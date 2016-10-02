@@ -17,20 +17,20 @@ package by.onliner.newsonlinerby.Enums;
 
 public enum NewsType {
     Autos,
-    Technologies,
     Peoples,
-    Immovable;
+    Realt,
+    Technologies;
 
     public static NewsType fromInteger(int x) {
         switch (x) {
             case 0:
                 return Autos;
             case 1:
-                return Technologies;
-            case 2:
                 return Peoples;
+            case 2:
+                return Realt;
             case 3:
-                return Immovable;
+                return Technologies;
         }
         return null;
     }

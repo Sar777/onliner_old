@@ -15,10 +15,8 @@
 
 package by.onliner.newsonlinerby.Tabs;
 
-import by.onliner.newsonlinerby.R;
-
 public class TabAuto extends TabBase {
     public TabAuto() {
-        super.resource = R.layout.t_news_auto;
+        Url = "https://auto.onliner.by";
     }
 }

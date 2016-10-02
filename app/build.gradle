@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "by.onliner.newsonlinerby"
         minSdkVersion 21
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
@@ -16,13 +16,26 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        buildType {
+        }
+    }
+    sourceSets {
+        main {
+                res.srcDirs = ['src/main/res']
+            }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:design:24.2.1'
+    compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'org.jsoup:jsoup:1.8.3'
+    compile 'com.github.eschao:android-ElasticListView:v1.0'
+    compile 'com.github.nostra13:Android-Universal-Image-Loader:v1.9.5'
+    compile 'com.github.HotBitmapGG:RingProgressBar:V1.2.2'
+    compile 'ayar.oktay.library:advancedtextview:0.4.5'
 }

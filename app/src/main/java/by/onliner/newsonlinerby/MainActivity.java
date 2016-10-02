@@ -17,6 +17,7 @@ package by.onliner.newsonlinerby;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -26,15 +27,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import by.onliner.newsonlinerby.Adapters.ViewPagerAdapter;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar toolbar;
     ViewPager pager;
     ViewPagerAdapter adapter;
-    SlidingTabLayout tabs;
+    TabLayout tabs;
     CharSequence Titles[]= { "Авто", "Люди", "Недвижимость", "Технологии" };
     int Numboftabs = 4;
+
+    public static ImageLoaderConfiguration imageLoaderConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,20 +71,14 @@ public class MainActivity extends AppCompatActivity
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
 
-        // Assiging the Sliding Tab Layout View
-        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
-        tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+        tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs.setupWithViewPager(pager);
 
-        // Setting Custom Color for the Scroll bar indicator of the Tab View
-        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
-            }
-        });
-
-        // Setting the ViewPager For the SlidingTabsLayout
-        tabs.setViewPager(pager);
+        imageLoaderConfig = new ImageLoaderConfiguration.Builder(this)
+                .denyCacheImageMultipleSizesInMemory()
+                .memoryCache(new LruMemoryCache(2 * 1024 * 1024))
+                .memoryCacheSize(2 * 1024 * 1024)
+                .build();
     }
 
     @Override

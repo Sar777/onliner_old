@@ -7,4 +7,12 @@
     <color name="ColorPrimary">#e71308</color>
     <color name="ColorPrimaryDark">#9f0000</color>
     <color name="tabsScrollColor">#8a140e</color>
+
+    <color name="colorCommentsList">#ffea00</color>
+    <color name="colorViewsList">#ff2400</color>
+    <color name="colorBlueOnliner">#004d99</color>
+    <color name="colorTabBlackOnliner">#333</color>
+    <color name="colorTabText">#999</color>
+    <color name="colorTabIndicator">#3e4753</color>
+    <color name="colorTabLayout">#f4f4f4</color>
 </resources>
