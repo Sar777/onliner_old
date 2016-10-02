@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity
     ViewPager pager;
     ViewPagerAdapter adapter;
     TabLayout tabs;
-    CharSequence Titles[]= { "Авто", "Люди", "Недвижимость", "Технологии" };
+    CharSequence Titles[];
     int Numboftabs = 4;
 
     public static ImageLoaderConfiguration imageLoaderConfig;
@@ -64,8 +64,10 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Titles = new CharSequence[] { getString(R.string.tabAuto),  getString(R.string.tabPeoples),  getString(R.string.tabRealt),  getString(R.string.tabTechnologies) };
+
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) findViewById(R.id.pager);

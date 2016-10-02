@@ -3,17 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ListView
+    <com.eschao.android.widget.elasticlistview.ElasticListView
         android:id="@+id/lvMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:divider="#ffda50"
+        android:fadingEdge="none"
+        android:scrollbars="none"
+        android:overScrollMode="never"
         android:dividerHeight="3dp">
-    </ListView>
+    </com.eschao.android.widget.elasticlistview.ElasticListView>
 
     <ProgressBar
         android:id="@+id/progressBarLoading"
+        style="@android:style/Widget.ProgressBar.Large.Inverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"

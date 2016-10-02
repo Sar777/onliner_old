@@ -6,7 +6,7 @@ package by.onliner.newsonlinerby.Tabs;
 
 public enum TabStatus {
     None,
-    Loading,
+    Load,
+    Pull,
     Fail,
-    Loaded
 }
