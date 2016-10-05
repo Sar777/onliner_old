@@ -26,4 +26,5 @@
     <string name="tabTechnologies">Технологии</string>
     <string name="updStatus">UPD</string>`
     <string name="footerLoading">Загрузка...</string>
+    <string name="title_activity_view_news">ViewNewsActivity</string>
 </resources>

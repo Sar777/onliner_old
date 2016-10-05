@@ -41,9 +41,9 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.Adapters.NewsListAdapter;
-import by.onliner.newsonlinerby.Parser.Parsers.PreviewParser;
+import by.onliner.newsonlinerby.Parser.Parsers.HeaderParser;
 import by.onliner.newsonlinerby.R;
-import by.onliner.newsonlinerby.Structures.Preview.PreviewData;
+import by.onliner.newsonlinerby.Structures.HeaderNews;
 import cz.msebera.android.httpclient.Header;
 
 public class TabBase extends Fragment implements View.OnClickListener, OnLoadListener {
@@ -51,7 +51,7 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
 
     protected TabStatus status;
 
-    private ArrayList<PreviewData> newsData = new ArrayList<PreviewData>();
+    private ArrayList<HeaderNews> newsData = new ArrayList<HeaderNews>();
     private NewsListAdapter newsListAdapter;
 
     private View myFragmentView;
@@ -121,7 +121,7 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
                 if (newsData.isEmpty())
                     throw new IllegalArgumentException("Empty news data container for pull news");
 
-                requestParams.put("fromDate", newsData.get(newsData.size() - 1).getDateUnix());
+                requestParams.put("fromDate", newsData.get(newsData.size() - 1).getPostDateUnix());
                 break;
             default:
                 break;
@@ -133,7 +133,7 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
                 Document doc = Jsoup.parse(new String(responseBody));
                 Elements elements = doc.getElementsByClass("news-tidings__item_condensed");
                 for (Element element : elements) {
-                    PreviewData data = new PreviewParser().parse(element);
+                    HeaderNews data = new HeaderParser().parse(element);
                     if (!data.isValid())
                         continue;
 

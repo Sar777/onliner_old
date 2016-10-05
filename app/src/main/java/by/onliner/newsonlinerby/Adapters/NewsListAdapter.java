@@ -19,16 +19,16 @@ import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.MainActivity;
 import by.onliner.newsonlinerby.R;
-import by.onliner.newsonlinerby.Structures.Preview.PreviewData;
+import by.onliner.newsonlinerby.Structures.HeaderNews;
 
 public class NewsListAdapter extends BaseAdapter {
     Context ctx;
     LayoutInflater lInflater;
-    ArrayList<PreviewData> objects;
+    ArrayList<HeaderNews> objects;
 
     ImageLoader imageLoader = ImageLoader.getInstance();
 
-    public NewsListAdapter(Context context, ArrayList<PreviewData> products) {
+    public NewsListAdapter(Context context, ArrayList<HeaderNews> products) {
         if (context == null)
             return;
 
@@ -65,11 +65,11 @@ public class NewsListAdapter extends BaseAdapter {
             view = lInflater.inflate(R.layout.l_item_news, parent, false);
         }
 
-        PreviewData p = getNew(position);
+        HeaderNews p = getNew(position);
 
-        imageLoader.displayImage(p.getImageUrl(), ((ImageView)view.findViewById(R.id.preview_image)), new DisplayImageOptions.Builder().cacheOnDisk(true).build());
+        imageLoader.displayImage(p.getImage(), ((ImageView)view.findViewById(R.id.preview_image)), new DisplayImageOptions.Builder().cacheOnDisk(true).build());
 
-        if (p.isUpd())
+        if (p.getAttributes().getUpd())
             ((TextView)view.findViewById(R.id.preview_upd_status)).setVisibility(View.VISIBLE);
 
         ((TextView)view.findViewById(R.id.preview_title)).setText(p.getTitle());
@@ -80,7 +80,7 @@ public class NewsListAdapter extends BaseAdapter {
         return view;
     }
 
-    PreviewData getNew(int position) {
-        return ((PreviewData) getItem(position));
+    HeaderNews getNew(int position) {
+        return ((HeaderNews) getItem(position));
     }
 }
