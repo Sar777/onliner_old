@@ -22,7 +22,7 @@
         </activity>
         <activity
             android:name=".ViewNewsActivity"
-            android:label="@string/title_activity_view_news"
+            android:label="@string/app_name"
             android:theme="@style/Onliner.BY"></activity>
     </application>
 

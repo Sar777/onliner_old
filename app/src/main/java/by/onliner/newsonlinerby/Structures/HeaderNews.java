@@ -11,6 +11,7 @@ public class HeaderNews {
     private String postDate;
     private Integer postDateUnix;
     private String image;
+    private String url;
 
     private HeaderAttributes attributes;
 
@@ -21,16 +22,18 @@ public class HeaderNews {
         this.postDate = "<unknown>";
         this.postDateUnix = 0;
         this.image = "";
+        this.url = "";
         this.attributes = new HeaderAttributes();
     }
 
-    public HeaderNews(String title, Integer views, Integer comments, String postDate, Integer postDateUnix, String image, HeaderAttributes attributes) {
+    public HeaderNews(String title, Integer views, Integer comments, String postDate, Integer postDateUnix, String image, String url, HeaderAttributes attributes) {
         this.title = title;
         this.views = views;
         this.comments = comments;
         this.postDate = postDate;
         this.postDateUnix = postDateUnix;
         this.image = image;
+        this.url = url;
         this.attributes = attributes;
     }
 
@@ -41,6 +44,7 @@ public class HeaderNews {
         this.postDate = headerNews.getPostDate();
         this.postDateUnix = headerNews.getPostDateUnix();
         this.image = headerNews.getImage();
+        this.url = headerNews.getUrl();
         this.attributes = headerNews.getAttributes();
     }
 
@@ -94,6 +98,14 @@ public class HeaderNews {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public HeaderAttributes getAttributes() {

@@ -1,7 +1,5 @@
 package by.onliner.newsonlinerby.Parser.Parsers;
 
-import android.util.Log;
-
 import org.jsoup.nodes.Element;
 
 import java.util.regex.Matcher;
@@ -23,13 +21,15 @@ public class HeaderParser implements IContentParser<Element, HeaderNews> {
         for (Element child : element.getAllElements()) {
             // Header basic
             if (child.className().indexOf("news-tidings__subtitle") != -1)
-                data.setTitle(child.text());
+                data.setTitle(child.children().first().child(0).text());
             else if (child.className().indexOf("news-tidings__comment") != -1)
                 data.setComments(Integer.parseInt(child.text().replaceAll(" ", "").trim()));
             else if (child.className().indexOf("news-tidings__button_views") != -1)
                 data.setViews(Integer.parseInt(child.text().replaceAll(" ", "").trim()));
             else if (child.className().indexOf("news-tidings__time") != -1)
                 data.setPostDate(child.text());
+            else if (child.className().indexOf("news-tidings__stub") != -1)
+                data.setUrl(child.attr("href"));
             else if (child.className().indexOf("news-tidings__image") != -1) {
                 Matcher m = Pattern.compile("background-image: url\\((.*)\\);").matcher(child.attr("style"));
                 if (m.matches())
@@ -37,13 +37,14 @@ public class HeaderParser implements IContentParser<Element, HeaderNews> {
             }
 
             // Attributes
-           // if (child.className().indexOf("button-style_excess button-style_small") != -1)
-          //      data.getAttributes().setUpd(true);
-         //  else if (child.className().indexOf("news-tidings__button_photo") != -1)
-         //      data.getAttributes().setPhotos(Integer.parseInt(child.text().replaceAll(" ", "").trim()));
+            if (child.className().indexOf("button-style_excess button-style_small") != -1)
+                data.getAttributes().setUpd(true);
+            else if (child.className().indexOf("news-tidings__button_photo") != -1)
+                data.getAttributes().setPhotos(Integer.parseInt(child.text().replaceAll(" ", "")));
+            else if (child.className().indexOf("news-tidings__button_video") != -1)
+                data.getAttributes().setCamera(true);
         }
 
-        Log.e("ORION", "E: " + data.getAttributes().getPhotos());
         return data;
     }
 }

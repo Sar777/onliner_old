@@ -15,12 +15,14 @@
 
 package by.onliner.newsonlinerby.Tabs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -44,10 +46,15 @@ import by.onliner.newsonlinerby.Adapters.NewsListAdapter;
 import by.onliner.newsonlinerby.Parser.Parsers.HeaderParser;
 import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.HeaderNews;
+import by.onliner.newsonlinerby.ViewNewsActivity;
 import cz.msebera.android.httpclient.Header;
 
 public class TabBase extends Fragment implements View.OnClickListener, OnLoadListener {
     protected String Url = "https://onliner.by";
+
+    private static String ASYNC_CLIENT_TAG = "PREVIEW_VIEW_NEWS";
+    public static String INTENT_URL_TAG = "URL";
+    public static String INTENT_FRAGMENT = "ACTIVITY";
 
     protected TabStatus status;
 
@@ -80,7 +87,19 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
 
         lvMain = (ElasticListView)myFragmentView.findViewById(R.id.lvMain);
         lvMain.setHorizontalFadingEdgeEnabled(true);
+        lvMain.setClickable(true);
         lvMain.setAdapter(newsListAdapter);
+
+        lvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                HeaderNews o = (HeaderNews)lvMain.getItemAtPosition(position);
+                Intent intent = new Intent(getContext(), ViewNewsActivity.class);
+                intent.putExtra(INTENT_URL_TAG, Url + o.getUrl());
+                intent.putExtra(INTENT_FRAGMENT, myFragmentView.getId());
+                startActivity(intent);
+            }
+        });
 
         DefaultLoadStateListener listener = new LoadFooter.DefaultLoadStateListener() {
             @Override
@@ -156,8 +175,13 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                btnLoadContent.setVisibility(View.VISIBLE);
-                progressBarStatus.setVisibility(View.GONE);
+                if (status == TabStatus.Pull)
+                    lvMain.notifyLoaded();
+                else {
+                    btnLoadContent.setVisibility(View.VISIBLE);
+                    progressBarStatus.setVisibility(View.GONE);
+                }
+
                 status = TabStatus.Fail;
             }
         });
@@ -166,11 +190,10 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnLoadContent: {
+            case R.id.btnLoadContent:
                 btnLoadContent.setVisibility(View.GONE);
                 LoadingContent();
                 break;
-            }
             default:
                 throw new UnsupportedOperationException("Unknown view id (" + v.getId() + ")");
         }

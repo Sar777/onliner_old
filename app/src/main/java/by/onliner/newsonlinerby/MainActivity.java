@@ -32,8 +32,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import by.onliner.newsonlinerby.Adapters.ViewPagerAdapter;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar toolbar;
     ViewPager pager;
@@ -71,6 +70,7 @@ public class MainActivity extends AppCompatActivity
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) findViewById(R.id.pager);
+        pager.setOffscreenPageLimit(Numboftabs);
         pager.setAdapter(adapter);
 
         tabs = (TabLayout) findViewById(R.id.tabs);
@@ -83,14 +83,17 @@ public class MainActivity extends AppCompatActivity
                 .build();
     }
 
+    public ViewPager getPager() {
+        return pager;
+    }
+
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
+        int count = getFragmentManager().getBackStackEntryCount();
+        if (count == 0)
             super.onBackPressed();
-        }
+        else
+            getFragmentManager().popBackStack();
     }
 
     @Override

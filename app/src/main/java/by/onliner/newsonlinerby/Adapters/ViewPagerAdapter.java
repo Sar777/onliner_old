@@ -43,7 +43,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     //This method return the fragment for the every position in the View Pager
     @Override
     public Fragment getItem(int position) {
-
         TabBase tab = null;
         switch (NewsType.fromInteger(position)) {
             case Autos:

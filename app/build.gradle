@@ -36,7 +36,5 @@ dependencies {
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'com.github.eschao:android-ElasticListView:v1.0'
     compile 'com.github.nostra13:Android-Universal-Image-Loader:v1.9.5'
-    compile 'com.github.HotBitmapGG:RingProgressBar:V1.2.2'
     compile 'ayar.oktay.library:advancedtextview:0.4.5'
-    compile 'com.github.japgolly:svg-android:svg-android-2.0.6'
 }

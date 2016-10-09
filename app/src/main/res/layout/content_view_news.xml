@@ -6,31 +6,163 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="by.onliner.newsonlinerby.ViewNewsActivity"
     tools:showIn="@layout/activity_view_news">
 
-    <LinearLayout
+    <ProgressBar
+        android:id="@+id/progressBarLoading"
+        style="@android:style/Widget.Holo.ProgressBar.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="5dp">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/img_full_new"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="120dp"
-            android:maxHeight="120dp"
-            android:scaleType="centerCrop"/>
-
-        <TextView
+        <RelativeLayout
+            android:id="@+id/l_container_news"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:paddingBottom="3dp"
+            android:visibility="invisible"
+            android:layout_alignParentTop="true">
 
+            <RelativeLayout
+                android:id="@+id/l_news_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/i_full_news_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:minHeight="250dp" />
+
+                <ProgressBar
+                    android:id="@+id/pb_view_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    style="@android:style/Widget.Holo.ProgressBar.Large"/>
+
+                <ayar.oktay.advancedtextview.AdvancedTextView
+                    android:id="@+id/tv_full_view_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_above="@+id/l_attributes_header"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/i_shape_light_black"
+                    android:text="Болельщикам, которые пришли во дворец спорта «Уручье» посмотреть на экранах матч сборной по футболу, запретили брать с собой пиво"/>
+
+                <LinearLayout
+                    android:id="@+id/l_attributes_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/i_shape_light_black"
+                    android:layout_alignBottom="@+id/i_full_news_image">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/tv_rounded_red">
+
+                        <TextView
+                            android:id="@+id/tv_full_view_views"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:textColor="@android:color/white"
+                            android:text="59000"/>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginRight="1dp"
+                            android:src="@drawable/i_onliner_views"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/tv_rounded_yellow"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_full_view_comments"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:paddingLeft="5dp"
+                            android:textColor="@android:color/black"
+                            android:text="3000"/>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:layout_marginRight="1dp"
+                            android:src="@drawable/i_onliner_comments"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_full_view_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:padding="2dp"
+                        android:textColor="@android:color/white"
+                        android:gravity="center"
+                        android:text="Вчера в 18:11"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_full_view_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/l_news_details"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:isScrollContainer="true"
+                android:textStyle="italic"
+                android:drawablePadding="5px"
+                android:linksClickable="true"
+                android:fadingEdgeLength="25px"
+                android:fadingEdge="vertical"
+                android:scrollbars="vertical"
+                android:scrollbarStyle="outsideOverlay"
+                android:text="weqweq eqw\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n \n\n\n\n\n\n\n\n"/>
+
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

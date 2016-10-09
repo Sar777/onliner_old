@@ -67,15 +67,23 @@ public class NewsListAdapter extends BaseAdapter {
 
         HeaderNews p = getNew(position);
 
-        imageLoader.displayImage(p.getImage(), ((ImageView)view.findViewById(R.id.preview_image)), new DisplayImageOptions.Builder().cacheOnDisk(true).build());
+        imageLoader.displayImage(p.getImage(), ((ImageView)view.findViewById(R.id.i_preview_image)), new DisplayImageOptions.Builder().cacheOnDisk(true).build());
 
+        ((TextView)view.findViewById(R.id.tv_preview_title)).setText(p.getTitle());
+        ((TextView)view.findViewById(R.id.tv_preview_comments)).setText(p.getComments().toString());
+        ((TextView)view.findViewById(R.id.tv_preview_views)).setText(p.getViews().toString());
+
+        // Attributes
         if (p.getAttributes().getUpd())
-            ((TextView)view.findViewById(R.id.preview_upd_status)).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.tv_preview_upd_status).setVisibility(View.VISIBLE);
 
-        ((TextView)view.findViewById(R.id.preview_title)).setText(p.getTitle());
-        ((TextView)view.findViewById(R.id.preview_comments)).setText(p.getComments().toString());
-        ((TextView)view.findViewById(R.id.preview_views)).setText(p.getViews().toString());
-        //((TextView)view.findViewById(R.id.pre)).setText(p.getDate());
+        if (p.getAttributes().getPhotos() > 0) {
+            view.findViewById(R.id.l_preview_photos).setVisibility(View.VISIBLE);
+            ((TextView)view.findViewById(R.id.tv_preview_photos)).setText(p.getAttributes().getPhotos().toString());
+        }
+
+        if (p.getAttributes().getCamera())
+            view.findViewById(R.id.i_preview_video).setVisibility(View.VISIBLE);
 
         return view;
     }
