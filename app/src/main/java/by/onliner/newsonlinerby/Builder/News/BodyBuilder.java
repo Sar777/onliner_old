@@ -5,15 +5,11 @@ import android.graphics.Typeface;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.binaryfork.spanny.Spanny;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -57,6 +53,7 @@ public class BodyBuilder implements IBuilder<View, String> {
                     textView.setText(result);
                     textView.append("\n");
                     textView.setTextColor(Color.BLACK);
+                    textView.setTextSize(15);
                     textView.setLinkTextColor(ResourcesCompat.getColor(App.getContext().getResources(), R.color.colorOnlinerNewsLinkText, null));
                     textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     ((LinearLayout)layout).addView(textView);
@@ -80,7 +77,9 @@ public class BodyBuilder implements IBuilder<View, String> {
                     else if (element.className().indexOf("news-header__title") != -1) {
                         TextView textView = new TextView(App.getContext());
                         textView.setTextColor(Color.BLACK);
-                        textView.setText(new Spanny().append(element.text(), new RelativeSizeSpan(1.2f), new StyleSpan(Typeface.BOLD)));
+                        textView.setText(element.text());
+                        textView.setTextSize(18);
+                        textView.setTypeface(null, Typeface.BOLD);
                         textView.append("\n");
                         ((LinearLayout)layout).addView(textView);
                     }

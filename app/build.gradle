@@ -36,6 +36,5 @@ dependencies {
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'com.github.eschao:android-ElasticListView:v1.0'
     compile 'ayar.oktay.library:advancedtextview:0.4.5'
-    compile 'com.binaryfork:spanny:1.0.4'
     compile 'com.squareup.picasso:picasso:2.5.2'
 }

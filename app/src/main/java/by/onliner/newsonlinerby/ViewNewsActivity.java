@@ -1,6 +1,7 @@
 package by.onliner.newsonlinerby;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -69,7 +70,9 @@ public class ViewNewsActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.tv_full_view_date)).setText(content.getHeader().getPostDate());
         ((TextView)findViewById(R.id.tv_full_view_comments)).setText(content.getHeader().getComments().toString());
         ((TextView)findViewById(R.id.tv_full_view_views)).setText(content.getHeader().getViews().toString());
+
         ((TextView)findViewById(R.id.tv_full_view_title)).setText(content.getHeader().getTitle());
+        ((TextView)findViewById(R.id.tv_full_view_title)).setTypeface(null, Typeface.BOLD);
 
         new BodyBuilder(content.getContent()).build(findViewById(R.id.l_body_news_text));
 
