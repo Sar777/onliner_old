@@ -15,4 +15,6 @@
     <color name="colorTabText">#999</color>
     <color name="colorTabIndicator">#3e4753</color>
     <color name="colorTabLayout">#f4f4f4</color>
+    <color name="colorOnlinerNewsLinkText">#4365ff</color>
+    <color name="colorOnlinerBlockquoteText">#666</color>
 </resources>

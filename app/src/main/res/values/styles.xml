@@ -39,6 +39,13 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <style name="Onliner.BY.TextAppearanceNewsBody" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorHighlight">?android:textColorHighlight</item>
+        <item name="android:textColorLink">@color/colorPrimary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="Onliner.BY.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

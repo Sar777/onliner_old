@@ -43,14 +43,6 @@
                     android:scaleType="centerCrop"
                     android:minHeight="250dp" />
 
-                <ProgressBar
-                    android:id="@+id/pb_view_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:visibility="gone"
-                    style="@android:style/Widget.Holo.ProgressBar.Large"/>
-
                 <ayar.oktay.advancedtextview.AdvancedTextView
                     android:id="@+id/tv_full_view_title"
                     android:layout_width="match_parent"
@@ -145,24 +137,22 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_full_view_text"
+            <LinearLayout
+                android:id="@+id/l_body_news_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_below="@+id/l_news_details"
+                android:layout_marginTop="5dp"
+                android:textAlignment="center"
+                android:paddingTop="15dp"
+                android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:isScrollContainer="true"
-                android:textStyle="italic"
-                android:drawablePadding="5px"
-                android:linksClickable="true"
-                android:fadingEdgeLength="25px"
-                android:fadingEdge="vertical"
-                android:scrollbars="vertical"
-                android:scrollbarStyle="outsideOverlay"
-                android:text="weqweq eqw\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n \n\n\n\n\n\n\n\n"/>
+                android:orientation="vertical">
+
+            </LinearLayout>
 
         </RelativeLayout>
+
     </ScrollView>
 </RelativeLayout>

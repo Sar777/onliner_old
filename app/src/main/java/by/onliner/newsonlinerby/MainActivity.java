@@ -16,6 +16,7 @@
 package by.onliner.newsonlinerby;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -26,9 +27,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import by.onliner.newsonlinerby.Adapters.ViewPagerAdapter;
 
@@ -41,14 +39,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     CharSequence Titles[];
     int Numboftabs = 4;
 
-    public static ImageLoaderConfiguration imageLoaderConfig;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -75,12 +74,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(pager);
-
-        imageLoaderConfig = new ImageLoaderConfiguration.Builder(this)
-                .denyCacheImageMultipleSizesInMemory()
-                .memoryCache(new LruMemoryCache(2 * 1024 * 1024))
-                .memoryCacheSize(2 * 1024 * 1024)
-                .build();
     }
 
     public ViewPager getPager() {

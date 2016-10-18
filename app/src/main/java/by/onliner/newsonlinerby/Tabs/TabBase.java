@@ -150,7 +150,7 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Document doc = Jsoup.parse(new String(responseBody));
-                Elements elements = doc.getElementsByClass("news-tidings__item_condensed");
+                Elements elements = doc.getElementsByClass("news-tidings__item");
                 for (Element element : elements) {
                     HeaderNews data = new HeaderParser().parse(element);
                     if (!data.isValid())
@@ -165,9 +165,8 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
 
                 if (status == TabStatus.Pull)
                     lvMain.notifyLoaded();
-                else {
+                else
                     view.findViewById(R.id.progressBarLoading).setVisibility(View.GONE);
-                }
 
                 newsListAdapter.notifyDataSetChanged();
                 status = TabStatus.None;

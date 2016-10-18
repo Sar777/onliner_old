@@ -12,12 +12,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import by.onliner.newsonlinerby.MainActivity;
+import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.HeaderNews;
 
@@ -26,8 +25,6 @@ public class NewsListAdapter extends BaseAdapter {
     LayoutInflater lInflater;
     ArrayList<HeaderNews> objects;
 
-    ImageLoader imageLoader = ImageLoader.getInstance();
-
     public NewsListAdapter(Context context, ArrayList<HeaderNews> products) {
         if (context == null)
             return;
@@ -35,7 +32,6 @@ public class NewsListAdapter extends BaseAdapter {
         ctx = context;
         objects = products;
         lInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        imageLoader.init(MainActivity.imageLoaderConfig);
     }
 
     // кол-во элементов
@@ -67,7 +63,11 @@ public class NewsListAdapter extends BaseAdapter {
 
         HeaderNews p = getNew(position);
 
-        imageLoader.displayImage(p.getImage(), ((ImageView)view.findViewById(R.id.i_preview_image)), new DisplayImageOptions.Builder().cacheOnDisk(true).build());
+        Picasso.with(App.getContext())
+                .load(p.getImage())
+             //   .placeholder(R.drawable.user_placeholder)
+             //   .error(R.drawable.user_placeholder_error)
+                .into(((ImageView)view.findViewById(R.id.i_preview_image)));
 
         ((TextView)view.findViewById(R.id.tv_preview_title)).setText(p.getTitle());
         ((TextView)view.findViewById(R.id.tv_preview_comments)).setText(p.getComments().toString());
