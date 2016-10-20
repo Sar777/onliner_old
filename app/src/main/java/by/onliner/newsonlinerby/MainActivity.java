@@ -32,7 +32,6 @@ import by.onliner.newsonlinerby.Adapters.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    Toolbar toolbar;
     ViewPager pager;
     ViewPagerAdapter adapter;
     TabLayout tabs;

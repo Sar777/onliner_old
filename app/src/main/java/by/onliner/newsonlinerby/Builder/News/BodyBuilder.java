@@ -7,8 +7,10 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.jsoup.Jsoup;
@@ -19,22 +21,33 @@ import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Builder.IBuilder;
 import by.onliner.newsonlinerby.CustomViews.QuoteTextView;
 import by.onliner.newsonlinerby.R;
+import by.onliner.newsonlinerby.Structures.ContentNews;
 
 /**
  * Created by Mi Air on 13.10.2016.
  */
 
-public class BodyBuilder implements IBuilder<View, String> {
+public class BodyBuilder implements IBuilder<View, View> {
     private String[] tagNames;
-    private String data;
+    private ContentNews content;
 
-    public BodyBuilder(String data, String... tags) {
-        this.data = data;
+    public BodyBuilder(ContentNews content, String... tags) {
+        this.content = content;
     }
 
     @Override
-    public String build(View layout) {
-        Document doc = Jsoup.parse(data);
+    public View build(View layout2) {
+        Document doc = Jsoup.parse(content.getContent());
+
+        LinearLayout layout = new LinearLayout(App.getContext());
+
+        RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        relativeParams.setMargins(0, 10, 0, 0);
+        layout.setLayoutParams(relativeParams);
+
+        layout.setPadding(10, 15, 10, 5);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
         for (Element element : doc.getAllElements()) {
             switch (element.tagName()) {
@@ -50,12 +63,15 @@ public class BodyBuilder implements IBuilder<View, String> {
                     }
 
                     TextView textView = new TextView(App.getContext());
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(0, 0, 0, 25);
+                    textView.setLayoutParams(layoutParams);
+
                     textView.setText(result);
-                    textView.append("\n");
                     textView.setTextColor(Color.BLACK);
-                    textView.setTextSize(15);
                     textView.setLinkTextColor(ResourcesCompat.getColor(App.getContext().getResources(), R.color.colorOnlinerNewsLinkText, null));
-                    textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    textView.setTextSize(15);
+
                     ((LinearLayout)layout).addView(textView);
                     break;
                 }
@@ -74,13 +90,19 @@ public class BodyBuilder implements IBuilder<View, String> {
                     // Images & Media
                     if (element.className().indexOf("news-media_extended") != -1 || element.className().indexOf("news-media_condensed") != -1)
                         new ImageBuilder(element).build(layout);
+                    else if (element.className().indexOf("news-media__gallery") != -1)
+                        new ImageSliderBuilder(element).build((LinearLayout) layout);
                     else if (element.className().indexOf("news-header__title") != -1) {
                         TextView textView = new TextView(App.getContext());
+
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        layoutParams.setMargins(0, 0, 0, 30);
+                        textView.setLayoutParams(layoutParams);
+
                         textView.setTextColor(Color.BLACK);
                         textView.setText(element.text());
                         textView.setTextSize(18);
                         textView.setTypeface(null, Typeface.BOLD);
-                        textView.append("\n");
                         ((LinearLayout)layout).addView(textView);
                     }
                     break;
@@ -96,6 +118,6 @@ public class BodyBuilder implements IBuilder<View, String> {
             }
         }
 
-        return "";
+        return layout;
     }
 }

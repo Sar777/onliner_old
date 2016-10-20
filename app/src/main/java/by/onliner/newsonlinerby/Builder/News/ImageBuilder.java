@@ -1,8 +1,11 @@
 package by.onliner.newsonlinerby.Builder.News;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,12 +31,15 @@ public class ImageBuilder implements IBuilder<View, View> {
 
     @Override
     public View build(View layout) {
-        for (Element child : element.getAllElements()) {
+        for (final Element child : element.getAllElements()) {
             View view = null;
             if (child.className().indexOf("news-media__image") != -1) {
                 view = new ImageView(App.getContext());
-                ((ImageView)view).setScaleType(ImageView.ScaleType.CENTER_CROP);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                ((ImageView)view).setScaleType(ImageView.ScaleType.FIT_CENTER);
+                ((ImageView)view).setAdjustViewBounds(true);
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.gravity = Gravity.CENTER;
 
                 // Sub title img
                 if (element.getElementsByClass("news-media__subtitle").isEmpty())
@@ -42,15 +48,34 @@ public class ImageBuilder implements IBuilder<View, View> {
                     layoutParams.setMargins(0, 5, 0, 10);
 
                 view.setLayoutParams(layoutParams);
-                Picasso.with(App.getContext()).load(child.attr("src")).into((ImageView)view);
+
+                if (!child.attr("src").isEmpty()) {
+                    Handler uiHandler = new Handler(Looper.getMainLooper());
+                    final View finalView = view;
+                    uiHandler.post(new Runnable(){
+                        @Override
+                        public void run() {
+                            Picasso.with(App.getContext()).
+                                    load(child.attr("src")).
+                                    error(R.drawable.ic_broken_image).
+                                    into((ImageView) finalView);
+                        }
+                    });
+                }
+                else
+                    continue;
             }
             else if (child.className().indexOf("news-media__subtitle") != -1) {
                 view = new TextView(App.getContext());
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(0, 0, 0, 25);
+                ((TextView)view).setLayoutParams(layoutParams);
+
                 ((TextView)view).setGravity(Gravity.CENTER_HORIZONTAL);
                 ((TextView)view).setTextColor(ResourcesCompat.getColor(App.getContext().getResources(), R.color.colorOnlinerBlockquoteText, null));
                 ((TextView)view).setTextSize(12);
                 ((TextView)view).setText(child.text());
-                ((TextView)view).append("\n");
             }
 
             if (view != null)

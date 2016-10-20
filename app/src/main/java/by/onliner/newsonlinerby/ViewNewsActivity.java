@@ -1,11 +1,15 @@
 package by.onliner.newsonlinerby;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,12 +24,21 @@ import by.onliner.newsonlinerby.Structures.ContentNews;
 import by.onliner.newsonlinerby.Tabs.TabBase;
 import cz.msebera.android.httpclient.Header;
 
-public class ViewNewsActivity extends AppCompatActivity {
+public class ViewNewsActivity extends AppCompatActivity implements View.OnClickListener {
     private static String ASYNC_CLIENT_TAG = "FULL_VIEW_NEWS";
 
-    private AsyncHttpClient client = new AsyncHttpClient();
+    public static String INTENT_URL_TAG = "URL";
 
-    private ProgressBar progressBar;
+    private AsyncHttpClient mClient = new AsyncHttpClient();
+
+    // Views
+    private ProgressBar mProgressBar;
+    private View mContainerNews;
+    private Button mButtonComment;
+
+    private ContentNews mContent;
+
+    private int mShortAnimationDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,47 +55,88 @@ public class ViewNewsActivity extends AppCompatActivity {
         });
 
         // Views
-        progressBar = (ProgressBar)findViewById(R.id.progressBarLoading);
+        mProgressBar = (ProgressBar)findViewById(R.id.progressBarLoading);
+        mContainerNews = (View)findViewById(R.id.scrollView_content_news);
+        mContainerNews.setVisibility(View.GONE);
+
+        mButtonComment = (Button)findViewById(R.id.btn_comment_full_news);
+        mButtonComment.setOnClickListener(this);
+
+        mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         Intent intent = getIntent();
         String url = intent.getStringExtra(TabBase.INTENT_URL_TAG);
 
-        client.get(url, null, new AsyncHttpResponseHandler() {
+        mClient.get(url, null, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
-                progressBar.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                ContentNews content = new FullNewsParser().parse(new String(responseBody));
-                InitialViewElements(content);
+                mContent = new FullNewsParser().parse(new String(responseBody));
+                new InitializeActivityTask().execute();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                progressBar.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE);
             }
         }).setTag(ASYNC_CLIENT_TAG);
     }
 
-    private void InitialViewElements(final ContentNews content) {
-        ((TextView)findViewById(R.id.tv_full_view_date)).setText(content.getHeader().getPostDate());
-        ((TextView)findViewById(R.id.tv_full_view_comments)).setText(content.getHeader().getComments().toString());
-        ((TextView)findViewById(R.id.tv_full_view_views)).setText(content.getHeader().getViews().toString());
+    private void VisibleNewsCountainer() {
+        mContainerNews.setAlpha(0f);
+        mContainerNews.setVisibility(View.VISIBLE);
 
-        ((TextView)findViewById(R.id.tv_full_view_title)).setText(content.getHeader().getTitle());
-        ((TextView)findViewById(R.id.tv_full_view_title)).setTypeface(null, Typeface.BOLD);
+        mContainerNews.animate().alpha(1f).setDuration(mShortAnimationDuration).setListener(null);
 
-        new BodyBuilder(content.getContent()).build(findViewById(R.id.l_body_news_text));
+        mProgressBar.animate().alpha(0f).setDuration(mShortAnimationDuration).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
+    }
 
-        Picasso.with(App.getContext())
-                .load(content.getHeader().getImage())
-                //   .placeholder(R.drawable.user_placeholder)
-                //   .error(R.drawable.user_placeholder_error)
-                .into((ImageView)findViewById(R.id.i_full_news_image));
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_comment_full_news: {
+                Intent intent = new Intent(App.getContext(), CommentsActivity.class);
+                intent.putExtra(INTENT_URL_TAG, mContent.getHeader().getUrl());
+                startActivity(intent);
+                break;
+            }
+            default:
+                break;
+        }
+    }
 
-        findViewById(R.id.l_container_news).setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
+    class InitializeActivityTask extends AsyncTask<Void, Void, View> {
+        @Override
+        protected View doInBackground(Void... params) {
+            return new BodyBuilder(mContent).build(null);
+        }
+
+        @Override
+        protected void onPostExecute(View layout) {
+            super.onPostExecute(layout);
+
+            ((ViewGroup)findViewById(R.id.l_content_news)).addView(layout, 1);
+
+            ((TextView)findViewById(R.id.tv_full_view_date)).setText(mContent.getHeader().getPostDate());
+            ((TextView)findViewById(R.id.tv_full_view_comments)).setText(mContent.getHeader().getComments().toString());
+            ((TextView)findViewById(R.id.tv_full_view_views)).setText(mContent.getHeader().getViews().toString());
+            ((TextView)findViewById(R.id.tv_full_view_title)).setText(mContent.getHeader().getTitle());
+
+            Picasso.with(App.getContext()).
+                    load(mContent.getHeader().getImage()).
+                    error(R.drawable.ic_broken_image).
+                    into((ImageView) findViewById(R.id.i_full_news_image));
+
+            VisibleNewsCountainer();
+        }
     }
 }

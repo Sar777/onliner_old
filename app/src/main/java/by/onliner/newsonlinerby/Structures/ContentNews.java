@@ -13,13 +13,9 @@ public class ContentNews {
         content = "";
     }
 
-    public ContentNews(HeaderNews header, String title, String content) {
+    public ContentNews(HeaderNews header, String content) {
         this.header = header;
         this.content = content;
-    }
-
-    public ContentNews(HeaderNews header) {
-        this.header = header;
     }
 
     public HeaderNews getHeader() {

@@ -183,7 +183,7 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
 
                 status = TabStatus.Fail;
             }
-        });
+        }).setTag(ASYNC_CLIENT_TAG);
     }
 
     @Override

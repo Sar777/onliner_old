@@ -63,11 +63,10 @@ public class NewsListAdapter extends BaseAdapter {
 
         HeaderNews p = getNew(position);
 
-        Picasso.with(App.getContext())
-                .load(p.getImage())
-             //   .placeholder(R.drawable.user_placeholder)
-             //   .error(R.drawable.user_placeholder_error)
-                .into(((ImageView)view.findViewById(R.id.i_preview_image)));
+        Picasso.with(App.getContext()).
+                load(p.getImage()).
+                error(R.drawable.ic_broken_image).
+                into(((ImageView)view.findViewById(R.id.i_preview_image)));
 
         ((TextView)view.findViewById(R.id.tv_preview_title)).setText(p.getTitle());
         ((TextView)view.findViewById(R.id.tv_preview_comments)).setText(p.getComments().toString());
