@@ -69,7 +69,7 @@ public class BodyBuilder implements IBuilder<View, View> {
                     textView.setText(result);
                     textView.setTextColor(Color.BLACK);
                     textView.setLinkTextColor(ResourcesCompat.getColor(App.getContext().getResources(), R.color.colorOnlinerNewsLinkText, null));
-                    textView.setTextSize(15);
+                    textView.setTextSize(16);
 
                     ((LinearLayout)layout).addView(textView);
                     break;
@@ -83,6 +83,18 @@ public class BodyBuilder implements IBuilder<View, View> {
                     imageView.setLayoutParams(layoutParams);
                     imageView.setImageResource(R.drawable.ic_hr_tag_onliner);
                     ((LinearLayout)layout).addView(imageView);
+                    break;
+                }
+                case "h2": {
+                    TextView textView = new TextView(App.getContext());
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(0, 10, 0, 15);
+                    textView.setLayoutParams(layoutParams);
+                    textView.setText(element.text());
+                    textView.setTextColor(Color.BLACK);
+                    textView.setTextSize(18);
+                    textView.setTypeface(null, Typeface.BOLD);
+                    ((LinearLayout)layout).addView(textView);
                     break;
                 }
                 case "div": {
