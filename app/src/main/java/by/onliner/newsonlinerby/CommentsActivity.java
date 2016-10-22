@@ -9,7 +9,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.Adapters.CommentListAdapter;
-import by.onliner.newsonlinerby.Structures.Comment;
+import by.onliner.newsonlinerby.Structures.Comments.Comment;
 
 public class CommentsActivity extends AppCompatActivity {
     private ArrayList<Comment> mComments = new ArrayList<>();
@@ -29,6 +29,8 @@ public class CommentsActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        mComments = (ArrayList<Comment>)( getIntent().getSerializableExtra(ViewNewsActivity.INTENT_COMMENTS_TAG));
 
         mCommentListAdapter = new CommentListAdapter(this, mComments);
 

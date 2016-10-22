@@ -18,9 +18,17 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import by.onliner.newsonlinerby.Asynchronous.AsyncCommentParser;
 import by.onliner.newsonlinerby.Builder.News.BodyBuilder;
-import by.onliner.newsonlinerby.Parser.Parsers.FullNewsParser;
-import by.onliner.newsonlinerby.Structures.ContentNews;
+import by.onliner.newsonlinerby.Listeners.ResponseListener;
+import by.onliner.newsonlinerby.Managers.LikeMgr;
+import by.onliner.newsonlinerby.Parser.Parsers.BodyNewsParser;
+import by.onliner.newsonlinerby.Structures.Comments.Comment;
+import by.onliner.newsonlinerby.Structures.Comments.Like;
+import by.onliner.newsonlinerby.Structures.News.News;
 import by.onliner.newsonlinerby.Tabs.TabBase;
 import cz.msebera.android.httpclient.Header;
 
@@ -28,6 +36,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private static String ASYNC_CLIENT_TAG = "FULL_VIEW_NEWS";
 
     public static String INTENT_URL_TAG = "URL";
+    public static String INTENT_COMMENTS_TAG = "COMMENTS";
 
     private AsyncHttpClient mClient = new AsyncHttpClient();
 
@@ -36,7 +45,8 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private View mContainerNews;
     private Button mButtonComment;
 
-    private ContentNews mContent;
+    private News mContent;
+    private HashMap<Integer, Comment> mComments;
 
     private int mShortAnimationDuration;
 
@@ -53,6 +63,8 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 onBackPressed();
             }
         });
+
+        mComments = new HashMap<>();
 
         // Views
         mProgressBar = (ProgressBar)findViewById(R.id.progressBarLoading);
@@ -75,8 +87,25 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                mContent = new FullNewsParser().parse(new String(responseBody));
-                new InitializeActivityTask().execute();
+                mContent = new BodyNewsParser().parse(new String(responseBody));
+                new AsyncBodyBuilder().execute();
+
+                new AsyncCommentParser(new String(responseBody), new ResponseListener<HashMap<Integer, Comment>>() {
+                    @Override
+                    public void onResponse(HashMap response) {
+                        mComments = response;
+                        LikeMgr.getInstance().getAsyncLikes(mContent.getLikeAPIUrl(), new ResponseListener<ArrayList<Like>>() {
+                            @Override
+                            public void onResponse(ArrayList<Like> response) {
+                                for (Like like : response) {
+                                    Comment comment = mComments.get(like.getCommentId());
+                                    if (comment != null)
+                                        comment.setLikes(like);
+                                }
+                            }
+                        });
+                    }
+                }).execute();
             }
 
             @Override
@@ -106,6 +135,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_comment_full_news: {
                 Intent intent = new Intent(App.getContext(), CommentsActivity.class);
                 intent.putExtra(INTENT_URL_TAG, mContent.getHeader().getUrl());
+                intent.putExtra(INTENT_COMMENTS_TAG, new ArrayList<Comment>(mComments.values()));
                 startActivity(intent);
                 break;
             }
@@ -114,9 +144,11 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    class InitializeActivityTask extends AsyncTask<Void, Void, View> {
+    // Асинхронный разбор и постройка Layout c содержимым новости
+    class AsyncBodyBuilder extends AsyncTask<Void, Void, View> {
         @Override
         protected View doInBackground(Void... params) {
+            // Формирование Laoyut
             return new BodyBuilder(mContent).build(null);
         }
 

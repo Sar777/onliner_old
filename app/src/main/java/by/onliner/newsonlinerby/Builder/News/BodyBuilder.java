@@ -21,17 +21,16 @@ import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Builder.IBuilder;
 import by.onliner.newsonlinerby.CustomViews.QuoteTextView;
 import by.onliner.newsonlinerby.R;
-import by.onliner.newsonlinerby.Structures.ContentNews;
+import by.onliner.newsonlinerby.Structures.News.News;
 
 /**
  * Created by Mi Air on 13.10.2016.
  */
 
 public class BodyBuilder implements IBuilder<View, View> {
-    private String[] tagNames;
-    private ContentNews content;
+    private News content;
 
-    public BodyBuilder(ContentNews content, String... tags) {
+    public BodyBuilder(News content, String... tags) {
         this.content = content;
     }
 
@@ -45,7 +44,7 @@ public class BodyBuilder implements IBuilder<View, View> {
         relativeParams.setMargins(0, 10, 0, 0);
         layout.setLayoutParams(relativeParams);
 
-        layout.setPadding(10, 15, 10, 5);
+        layout.setPadding(17, 15, 17, 5);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
