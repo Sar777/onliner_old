@@ -31,34 +31,26 @@ import com.eschao.android.widget.elasticlistview.ElasticListView;
 import com.eschao.android.widget.elasticlistview.LoadFooter;
 import com.eschao.android.widget.elasticlistview.LoadFooter.DefaultLoadStateListener;
 import com.eschao.android.widget.elasticlistview.OnLoadListener;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.Adapters.NewsListAdapter;
-import by.onliner.newsonlinerby.Parser.Parsers.HeaderParser;
+import by.onliner.newsonlinerby.Listeners.NewsListResponse;
+import by.onliner.newsonlinerby.Managers.NewsMgr;
 import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.HeaderNews;
 import by.onliner.newsonlinerby.ViewNewsActivity;
-import cz.msebera.android.httpclient.Header;
 
-public class TabBase extends Fragment implements View.OnClickListener, OnLoadListener {
+public class TabBase extends Fragment implements View.OnClickListener {
     protected String Url = "https://onliner.by";
 
-    private static String ASYNC_CLIENT_TAG = "PREVIEW_VIEW_NEWS";
     public static String INTENT_URL_TAG = "URL";
     public static String INTENT_FRAGMENT = "ACTIVITY";
 
     protected TabStatus status;
 
-    private ArrayList<HeaderNews> newsData = new ArrayList<HeaderNews>();
+    private ArrayList<HeaderNews> newsData = new ArrayList<>();
     private NewsListAdapter newsListAdapter;
 
     private View myFragmentView;
@@ -67,11 +59,8 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
     private ProgressBar progressBarStatus;
     private ElasticListView lvMain;
 
-    private AsyncHttpClient client = new AsyncHttpClient();
-
     public TabBase() {
         status = TabStatus.None;
-        client.setTimeout(5 * 1000);
     }
 
     @Override
@@ -120,7 +109,13 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
         lvMain.enableUpdateHeader(false);
         lvMain.enableLoadFooter(true);
         lvMain.getLoadFooter().setOnLoadStateListener(listener).setContentView(R.layout.l_news_footer_load, true);
-        lvMain.setOnLoadListener(this);
+        lvMain.setOnLoadListener(new OnLoadListener() {
+            @Override
+            public void onLoad() {
+                status = TabStatus.Pull;
+                LoadingContent();
+            }
+        });
 
         status = TabStatus.Load;
 
@@ -132,36 +127,33 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
         RequestParams requestParams = new RequestParams();
 
         switch (status) {
-            case Load:
+            case Load: {
                 newsData.clear();
                 progressBarStatus.setVisibility(View.VISIBLE);
                 break;
-            case Pull:
+            }
+            case Pull: {
                 if (newsData.isEmpty())
                     throw new IllegalArgumentException("Empty news data container for pull news");
 
                 requestParams.put("fromDate", newsData.get(newsData.size() - 1).getPostDateUnix());
                 break;
+            }
             default:
                 break;
         }
 
-        client.get(Url, requestParams, new AsyncHttpResponseHandler() {
+        NewsMgr.getInstance().getAsyncNewsList(Url, requestParams, new NewsListResponse<ArrayList<HeaderNews>>() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Document doc = Jsoup.parse(new String(responseBody));
-                Elements elements = doc.getElementsByClass("news-tidings__item");
-                for (Element element : elements) {
-                    HeaderNews data = new HeaderParser().parse(element);
-                    if (!data.isValid())
-                        continue;
-
-                    newsData.add(data);
-                }
-
+            public void OnSuccess(ArrayList<HeaderNews> response) {
                 View view = getView();
                 if (view == null)
                     return;
+
+                for (HeaderNews header : response){
+                    if (!newsData.contains(header))
+                        newsData.add(header);
+                }
 
                 if (status == TabStatus.Pull)
                     lvMain.notifyLoaded();
@@ -173,7 +165,7 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure() {
                 if (status == TabStatus.Pull)
                     lvMain.notifyLoaded();
                 else {
@@ -183,7 +175,7 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
 
                 status = TabStatus.Fail;
             }
-        }).setTag(ASYNC_CLIENT_TAG);
+        });
     }
 
     @Override
@@ -198,18 +190,7 @@ public class TabBase extends Fragment implements View.OnClickListener, OnLoadLis
         }
     }
 
-    @Override
-    public void onLoad() {
-        status = TabStatus.Pull;
-        LoadingContent();
-    }
-
-    public TabStatus getStatus() {
-        return status;
-    }
-
     private void LoadContentIfNeed() {
-
         switch (status) {
             case Pull:
             case Load:

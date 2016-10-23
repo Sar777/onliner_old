@@ -39,7 +39,7 @@ public class Like implements Serializable {
         this.mCount = count;
     }
 
-    public Boolean getBest() {
+    public Boolean isBest() {
         return mIsBest;
     }
 
