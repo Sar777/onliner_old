@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import by.onliner.newsonlinerby.Parser.IContentParser;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
@@ -13,11 +14,11 @@ import by.onliner.newsonlinerby.Structures.Comments.Comment;
  * Created by Mi Air on 21.10.2016.
  */
 
-public class CommentsParser implements IContentParser<String, HashMap<Integer, Comment>> {
+public class CommentsParser implements IContentParser<String, LinkedHashMap<Integer, Comment>> {
     @Override
-    public HashMap<Integer, Comment> parse(String data) {
+    public LinkedHashMap<Integer, Comment> parse(String data) {
         Document doc = Jsoup.parse(data);
-        HashMap<Integer, Comment> commentList = new HashMap<>();
+        LinkedHashMap<Integer, Comment> commentList = new LinkedHashMap<>();
 
         for (Element element : doc.getElementById("commentsList").getElementsByClass("news-comment__item")) {
             Comment comment = new Comment();

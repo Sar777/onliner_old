@@ -1,6 +1,7 @@
 package by.onliner.newsonlinerby.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,18 +22,31 @@ import by.onliner.newsonlinerby.Transforms.CircleTransform;
  */
 
 public class CommentListAdapter extends BaseAdapter {
-    Context mContext;
-    LayoutInflater mInflater;
-    ArrayList<Comment> mObjects;
+    private Context mContext;
+    private LayoutInflater mInflater;
+    private ArrayList<Comment> mObjects;
+    private Integer mLoadedItems;
 
     public CommentListAdapter(Context context, ArrayList<Comment> comments) {
         mContext = context;
         mObjects = comments;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mLoadedItems = mObjects.size() < 10 ? mObjects.size() : 10;
+    }
+
+    public void increaseLoadedItems() {
+        mLoadedItems += mObjects.size() < 10 ? mObjects.size() : 10;
+
+        if (mLoadedItems >= mObjects.size())
+            mLoadedItems = mObjects.size();
     }
 
     @Override
     public int getCount() {
+        return mLoadedItems;
+    }
+
+    public int getRealCount() {
         return mObjects.size();
     }
 
@@ -57,8 +71,10 @@ public class CommentListAdapter extends BaseAdapter {
         ((TextView)view.findViewById(R.id.tv_comment_author)).setText(comment.getAuthor().getName());
         ((TextView)view.findViewById(R.id.tv_comment_date)).setText(comment.getDate());
 
-        if (comment.getLikes().getCount() > 0)
+        if (comment.getLikes().getCount() > 0) {
+            view.findViewById(R.id.l_like_group).setVisibility(View.VISIBLE);
             ((TextView) view.findViewById(R.id.tv_comment_likes_count)).setText(comment.getLikes().getCount().toString());
+        }
         else
             view.findViewById(R.id.l_like_group).setVisibility(View.GONE);
 
