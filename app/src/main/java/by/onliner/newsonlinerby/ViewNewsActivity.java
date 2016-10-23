@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import by.onliner.newsonlinerby.Asynchronous.AsyncCommentParser;
 import by.onliner.newsonlinerby.Builder.News.BodyBuilder;
@@ -46,7 +48,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private Button mButtonComment;
 
     private News mContent;
-    private HashMap<Integer, Comment> mComments;
+    private LinkedHashMap<Integer, Comment> mComments;
 
     private int mShortAnimationDuration;
 
@@ -64,7 +66,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        mComments = new HashMap<>();
+        mComments = new LinkedHashMap<>();
 
         // Views
         mProgressBar = (ProgressBar)findViewById(R.id.progressBarLoading);
@@ -90,9 +92,9 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 mContent = new BodyNewsParser().parse(new String(responseBody));
                 new AsyncBodyBuilder().execute();
 
-                new AsyncCommentParser(new String(responseBody), new ResponseListener<HashMap<Integer, Comment>>() {
+                new AsyncCommentParser(new String(responseBody), new ResponseListener<LinkedHashMap<Integer, Comment>>() {
                     @Override
-                    public void onResponse(HashMap response) {
+                    public void onResponse(LinkedHashMap response) {
                         mComments = response;
                         LikeMgr.getInstance().getAsyncLikes(mContent.getLikeAPIUrl(), new ResponseListener<ArrayList<Like>>() {
                             @Override

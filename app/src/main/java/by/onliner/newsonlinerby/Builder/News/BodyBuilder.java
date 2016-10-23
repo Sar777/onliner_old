@@ -44,7 +44,7 @@ public class BodyBuilder implements IBuilder<View, View> {
         relativeParams.setMargins(0, 10, 0, 0);
         layout.setLayoutParams(relativeParams);
 
-        layout.setPadding(17, 15, 17, 5);
+        layout.setPadding(23, 15, 23, 5);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
@@ -69,7 +69,7 @@ public class BodyBuilder implements IBuilder<View, View> {
                     textView.setText(result);
                     textView.setTextColor(Color.BLACK);
                     textView.setLinkTextColor(ResourcesCompat.getColor(App.getContext().getResources(), R.color.colorOnlinerNewsLinkText, null));
-                    textView.setTextSize(16);
+                    textView.setTextSize(15);
 
                     ((LinearLayout)layout).addView(textView);
                     break;

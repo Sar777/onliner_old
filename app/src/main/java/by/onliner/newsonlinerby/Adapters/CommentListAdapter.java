@@ -1,7 +1,6 @@
 package by.onliner.newsonlinerby.Adapters;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
 import by.onliner.newsonlinerby.Transforms.CircleTransform;
@@ -59,11 +57,8 @@ public class CommentListAdapter extends BaseAdapter {
         ((TextView)view.findViewById(R.id.tv_comment_author)).setText(comment.getAuthor().getName());
         ((TextView)view.findViewById(R.id.tv_comment_date)).setText(comment.getDate());
 
-        if (comment.getLikes().getCount() > 0) {
+        if (comment.getLikes().getCount() > 0)
             ((TextView) view.findViewById(R.id.tv_comment_likes_count)).setText(comment.getLikes().getCount().toString());
-            if (comment.getLikes().isBest())
-                ((ImageView) view.findViewById(R.id.img_like_type)).setImageDrawable(ContextCompat.getDrawable(App.getContext(), R.drawable.i_best_like));
-        }
         else
             view.findViewById(R.id.l_like_group).setVisibility(View.GONE);
 
