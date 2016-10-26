@@ -34,4 +34,5 @@
     <string name="default_text"><![CDATA[<Text>]]></string>
     <string name="default_author"><![CDATA[<Author>]]></string>
     <string name="default_date"><![CDATA[<Date>]]></string>
+    <string name="repeat_load_info">При загрузке данных произошла ошибка.\nПроверьте Ваше подключение к сети.</string>
 </resources>

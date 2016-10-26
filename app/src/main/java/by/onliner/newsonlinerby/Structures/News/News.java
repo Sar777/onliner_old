@@ -47,7 +47,7 @@ public class News {
         return mContent;
     }
 
-    public String getLikeAPIUrl() {
+    public String getLikesAPIUrl() {
         return "https://" + getAttributes().getProject() + ".onliner.by/sdapi/news.api/" + getAttributes().getProject() + "/posts/" + getAttributes().getId() + "/likes";
     }
 }

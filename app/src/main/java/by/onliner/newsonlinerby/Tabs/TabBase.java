@@ -55,7 +55,10 @@ public class TabBase extends Fragment implements View.OnClickListener {
 
     private View myFragmentView;
 
+    // Views
     private Button btnLoadContent;
+    private ViewGroup mLinerRepeatGroup;
+
     private ProgressBar progressBarStatus;
     private ElasticListView lvMain;
 
@@ -71,6 +74,8 @@ public class TabBase extends Fragment implements View.OnClickListener {
         // Views
         btnLoadContent = (Button)myFragmentView.findViewById(R.id.btnLoadContent);
         btnLoadContent.setOnClickListener(this);
+
+        mLinerRepeatGroup = (ViewGroup)myFragmentView.findViewById(R.id.l_group_repeat);
 
         progressBarStatus = (ProgressBar)myFragmentView.findViewById(R.id.progressBarLoading);
 
@@ -197,7 +202,7 @@ public class TabBase extends Fragment implements View.OnClickListener {
                 LoadingContent();
                 break;
             case Fail:
-                btnLoadContent.setVisibility(View.VISIBLE);
+                mLinerRepeatGroup.setVisibility(View.VISIBLE);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown loading tab status(" + status + ")");

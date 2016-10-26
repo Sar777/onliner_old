@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,12 +19,12 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import by.onliner.newsonlinerby.Asynchronous.AsyncCommentParser;
 import by.onliner.newsonlinerby.Builder.News.BodyBuilder;
 import by.onliner.newsonlinerby.Listeners.ResponseListener;
+import by.onliner.newsonlinerby.Managers.AuthMgr;
 import by.onliner.newsonlinerby.Managers.LikeMgr;
 import by.onliner.newsonlinerby.Parser.Parsers.BodyNewsParser;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
@@ -70,7 +69,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
         // Views
         mProgressBar = (ProgressBar)findViewById(R.id.progressBarLoading);
-        mContainerNews = (View)findViewById(R.id.scrollView_content_news);
+        mContainerNews = findViewById(R.id.scrollView_content_news);
         mContainerNews.setVisibility(View.GONE);
 
         mButtonComment = (Button)findViewById(R.id.btn_comment_full_news);
@@ -80,6 +79,8 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
         Intent intent = getIntent();
         String url = intent.getStringExtra(TabBase.INTENT_URL_TAG);
+
+        AuthMgr.getInstance().getAuthToken();
 
         mClient.get(url, null, new AsyncHttpResponseHandler() {
             @Override
@@ -96,7 +97,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onResponse(LinkedHashMap response) {
                         mComments = response;
-                        LikeMgr.getInstance().getAsyncLikes(mContent.getLikeAPIUrl(), new ResponseListener<ArrayList<Like>>() {
+                        LikeMgr.getInstance().getAsyncLikes(mContent.getLikesAPIUrl(), new ResponseListener<ArrayList<Like>>() {
                             @Override
                             public void onResponse(ArrayList<Like> response) {
                                 for (Like like : response) {

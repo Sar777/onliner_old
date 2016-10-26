@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="3dp"
-                    android:src="@drawable/i_like"
+                    android:src="@drawable/i_default_like"
                     android:adjustViewBounds="false"
                     tools:ignore="ContentDescription" />
 

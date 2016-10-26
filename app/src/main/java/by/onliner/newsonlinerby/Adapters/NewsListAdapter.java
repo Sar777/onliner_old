@@ -75,14 +75,20 @@ public class NewsListAdapter extends BaseAdapter {
         // Attributes
         if (p.getAttributes().getUpd())
             view.findViewById(R.id.tv_preview_upd_status).setVisibility(View.VISIBLE);
+        else
+            view.findViewById(R.id.tv_preview_upd_status).setVisibility(View.GONE);
 
         if (p.getAttributes().getPhotos() > 0) {
             view.findViewById(R.id.l_preview_photos).setVisibility(View.VISIBLE);
             ((TextView)view.findViewById(R.id.tv_preview_photos)).setText(p.getAttributes().getPhotos().toString());
         }
+        else
+            view.findViewById(R.id.l_preview_photos).setVisibility(View.GONE);
 
         if (p.getAttributes().getCamera())
             view.findViewById(R.id.i_preview_video).setVisibility(View.VISIBLE);
+        else
+            view.findViewById(R.id.i_preview_video).setVisibility(View.GONE);
 
         return view;
     }

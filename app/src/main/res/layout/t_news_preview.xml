@@ -23,14 +23,31 @@
         android:visibility="invisible"
         android:layout_centerInParent="true" />
 
-    <Button
-        android:id="@+id/btnLoadContent"
+    <LinearLayout
+        android:id="@+id/l_group_repeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textColor="@android:color/white"
-        android:visibility="gone"
-        android:background="@drawable/comment_button_selector"
-        android:padding="10dp"
-        android:text="@string/repeat"/>
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="@string/repeat_load_info" />
+
+        <Button
+            android:id="@+id/btnLoadContent"
+            android:layout_width="120dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center"
+            android:textColor="@android:color/white"
+            android:background="@drawable/comment_button_selector"
+            android:padding="10dp"
+            android:text="@string/repeat"/>
+    </LinearLayout>
 </RelativeLayout>

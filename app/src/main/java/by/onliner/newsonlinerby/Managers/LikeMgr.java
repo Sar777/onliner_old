@@ -7,6 +7,7 @@ import com.loopj.android.http.RequestParams;
 import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.App;
+import by.onliner.newsonlinerby.Listeners.LikeCommentListener;
 import by.onliner.newsonlinerby.Listeners.ResponseListener;
 import by.onliner.newsonlinerby.Parser.JSON.JSONLikesParser;
 import by.onliner.newsonlinerby.Structures.Comments.Like;
@@ -40,6 +41,22 @@ public class LikeMgr {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 asyncListener.onResponse(new JSONLikesParser().parse(new String(responseBody)));
+            }
+        });
+    }
+
+    public void asyncLikeComment(Integer commentId, String project, final LikeCommentListener likeCommentListener) {
+        String url = "https://" + project + ".onliner.by/sdapi/news.api/" + project + "/comments/" + commentId + "/like";
+        mClient.get(App.getContext(), url, new RequestParams(), new AsyncHttpResponseHandler() {
+            LikeCommentListener listener =  likeCommentListener;
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                listener.OnSuccess(statusCode, new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onFailure(statusCode);
             }
         });
     }
