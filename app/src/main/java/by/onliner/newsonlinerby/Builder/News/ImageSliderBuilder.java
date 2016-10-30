@@ -44,7 +44,7 @@ public class ImageSliderBuilder implements IBuilder<LinearLayout, LinearLayout> 
             throw new ExceptionInInitializerError("ImageSliderBuilder empty images url container");
 
         SimpleViewPager viewPager = new SimpleViewPager(App.getContext());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 600);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 700);
         viewPager.setLayoutParams(layoutParams);
 
         viewPager.setImageUrls(imagesUrl.toArray(new String[imagesUrl.size()]), new ImageURLLoader() {

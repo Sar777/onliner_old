@@ -66,7 +66,7 @@ public class QuoteTextView extends TextView {
         if (borders == null)
             return;
 
-        for (Border border : borders){
+        for (Border border : borders) {
             paint.setColor(border.getColor());
             paint.setStrokeWidth(border.getWidth());
 

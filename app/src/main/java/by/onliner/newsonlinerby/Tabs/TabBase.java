@@ -31,26 +31,24 @@ import com.eschao.android.widget.elasticlistview.ElasticListView;
 import com.eschao.android.widget.elasticlistview.LoadFooter;
 import com.eschao.android.widget.elasticlistview.LoadFooter.DefaultLoadStateListener;
 import com.eschao.android.widget.elasticlistview.OnLoadListener;
-import com.loopj.android.http.RequestParams;
-
-import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.Adapters.NewsListAdapter;
 import by.onliner.newsonlinerby.Listeners.NewsListResponse;
 import by.onliner.newsonlinerby.Managers.NewsMgr;
 import by.onliner.newsonlinerby.R;
-import by.onliner.newsonlinerby.Structures.HeaderNews;
+import by.onliner.newsonlinerby.Structures.News.News;
 import by.onliner.newsonlinerby.ViewNewsActivity;
 
+/**
+ * The type Tab base.
+ */
 public class TabBase extends Fragment implements View.OnClickListener {
-    protected String Url = "https://onliner.by";
+    protected String mProjectId = "default";
 
+    // Intents
     public static String INTENT_URL_TAG = "URL";
     public static String INTENT_FRAGMENT = "ACTIVITY";
 
-    protected TabStatus status;
-
-    private ArrayList<HeaderNews> newsData = new ArrayList<>();
     private NewsListAdapter newsListAdapter;
 
     private View myFragmentView;
@@ -63,13 +61,12 @@ public class TabBase extends Fragment implements View.OnClickListener {
     private ElasticListView lvMain;
 
     public TabBase() {
-        status = TabStatus.None;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myFragmentView = inflater.inflate(R.layout.t_news_preview, container, false);
-        newsListAdapter = new NewsListAdapter(getContext(), newsData);
+        newsListAdapter = new NewsListAdapter(getContext(), mProjectId);
 
         // Views
         btnLoadContent = (Button)myFragmentView.findViewById(R.id.btnLoadContent);
@@ -87,9 +84,9 @@ public class TabBase extends Fragment implements View.OnClickListener {
         lvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                HeaderNews o = (HeaderNews)lvMain.getItemAtPosition(position);
+                News item = (News)lvMain.getItemAtPosition(position);
                 Intent intent = new Intent(getContext(), ViewNewsActivity.class);
-                intent.putExtra(INTENT_URL_TAG, Url + o.getUrl());
+                intent.putExtra(INTENT_URL_TAG, item.getAttributes().getUrl());
                 intent.putExtra(INTENT_FRAGMENT, myFragmentView.getId());
                 startActivity(intent);
             }
@@ -117,68 +114,39 @@ public class TabBase extends Fragment implements View.OnClickListener {
         lvMain.setOnLoadListener(new OnLoadListener() {
             @Override
             public void onLoad() {
-                status = TabStatus.Pull;
-                LoadingContent();
+                loadingNews(true);
             }
         });
 
-        status = TabStatus.Load;
-
-        LoadContentIfNeed();
+        loadingNews(false);
         return myFragmentView;
     }
 
-    public void LoadingContent() {
-        RequestParams requestParams = new RequestParams();
 
-        switch (status) {
-            case Load: {
-                newsData.clear();
-                progressBarStatus.setVisibility(View.VISIBLE);
-                break;
-            }
-            case Pull: {
-                if (newsData.isEmpty())
-                    throw new IllegalArgumentException("Empty news data container for pull news");
-
-                requestParams.put("fromDate", newsData.get(newsData.size() - 1).getPostDateUnix());
-                break;
-            }
-            default:
-                break;
+    /**
+     * Получнеие полного списка новостей
+     */
+    public void loadingNews(boolean pull) {
+        if (!pull) {
+            lvMain.setVisibility(View.INVISIBLE);
+            progressBarStatus.setVisibility(View.VISIBLE);
+            mLinerRepeatGroup.setVisibility(View.GONE);
         }
 
-        NewsMgr.getInstance().getAsyncNewsList(Url, requestParams, new NewsListResponse<ArrayList<HeaderNews>>() {
+        NewsMgr.getInstance().getLoadingNewsList(mProjectId, pull, new NewsListResponse() {
             @Override
-            public void OnSuccess(ArrayList<HeaderNews> response) {
-                View view = getView();
-                if (view == null)
-                    return;
-
-                for (HeaderNews header : response){
-                    if (!newsData.contains(header))
-                        newsData.add(header);
-                }
-
-                if (status == TabStatus.Pull)
-                    lvMain.notifyLoaded();
-                else
-                    view.findViewById(R.id.progressBarLoading).setVisibility(View.GONE);
-
-                newsListAdapter.notifyDataSetChanged();
-                status = TabStatus.None;
-            }
-
-            @Override
-            public void onFailure() {
-                if (status == TabStatus.Pull)
-                    lvMain.notifyLoaded();
-                else {
-                    btnLoadContent.setVisibility(View.VISIBLE);
+            public void onResult(boolean success) {
+                if (success) {
+                    lvMain.setVisibility(View.VISIBLE);
+                    // Обновление списка
+                    newsListAdapter.notifyDataSetChanged();
+                } else {
+                    mLinerRepeatGroup.setVisibility(View.VISIBLE);
                     progressBarStatus.setVisibility(View.GONE);
                 }
 
-                status = TabStatus.Fail;
+                progressBarStatus.setVisibility(View.GONE);
+                lvMain.notifyLoaded();
             }
         });
     }
@@ -187,25 +155,10 @@ public class TabBase extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLoadContent:
-                btnLoadContent.setVisibility(View.GONE);
-                LoadingContent();
+                loadingNews(false);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown view id (" + v.getId() + ")");
-        }
-    }
-
-    private void LoadContentIfNeed() {
-        switch (status) {
-            case Pull:
-            case Load:
-                LoadingContent();
-                break;
-            case Fail:
-                mLinerRepeatGroup.setVisibility(View.VISIBLE);
-                break;
-            default:
-                throw new UnsupportedOperationException("Unknown loading tab status(" + status + ")");
         }
     }
 }

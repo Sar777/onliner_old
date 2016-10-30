@@ -38,7 +38,7 @@ public class ImageBuilder implements IBuilder<View, View> {
                 ((ImageView)view).setScaleType(ImageView.ScaleType.FIT_CENTER);
                 ((ImageView)view).setAdjustViewBounds(true);
 
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
                 layoutParams.gravity = Gravity.CENTER;
 
                 // Sub title img

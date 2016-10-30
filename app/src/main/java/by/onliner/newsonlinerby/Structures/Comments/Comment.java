@@ -13,6 +13,7 @@ public class Comment implements Serializable {
     private Like mLikes;
     private String mText;
     private String mAvatarURL;
+    private CommentQuote mQuote;
 
     public Comment(Integer id, Author author, String date, Like likes, String text) {
         this.Id = id;
@@ -28,6 +29,7 @@ public class Comment implements Serializable {
         this.mLikes = new Like();
         this.mDate = "<Unknown>";
         this.mText = "<Unknown>";
+        this.mQuote = new CommentQuote();
     }
 
     public Integer getId() {
@@ -76,5 +78,13 @@ public class Comment implements Serializable {
 
     public void setAvatarURL(String avatarURL) {
         this.mAvatarURL = avatarURL;
+    }
+
+    public CommentQuote getQuote() {
+        return mQuote;
+    }
+
+    public void setQuote(CommentQuote quote) {
+        this.mQuote = quote;
     }
 }

@@ -4,16 +4,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import by.onliner.newsonlinerby.Parser.IContentParser;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
 
 /**
- * Created by Mi Air on 21.10.2016.
+ * Парсинг комментариев
  */
-
 public class CommentsParser implements IContentParser<String, LinkedHashMap<Integer, Comment>> {
     @Override
     public LinkedHashMap<Integer, Comment> parse(String data) {
@@ -29,14 +27,19 @@ public class CommentsParser implements IContentParser<String, LinkedHashMap<Inte
 
             comment.setId(Integer.parseInt(element.attr("data-comment-id")));
             comment.setDate(element.getElementsByClass("news-comment__time").first().text());
-            comment.setText(element.getElementsByClass("news-comment__speech").first().text());
             comment.setAvatarURL(element.getElementsByClass("news-comment__image").first().attr("data-avatar").replace("url(", "").replace(")", ""));
 
             comment.getAuthor().setId(Integer.parseInt(element.attr("data-author-id")));
             comment.getAuthor().setName(element.attr("data-author"));
+
+            // Цитаты в комментариях
+            comment.setQuote(new CommentQuoteParser().parse(element.getElementsByClass("news-comment__cite").first()));
+
+            element.getElementsByClass("news-comment__cite").remove();
+            comment.setText(element.getElementsByClass("news-comment__speech").first().html());
+
             commentList.put(comment.getId(), comment);
         }
-
 
         return commentList;
     }

@@ -24,7 +24,6 @@ import java.util.LinkedHashMap;
 import by.onliner.newsonlinerby.Asynchronous.AsyncCommentParser;
 import by.onliner.newsonlinerby.Builder.News.BodyBuilder;
 import by.onliner.newsonlinerby.Listeners.ResponseListener;
-import by.onliner.newsonlinerby.Managers.AuthMgr;
 import by.onliner.newsonlinerby.Managers.LikeMgr;
 import by.onliner.newsonlinerby.Parser.Parsers.BodyNewsParser;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
@@ -79,8 +78,6 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
         Intent intent = getIntent();
         String url = intent.getStringExtra(TabBase.INTENT_URL_TAG);
-
-        AuthMgr.getInstance().getAuthToken();
 
         mClient.get(url, null, new AsyncHttpResponseHandler() {
             @Override
@@ -152,7 +149,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected View doInBackground(Void... params) {
             // Формирование Laoyut
-            return new BodyBuilder(mContent).build(null);
+            return new BodyBuilder(ViewNewsActivity.this, mContent).build(null);
         }
 
         @Override

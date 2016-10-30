@@ -40,6 +40,12 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         this.NumbOfTabs = mNumbOfTabsumb;
     }
 
+    @Override
+    public int getItemPosition(Object object) {
+        // POSITION_NONE makes it possible to reload the PagerAdapter
+        return POSITION_NONE;
+    }
+
     //This method return the fragment for the every position in the View Pager
     @Override
     public Fragment getItem(int position) {

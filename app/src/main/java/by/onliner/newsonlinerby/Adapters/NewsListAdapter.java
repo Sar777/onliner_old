@@ -17,20 +17,22 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.App;
+import by.onliner.newsonlinerby.Managers.NewsMgr;
 import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.HeaderNews;
+import by.onliner.newsonlinerby.Structures.News.News;
 
 public class NewsListAdapter extends BaseAdapter {
     Context ctx;
     LayoutInflater lInflater;
-    ArrayList<HeaderNews> objects;
+    ArrayList<News> objects;
 
-    public NewsListAdapter(Context context, ArrayList<HeaderNews> products) {
+    public NewsListAdapter(Context context, String projectId) {
         if (context == null)
             return;
 
         ctx = context;
-        objects = products;
+        objects = NewsMgr.getInstance().getNewsList(projectId);
         lInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -61,31 +63,35 @@ public class NewsListAdapter extends BaseAdapter {
             view = lInflater.inflate(R.layout.l_item_news, parent, false);
         }
 
-        HeaderNews p = getNew(position);
+        News p = getNew(position);
+        if (p == null)
+            return view;
+
+        HeaderNews header = p.getHeader();
 
         Picasso.with(App.getContext()).
-                load(p.getImage()).
+                load(header.getImage()).
                 error(R.drawable.ic_broken_image).
                 into(((ImageView)view.findViewById(R.id.i_preview_image)));
 
-        ((TextView)view.findViewById(R.id.tv_preview_title)).setText(p.getTitle());
-        ((TextView)view.findViewById(R.id.tv_preview_comments)).setText(p.getComments().toString());
-        ((TextView)view.findViewById(R.id.tv_preview_views)).setText(p.getViews().toString());
+        ((TextView)view.findViewById(R.id.tv_preview_title)).setText(header.getTitle());
+        ((TextView)view.findViewById(R.id.tv_preview_comments)).setText(header.getComments().toString());
+        ((TextView)view.findViewById(R.id.tv_preview_views)).setText(header.getViews().toString());
 
         // Attributes
-        if (p.getAttributes().getUpd())
+        if (header.getAttributes().getUpd())
             view.findViewById(R.id.tv_preview_upd_status).setVisibility(View.VISIBLE);
         else
             view.findViewById(R.id.tv_preview_upd_status).setVisibility(View.GONE);
 
-        if (p.getAttributes().getPhotos() > 0) {
+        if (header.getAttributes().getPhotos() > 0) {
             view.findViewById(R.id.l_preview_photos).setVisibility(View.VISIBLE);
-            ((TextView)view.findViewById(R.id.tv_preview_photos)).setText(p.getAttributes().getPhotos().toString());
+            ((TextView)view.findViewById(R.id.tv_preview_photos)).setText(header.getAttributes().getPhotos().toString());
         }
         else
             view.findViewById(R.id.l_preview_photos).setVisibility(View.GONE);
 
-        if (p.getAttributes().getCamera())
+        if (header.getAttributes().getCamera())
             view.findViewById(R.id.i_preview_video).setVisibility(View.VISIBLE);
         else
             view.findViewById(R.id.i_preview_video).setVisibility(View.GONE);
@@ -93,7 +99,7 @@ public class NewsListAdapter extends BaseAdapter {
         return view;
     }
 
-    HeaderNews getNew(int position) {
-        return ((HeaderNews) getItem(position));
+    News getNew(int position) {
+        return ((News) getItem(position));
     }
 }

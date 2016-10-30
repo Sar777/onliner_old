@@ -5,6 +5,6 @@ package by.onliner.newsonlinerby.Tabs;
  */
 public class TabPeople extends TabBase {
     public TabPeople() {
-        Url = "https://people.onliner.by";
+        mProjectId = "people";
     }
 }

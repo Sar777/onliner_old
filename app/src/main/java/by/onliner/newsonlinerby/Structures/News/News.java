@@ -17,6 +17,12 @@ public class News {
         this.mContent = "";
     }
 
+    public News(HeaderNews header) {
+        this.mAttributes = new NewsAttributes();
+        this.mHeader = header;
+        this.mContent = "";
+    }
+
     public News(NewsAttributes attributes, HeaderNews header, String content) {
         this.mAttributes = attributes;
         this.mHeader = header;

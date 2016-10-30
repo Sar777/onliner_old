@@ -5,6 +5,6 @@ package by.onliner.newsonlinerby.Tabs;
  */
 public class TabRealt extends TabBase {
     public TabRealt() {
-        Url = "https://realt.onliner.by";
+        mProjectId = "realt";
     }
 }

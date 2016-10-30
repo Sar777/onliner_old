@@ -1,9 +1,9 @@
 package by.onliner.newsonlinerby.Builder.News;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.content.res.ResourcesCompat;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.Gravity;
 import android.view.View;
@@ -19,18 +19,20 @@ import org.jsoup.nodes.Element;
 
 import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Builder.IBuilder;
+import by.onliner.newsonlinerby.Common.Common;
 import by.onliner.newsonlinerby.CustomViews.QuoteTextView;
 import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.News.News;
 
 /**
- * Created by Mi Air on 13.10.2016.
+ * Формирование блока новости
  */
-
 public class BodyBuilder implements IBuilder<View, View> {
     private News content;
+    private Activity activity;
 
-    public BodyBuilder(News content, String... tags) {
+    public BodyBuilder(Activity activity, News content) {
+        this.activity = activity;
         this.content = content;
     }
 
@@ -51,15 +53,12 @@ public class BodyBuilder implements IBuilder<View, View> {
         for (Element element : doc.getAllElements()) {
             switch (element.tagName()) {
                 case "p": {
-                    if (element.text().isEmpty())
-                        continue;
 
-                    Spanned result;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                        result = Html.fromHtml(element.html(), Html.FROM_HTML_MODE_LEGACY);
-                    } else {
-                        result = Html.fromHtml(element.html());
+                    if (element.ownText().isEmpty()) {
+                        continue;
                     }
+
+                    Spanned result = Common.fromHtml(element.html());
 
                     TextView textView = new TextView(App.getContext());
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -71,7 +70,24 @@ public class BodyBuilder implements IBuilder<View, View> {
                     textView.setLinkTextColor(ResourcesCompat.getColor(App.getContext().getResources(), R.color.colorOnlinerNewsLinkText, null));
                     textView.setTextSize(15);
 
-                    ((LinearLayout)layout).addView(textView);
+                    layout.addView(textView);
+                    break;
+                }
+                case "ul": {
+                    // Список
+                    Spanned result = Common.fromHtml(element.html());
+
+                    TextView textView = new TextView(App.getContext());
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(15, 0, 0, 25);
+                    textView.setLayoutParams(layoutParams);
+
+                    textView.setText(result);
+                    textView.setTextColor(Color.BLACK);
+                    textView.setLinkTextColor(ResourcesCompat.getColor(App.getContext().getResources(), R.color.colorOnlinerNewsLinkText, null));
+                    textView.setTextSize(15);
+
+                    layout.addView(textView);
                     break;
                 }
                 case "hr": {
@@ -82,7 +98,7 @@ public class BodyBuilder implements IBuilder<View, View> {
                     layoutParams.topMargin = 15;
                     imageView.setLayoutParams(layoutParams);
                     imageView.setImageResource(R.drawable.ic_hr_tag_onliner);
-                    ((LinearLayout)layout).addView(imageView);
+                    layout.addView(imageView);
                     break;
                 }
                 case "h2": {
@@ -94,7 +110,7 @@ public class BodyBuilder implements IBuilder<View, View> {
                     textView.setTextColor(Color.BLACK);
                     textView.setTextSize(18);
                     textView.setTypeface(null, Typeface.BOLD);
-                    ((LinearLayout)layout).addView(textView);
+                    layout.addView(textView);
                     break;
                 }
                 case "div": {
@@ -121,7 +137,7 @@ public class BodyBuilder implements IBuilder<View, View> {
                 case "blockquote": {
                     QuoteTextView textView = new QuoteTextView(App.getContext());
                     textView.setText(element.text());
-                    ((LinearLayout)layout).addView(textView);
+                    layout.addView(textView);
                     break;
                 }
                 default:

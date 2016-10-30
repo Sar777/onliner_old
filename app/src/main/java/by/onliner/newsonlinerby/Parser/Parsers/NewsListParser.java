@@ -9,24 +9,34 @@ import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.Parser.IContentParser;
 import by.onliner.newsonlinerby.Structures.HeaderNews;
+import by.onliner.newsonlinerby.Structures.News.News;
 
 /**
  * Created by orion on 23.10.16.
  */
 
-public class NewsListParser implements IContentParser<String, ArrayList<HeaderNews>> {
+public class NewsListParser implements IContentParser<String, ArrayList<News>> {
+    private String mUrl;
+
+    public NewsListParser(String url) {
+        this.mUrl = url;
+    }
+
     @Override
-    public ArrayList<HeaderNews> parse(String response) {
-        ArrayList<HeaderNews> list = new ArrayList<>();
+    public ArrayList<News> parse(String response) {
+        ArrayList<News> list = new ArrayList<>();
 
         Document doc = Jsoup.parse(response);
         Elements elements = doc.getElementsByClass("news-tidings__item");
         for (Element element : elements) {
             HeaderNews header = new HeaderParser().parse(element);
-            if (!header.isValid())
+            News news = new News(header);
+            news.getAttributes().setUrl(mUrl + news.getHeader().getUrl());
+
+            if (!news.getHeader().isValid())
                 continue;
 
-            list.add(header);
+            list.add(news);
         }
 
         return list;

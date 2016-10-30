@@ -1,6 +1,7 @@
 package by.onliner.newsonlinerby.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +15,16 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.App;
+import by.onliner.newsonlinerby.Builder.Comment.CommentQuoteBuilder;
+import by.onliner.newsonlinerby.Common.Common;
 import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
 import by.onliner.newsonlinerby.Transforms.CircleTransform;
 
-/**
- * Created by Mi Air on 20.10.2016.
- */
 
+/**
+ * Адаптере для отображения комментариев к новости
+ */
 public class CommentListAdapter extends BaseAdapter {
     Context mContext;
     LayoutInflater mInflater;
@@ -69,7 +72,23 @@ public class CommentListAdapter extends BaseAdapter {
         else
             view.findViewById(R.id.l_like_group).setVisibility(View.GONE);
 
-        ((TextView)view.findViewById(R.id.tv_comment_text)).setText(comment.getText());
+        ((ViewGroup) view.findViewById(R.id.l_comment_text)).removeAllViews();
+
+        TextView commentTextView = new TextView(App.getContext());
+        commentTextView.setTextColor(Color.BLACK);
+        commentTextView.setText(Common.fromHtml(comment.getText()));
+        commentTextView.setPadding(30, 40, 30, 0);
+
+        // Формирование цитаты в комментарии
+        if (comment.getQuote() != null) {
+            View quoteView = new CommentQuoteBuilder().build(comment.getQuote());
+            if (quoteView != null) {
+                ((ViewGroup) view.findViewById(R.id.l_comment_text)).addView(quoteView, 0);
+                commentTextView.setPadding(30, 0, 30, 0);
+            }
+        }
+
+        ((ViewGroup) view.findViewById(R.id.l_comment_text)).addView(commentTextView);
 
         if (!comment.getAvatarURL().isEmpty())
             Picasso.with(mContext).

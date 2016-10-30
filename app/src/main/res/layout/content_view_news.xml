@@ -153,6 +153,7 @@
                     android:visibility="visible"
                     android:padding="10dp"
                     android:text="@string/comments"/>
+
             </LinearLayout>
         </RelativeLayout>
 

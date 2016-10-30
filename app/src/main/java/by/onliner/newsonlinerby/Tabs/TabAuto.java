@@ -17,6 +17,6 @@ package by.onliner.newsonlinerby.Tabs;
 
 public class TabAuto extends TabBase {
     public TabAuto() {
-        Url = "https://auto.onliner.by";
+        mProjectId = "auto";
     }
 }
