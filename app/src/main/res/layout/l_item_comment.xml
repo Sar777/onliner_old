@@ -74,7 +74,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginRight="3dp"
-                    android:src="@drawable/i_default_like"
+                    android:src="@drawable/i_best_like"
                     android:adjustViewBounds="true"
                     tools:ignore="ContentDescription" />
 

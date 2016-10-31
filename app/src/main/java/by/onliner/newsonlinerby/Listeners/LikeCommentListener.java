@@ -5,6 +5,5 @@ package by.onliner.newsonlinerby.Listeners;
  */
 
 public interface LikeCommentListener {
-    void OnSuccess(int code, String json);
-    void onFailure(int code);
+    void OnResponse(int code, String json);
 }

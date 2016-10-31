@@ -17,7 +17,10 @@ public class CommentsActivity extends AppCompatActivity {
     private ArrayList<Comment> mComments = new ArrayList<>();
     private CommentListAdapter mCommentListAdapter;
 
+    // Views
     private ListView lvMain;
+
+    private String mProject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,9 @@ public class CommentsActivity extends AppCompatActivity {
         });
 
         mComments = (ArrayList<Comment>)( getIntent().getSerializableExtra(ViewNewsActivity.INTENT_COMMENTS_TAG));
+        mProject = getIntent().getStringExtra(ViewNewsActivity.INTENT_PROJECT_TAG);
 
-        mCommentListAdapter = new CommentListAdapter(this, mComments);
+        mCommentListAdapter = new CommentListAdapter(this, mComments, mProject);
 
         lvMain = (ListView) findViewById(R.id.lv_comments);
         lvMain.setAdapter(mCommentListAdapter);

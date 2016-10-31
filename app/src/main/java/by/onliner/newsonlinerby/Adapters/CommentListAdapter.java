@@ -3,10 +3,12 @@ package by.onliner.newsonlinerby.Adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Builder.Comment.CommentQuoteBuilder;
 import by.onliner.newsonlinerby.Common.Common;
+import by.onliner.newsonlinerby.Listeners.LikeCommentListener;
+import by.onliner.newsonlinerby.Managers.LikeMgr;
 import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
 import by.onliner.newsonlinerby.Transforms.CircleTransform;
@@ -25,15 +29,17 @@ import by.onliner.newsonlinerby.Transforms.CircleTransform;
 /**
  * Адаптере для отображения комментариев к новости
  */
-public class CommentListAdapter extends BaseAdapter {
-    Context mContext;
-    LayoutInflater mInflater;
-    ArrayList<Comment> mObjects;
+public class CommentListAdapter extends BaseAdapter implements View.OnClickListener {
+    private Context mContext;
+    private LayoutInflater mInflater;
+    private ArrayList<Comment> mObjects;
+    private String mProject;
 
-    public CommentListAdapter(Context context, ArrayList<Comment> comments) {
+    public CommentListAdapter(Context context, ArrayList<Comment> comments, String project) {
         mContext = context;
         mObjects = comments;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mProject = project;
     }
 
     @Override
@@ -90,6 +96,10 @@ public class CommentListAdapter extends BaseAdapter {
 
         ((ViewGroup) view.findViewById(R.id.l_comment_text)).addView(commentTextView);
 
+        Button likeButton = (Button)view.findViewById(R.id.bt_like_comment);
+        likeButton.setTag(comment.getId());
+        likeButton.setOnClickListener(this);
+
         if (!comment.getAvatarURL().isEmpty())
             Picasso.with(mContext).
                    load(comment.getAvatarURL()).
@@ -102,5 +112,22 @@ public class CommentListAdapter extends BaseAdapter {
 
     Comment getComment(int position) {
         return ((Comment) getItem(position));
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_like_comment: {
+                LikeMgr.getInstance().asyncLikeComment(view.getTag().toString(), mProject, new LikeCommentListener() {
+                    @Override
+                    public void OnResponse(int code, String json) {
+                        Log.e("ORION", "CODE: " + code + " RESP: " + json);
+                    }
+                });
+                break;
+            }
+            default:
+                break;
+        }
     }
 }

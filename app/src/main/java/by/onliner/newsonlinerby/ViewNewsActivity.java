@@ -37,6 +37,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
     public static String INTENT_URL_TAG = "URL";
     public static String INTENT_COMMENTS_TAG = "COMMENTS";
+    public static String INTENT_PROJECT_TAG = "PROJECT";
 
     private AsyncHttpClient mClient = new AsyncHttpClient();
 
@@ -90,10 +91,13 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 mContent = new BodyNewsParser().parse(new String(responseBody));
                 new AsyncBodyBuilder().execute();
 
+                // Парсинг комментариев
                 new AsyncCommentParser(new String(responseBody), new ResponseListener<LinkedHashMap<Integer, Comment>>() {
                     @Override
                     public void onResponse(LinkedHashMap response) {
                         mComments = response;
+
+                        // Запрос на получение спискай лайков
                         LikeMgr.getInstance().getAsyncLikes(mContent.getLikesAPIUrl(), new ResponseListener<ArrayList<Like>>() {
                             @Override
                             public void onResponse(ArrayList<Like> response) {
@@ -115,20 +119,6 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         }).setTag(ASYNC_CLIENT_TAG);
     }
 
-    private void VisibleNewsCountainer() {
-        mContainerNews.setAlpha(0f);
-        mContainerNews.setVisibility(View.VISIBLE);
-
-        mContainerNews.animate().alpha(1f).setDuration(mShortAnimationDuration).setListener(null);
-
-        mProgressBar.animate().alpha(0f).setDuration(mShortAnimationDuration).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-                });
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -136,6 +126,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 Intent intent = new Intent(App.getContext(), CommentsActivity.class);
                 intent.putExtra(INTENT_URL_TAG, mContent.getHeader().getUrl());
                 intent.putExtra(INTENT_COMMENTS_TAG, new ArrayList<Comment>(mComments.values()));
+                intent.putExtra(INTENT_PROJECT_TAG, mContent.getAttributes().getProject());
                 startActivity(intent);
                 break;
             }
@@ -170,5 +161,19 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
             VisibleNewsCountainer();
         }
+    }
+
+    private void VisibleNewsCountainer() {
+        mContainerNews.setAlpha(0f);
+        mContainerNews.setVisibility(View.VISIBLE);
+
+        mContainerNews.animate().alpha(1f).setDuration(mShortAnimationDuration).setListener(null);
+
+        mProgressBar.animate().alpha(0f).setDuration(mShortAnimationDuration).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mProgressBar.setVisibility(View.GONE);
+            }
+        });
     }
 }
