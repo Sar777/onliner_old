@@ -110,7 +110,7 @@ public class TabBase extends Fragment implements View.OnClickListener {
 
         lvMain.enableUpdateHeader(false);
         lvMain.enableLoadFooter(true);
-        lvMain.getLoadFooter().setOnLoadStateListener(listener).setContentView(R.layout.l_news_footer_load, true);
+        lvMain.getLoadFooter().setOnLoadStateListener(listener).setContentView(R.layout.layout_news_footer_load, true);
         lvMain.setOnLoadListener(new OnLoadListener() {
             @Override
             public void onLoad() {

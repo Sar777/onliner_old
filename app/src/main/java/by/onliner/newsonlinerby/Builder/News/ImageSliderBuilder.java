@@ -1,6 +1,10 @@
 package by.onliner.newsonlinerby.Builder.News;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,6 +19,8 @@ import java.util.List;
 
 import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Builder.IBuilder;
+import by.onliner.newsonlinerby.FullScreenImageActivity;
+import by.onliner.newsonlinerby.Listeners.FullScreenImageListener;
 import by.onliner.newsonlinerby.R;
 import eu.fiskur.simpleviewpager.ImageURLLoader;
 import eu.fiskur.simpleviewpager.SimpleViewPager;
@@ -25,14 +31,16 @@ import eu.fiskur.simpleviewpager.SimpleViewPager;
 
 public class ImageSliderBuilder implements IBuilder<LinearLayout, LinearLayout> {
     private Element element;
+    private Activity mActivity;
 
-    public ImageSliderBuilder(Element element) {
+    public ImageSliderBuilder(Element element, Activity activity) {
         this.element = element;
+        this.mActivity = activity;
     }
 
     @Override
     public LinearLayout build(LinearLayout layout) {
-        List<String> imagesUrl = new ArrayList<>();
+        final ArrayList<String> imagesUrl = new ArrayList<>();
         for (Element imageElement : element.getElementsByTag("img")) {
             if (imageElement.attr("data-src").isEmpty())
                 continue;
@@ -52,6 +60,8 @@ public class ImageSliderBuilder implements IBuilder<LinearLayout, LinearLayout> 
             public void loadImage(ImageView view, String url) {
                 view.setScaleType(ImageView.ScaleType.FIT_START);
                 view.setAdjustViewBounds(true);
+                view.setOnClickListener(new FullScreenImageListener(mActivity, imagesUrl));
+
                 Picasso.with(App.getContext()).
                         load(url).
                         error(R.drawable.ic_broken_image).

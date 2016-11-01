@@ -60,7 +60,7 @@ public class NewsListAdapter extends BaseAdapter {
         // используем созданные, но не используемые view
         View view = convertView;
         if (view == null) {
-            view = lInflater.inflate(R.layout.l_item_news, parent, false);
+            view = lInflater.inflate(R.layout.layout_item_news, parent, false);
         }
 
         News p = getNew(position);

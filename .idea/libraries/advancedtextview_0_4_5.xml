@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="advancedtextview-0.4.5">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/ayar.oktay.library/advancedtextview/0.4.5/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/ayar.oktay.library/advancedtextview/0.4.5/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/ayar.oktay.library/advancedtextview/0.4.5/73a885409abb2c8be37d06002898821f8b320de1/advancedtextview-0.4.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

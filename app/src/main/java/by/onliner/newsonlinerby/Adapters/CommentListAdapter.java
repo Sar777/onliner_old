@@ -61,7 +61,7 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null)
-            view = mInflater.inflate(R.layout.l_item_comment, parent, false);
+            view = mInflater.inflate(R.layout.layout_item_comment, parent, false);
 
         Comment comment = getComment(position);
 

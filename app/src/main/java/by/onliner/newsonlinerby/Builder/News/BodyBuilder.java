@@ -28,17 +28,17 @@ import by.onliner.newsonlinerby.Structures.News.News;
  * Формирование блока новости
  */
 public class BodyBuilder implements IBuilder<View, View> {
-    private News content;
-    private Activity activity;
+    private News mContent;
+    private Activity mActivity;
 
     public BodyBuilder(Activity activity, News content) {
-        this.activity = activity;
-        this.content = content;
+        this.mActivity = activity;
+        this.mContent = content;
     }
 
     @Override
     public View build(View layout2) {
-        Document doc = Jsoup.parse(content.getContent());
+        Document doc = Jsoup.parse(mContent.getContent());
 
         LinearLayout layout = new LinearLayout(App.getContext());
 
@@ -118,7 +118,7 @@ public class BodyBuilder implements IBuilder<View, View> {
                     if (element.className().indexOf("news-media_extended") != -1 || element.className().indexOf("news-media_condensed") != -1)
                         new ImageBuilder(element).build(layout);
                     else if (element.className().indexOf("news-media__gallery") != -1)
-                        new ImageSliderBuilder(element).build((LinearLayout) layout);
+                        new ImageSliderBuilder(element, mActivity).build(layout);
                     else if (element.className().indexOf("news-header__title") != -1) {
                         TextView textView = new TextView(App.getContext());
 

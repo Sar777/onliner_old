@@ -72,9 +72,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(pager);
-
-        Intent intent = new Intent(App.getContext(), AuthActivity.class);
-        startActivity(intent);
     }
 
     public ViewPager getPager() {

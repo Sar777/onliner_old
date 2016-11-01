@@ -21,7 +21,7 @@ import by.onliner.newsonlinerby.Structures.Comments.CommentQuote;
 public class CommentQuoteBuilder implements IBuilder<CommentQuote, View> {
     @Override
     public View build(CommentQuote quote) {
-        View view = LayoutInflater.from(App.getContext()).inflate(R.layout.l_comment_quote, null);
+        View view = LayoutInflater.from(App.getContext()).inflate(R.layout.layout_comment_quote, null);
         CardView cardView = (CardView)view.findViewById(R.id.cv_comment_quote);
 
         View baseView = newQuote(quote.getText(), quote.getAuthor(), cardView);
