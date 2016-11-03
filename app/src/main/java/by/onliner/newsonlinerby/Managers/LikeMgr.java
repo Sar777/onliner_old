@@ -1,9 +1,5 @@
 package by.onliner.newsonlinerby.Managers;
 
-import android.util.Log;
-import android.webkit.CookieManager;
-
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -15,10 +11,9 @@ import by.onliner.newsonlinerby.Listeners.ResponseListener;
 import by.onliner.newsonlinerby.Parser.JSON.JSONLikesParser;
 import by.onliner.newsonlinerby.Structures.Comments.Like;
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.impl.cookie.BasicClientCookie;
 
 /**
- * Created by Mi Air on 22.10.2016.
+ * Менеджер обработки лайков
  */
 public class LikeMgr {
     private static LikeMgr ourInstance = new LikeMgr();

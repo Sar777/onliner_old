@@ -30,6 +30,9 @@ import android.view.MenuItem;
 
 import by.onliner.newsonlinerby.Adapters.ViewPagerAdapter;
 
+/**
+ * Главное окно
+ */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ViewPager pager;
@@ -42,29 +45,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.hideOverflowMenu();
         setSupportActionBar(toolbar);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Tab Slides
         Titles = new CharSequence[] { getString(R.string.tabAuto),  getString(R.string.tabPeoples),  getString(R.string.tabRealt),  getString(R.string.tabTechnologies) };
 
-        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
 
-        // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) findViewById(R.id.pager_news_list);
         pager.setOffscreenPageLimit(Numboftabs);
         pager.setAdapter(adapter);

@@ -1,10 +1,7 @@
 package by.onliner.newsonlinerby.Builder.News;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,11 +12,9 @@ import com.squareup.picasso.Picasso;
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Builder.IBuilder;
-import by.onliner.newsonlinerby.FullScreenImageActivity;
 import by.onliner.newsonlinerby.Listeners.FullScreenImageListener;
 import by.onliner.newsonlinerby.R;
 import eu.fiskur.simpleviewpager.ImageURLLoader;

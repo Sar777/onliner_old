@@ -1,9 +1,11 @@
 package by.onliner.newsonlinerby.Parser;
 
-/**
- * Created by Mi Air on 21.10.2016.
- */
 
+/**
+ * Интерфейс для парсинг JSON формата
+ * @param <A>
+ * @param <B>
+ */
 public interface IJSONParser<A, B> {
     B parse(A json);
 }

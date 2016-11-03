@@ -11,9 +11,8 @@ import by.onliner.newsonlinerby.Parser.IContentParser;
 import by.onliner.newsonlinerby.Structures.News.News;
 
 /**
- * Created by Mi Air on 09.10.2016.
+ * Парсинг содержимого новости и атрибутов
  */
-
 public class BodyNewsParser implements IContentParser<String, News> {
     @Override
     public News parse(String data) {

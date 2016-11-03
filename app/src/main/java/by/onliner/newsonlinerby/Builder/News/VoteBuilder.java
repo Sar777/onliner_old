@@ -16,9 +16,8 @@ import by.onliner.newsonlinerby.Builder.IBuilder;
 import by.onliner.newsonlinerby.R;
 
 /**
- * Created by orion on 2.11.16.
+ * Формирование опроса
  */
-
 public class VoteBuilder implements IBuilder<Element, View> {
     @Override
     public View build(Element element) {

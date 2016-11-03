@@ -15,7 +15,7 @@ import by.onliner.newsonlinerby.Structures.News.News;
 import cz.msebera.android.httpclient.Header;
 
 /**
- * Created by orion on 23.10.16.
+ * Менеджер обработки и загрузки новостей
  */
 public class NewsMgr {
     private static NewsMgr ourInstance = new NewsMgr();

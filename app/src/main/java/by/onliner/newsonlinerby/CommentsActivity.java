@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import by.onliner.newsonlinerby.Adapters.CommentListAdapter;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
 
+/**
+ * Просмотр комментариев
+ */
 public class CommentsActivity extends AppCompatActivity {
     private ArrayList<Comment> mComments = new ArrayList<>();
     private CommentListAdapter mCommentListAdapter;

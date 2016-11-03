@@ -33,6 +33,9 @@ import by.onliner.newsonlinerby.Structures.News.News;
 import by.onliner.newsonlinerby.Tabs.TabBase;
 import cz.msebera.android.httpclient.HttpStatus;
 
+/**
+ * Просмотр отдельной новости
+ */
 public class ViewNewsActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static String INTENT_URL_TAG = "URL";

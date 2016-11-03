@@ -1,19 +1,17 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@color/colorTabLayout</item>
-    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:textColor">@android:color/black</item>
     </style>
+
+    <style name="AppTheme.Toolbar.FullScreen" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColor">@android:color/holo_blue_bright</item>
+        <item name="android:colorBackground">@android:color/white</item>
+    </style>
+    ThemeOverlay.Material.Dark.ActionBar
 
     <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorHeight">2dp</item>
@@ -47,5 +45,4 @@
     </style>
 
     <style name="Onliner.BY.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 </resources>

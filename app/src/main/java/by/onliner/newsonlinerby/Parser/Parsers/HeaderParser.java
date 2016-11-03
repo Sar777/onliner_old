@@ -9,9 +9,8 @@ import by.onliner.newsonlinerby.Parser.IContentParser;
 import by.onliner.newsonlinerby.Structures.HeaderNews;
 
 /**
- * Created by Mi Air on 30.09.2016.
+ * Парсинг заголовка новости
  */
-
 public class HeaderParser implements IContentParser<Element, HeaderNews> {
     @Override
     public HeaderNews parse(Element element) {

@@ -3,9 +3,6 @@ package by.onliner.newsonlinerby.Common;
 import android.text.Html;
 import android.text.Spanned;
 
-/**
- * Created by orion on 30.10.16.
- */
 public class Common {
 
     /**

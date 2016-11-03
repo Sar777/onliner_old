@@ -10,9 +10,8 @@ import by.onliner.newsonlinerby.Parser.IJSONParser;
 import by.onliner.newsonlinerby.Structures.Comments.Like;
 
 /**
- * Created by Mi Air on 21.10.2016.
+ * Парсинг JSON со списком лайков к комментариям
  */
-
 public class JSONLikesParser implements IJSONParser<String, ArrayList<Like>> {
     @Override
     public ArrayList<Like> parse(String json) {

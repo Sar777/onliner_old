@@ -1,5 +1,6 @@
 package by.onliner.newsonlinerby.Builder.News;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.content.res.ResourcesCompat;
@@ -14,26 +15,35 @@ import com.squareup.picasso.Picasso;
 
 import org.jsoup.nodes.Element;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Builder.IBuilder;
+import by.onliner.newsonlinerby.Listeners.FullScreenImageListener;
 import by.onliner.newsonlinerby.R;
 
 /**
- * Created by Mi Air on 13.10.2016.
+ * Формирование элемента с изображением
  */
-
 public class ImageBuilder implements IBuilder<View, View> {
-    private Element element;
+    private Element mElement;
+    private Activity mActivity;
 
-    public ImageBuilder(Element element) {
-        this.element = element;
+    public ImageBuilder(Element element, Activity activity) {
+        this.mElement = element;
+        this.mActivity = activity;
     }
 
     @Override
     public View build(View layout) {
-        for (final Element child : element.getAllElements()) {
+        for (final Element child : mElement.getAllElements()) {
             View view = null;
             if (child.className().contains("news-media__image")) {
+
+                if (child.attr("src").isEmpty())
+                    continue;
+
                 view = new ImageView(App.getContext());
                 ((ImageView)view).setScaleType(ImageView.ScaleType.FIT_CENTER);
                 ((ImageView)view).setAdjustViewBounds(true);
@@ -42,17 +52,20 @@ public class ImageBuilder implements IBuilder<View, View> {
                 layoutParams.gravity = Gravity.CENTER;
 
                 // Sub title img
-                if (element.getElementsByClass("news-media__subtitle").isEmpty())
+                if (mElement.getElementsByClass("news-media__subtitle").isEmpty())
                     layoutParams.setMargins(0, 5, 0, 30);
                 else
                     layoutParams.setMargins(0, 5, 0, 10);
 
                 view.setLayoutParams(layoutParams);
 
-                if (!child.attr("src").isEmpty()) {
+                // Открытие полного режима просмотра
+                view.setOnClickListener(new FullScreenImageListener(mActivity, new ArrayList<>(Arrays.asList(child.attr("src")))));
+
+                {
                     Handler uiHandler = new Handler(Looper.getMainLooper());
                     final View finalView = view;
-                    uiHandler.post(new Runnable(){
+                    uiHandler.post(new Runnable() {
                         @Override
                         public void run() {
                             Picasso.with(App.getContext()).
@@ -62,8 +75,6 @@ public class ImageBuilder implements IBuilder<View, View> {
                         }
                     });
                 }
-                else
-                    continue;
             }
             else if (child.className().contains("news-media__subtitle")) {
                 view = new TextView(App.getContext());

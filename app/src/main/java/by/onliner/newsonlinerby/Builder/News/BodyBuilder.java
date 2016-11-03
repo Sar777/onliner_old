@@ -116,7 +116,7 @@ public class BodyBuilder implements IBuilder<View, View> {
                 case "div": {
                     // Изображения по одному
                     if (element.className().indexOf("news-media_extended") != -1 || element.className().indexOf("news-media_condensed") != -1)
-                        new ImageBuilder(element).build(layout);
+                        new ImageBuilder(element, mActivity).build(layout);
                     // Слайдер изображений
                     else if (element.className().indexOf("news-media__gallery") != -1)
                         new ImageSliderBuilder(element, mActivity).build(layout);

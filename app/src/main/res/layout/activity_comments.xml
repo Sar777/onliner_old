@@ -39,7 +39,8 @@
             android:id="@+id/lv_comments_list"
             android:transcriptMode="normal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:dividerHeight="2dp">
         </ListView>
     </RelativeLayout>
 

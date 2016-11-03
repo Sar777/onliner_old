@@ -12,9 +12,8 @@ import by.onliner.newsonlinerby.Structures.HeaderNews;
 import by.onliner.newsonlinerby.Structures.News.News;
 
 /**
- * Created by orion on 23.10.16.
+ * Парсинг списка новостей
  */
-
 public class NewsListParser implements IContentParser<String, ArrayList<News>> {
     private String mUrl;
 
