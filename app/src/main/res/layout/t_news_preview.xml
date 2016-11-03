@@ -4,23 +4,23 @@
     android:layout_height="match_parent">
 
     <com.eschao.android.widget.elasticlistview.ElasticListView
-        android:id="@+id/lvMain"
+        android:id="@+id/lv_news_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:divider="#ffda50"
         android:fadingEdge="none"
         android:scrollbars="none"
         android:overScrollMode="never"
-        android:dividerHeight="3dp">
-    </com.eschao.android.widget.elasticlistview.ElasticListView>
+        android:dividerHeight="3dp"
+        android:divider="#ffda50"/>
 
     <ProgressBar
-        android:id="@+id/progressBarLoading"
-        style="@android:style/Widget.ProgressBar.Large.Inverse"
+        android:id="@+id/pb_news_list_loading"
+        style="@android:style/Widget.Holo.ProgressBar.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:visibility="visible"
         android:layout_centerInParent="true" />
 
     <LinearLayout
@@ -41,9 +41,9 @@
             android:text="@string/repeat_load_info" />
 
         <Button
-            android:id="@+id/btnLoadContent"
+            android:id="@+id/bt_loadContent"
             android:layout_width="120dp"
-            android:layout_height="34dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:textColor="@android:color/white"
             android:background="@drawable/comment_button_selector"

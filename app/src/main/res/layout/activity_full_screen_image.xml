@@ -9,7 +9,7 @@
         android:id="@+id/full_screen_image_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorTabText"
+        android:background="@color/colorOnlinerGray"
         simpleviewpager:vertical="true"
         simpleviewpager:scaleType="CENTER_CROP" />
 

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Listeners.NewsListResponse;
+import by.onliner.newsonlinerby.Listeners.ViewNewsListener;
 import by.onliner.newsonlinerby.Parser.Parsers.NewsListParser;
 import by.onliner.newsonlinerby.Structures.News.News;
 import cz.msebera.android.httpclient.Header;
@@ -40,7 +41,6 @@ public class NewsMgr {
      * @param pull         подгрузка
      * @param listResponse обработка
      */
-
     public void getLoadingNewsList(final String projectId, boolean pull, final NewsListResponse listResponse) {
         RequestParams params = new RequestParams();
         if (pull)
@@ -65,15 +65,55 @@ public class NewsMgr {
         });
     }
 
+    /**
+     * Получение новости по url
+     *
+     * @param url              Адрес новости
+     * @param viewNewsListener Обработчик загруженных данных
+     */
+    public void getNewsByUrl(String url, final ViewNewsListener viewNewsListener) {
+        App.getAsyncHttpClient().get(url, null, new AsyncHttpResponseHandler() {
+            ViewNewsListener listener = viewNewsListener;
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                listener.onResponse(statusCode, new String(responseBody));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                listener.onResponse(statusCode, new String(responseBody));
+            }
+        });
+    }
+
+    /**
+     * Получение списка новости по категории
+     *
+     * @param projectId the project id
+     * @return the news list
+     */
     public ArrayList<News> getNewsList(String projectId) {
         return mNews.get(projectId);
     }
 
-    public static String getUrl(String project) {
+    /**
+     * Формирование адреса новости по категории
+     *
+     * @param project Категория
+     * @return Сформировання строку
+     */
+    private static String getUrl(String project) {
         return "https://" + project + ".onliner.by";
     }
 
-    public News getLastNews(String project) {
+
+    /**
+     * Получение последней новости по по категории
+     *
+     * @param project Категория
+     * @return Последняя новость
+     */
+    private News getLastNews(String project) {
         ArrayList<News> projectNews = mNews.get(project);
         if (projectNews == null || projectNews.size() == 0)
             return null;
@@ -81,6 +121,11 @@ public class NewsMgr {
         return projectNews.get(projectNews.size() - 1);
     }
 
+    /**
+     * Очистка списка загруженных новостей по категории
+     *
+     * @param project Проект
+     */
     private void clearAllProjectNews(String project) {
         ArrayList<News> projectNews = mNews.get(project);
         if (projectNews == null || projectNews.size() == 0)
@@ -89,6 +134,9 @@ public class NewsMgr {
         projectNews.clear();;
     }
 
+    /**
+     * Очистка
+     */
     public void clearAll() {
         mNews.clear();
     }

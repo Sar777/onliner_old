@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:paddingTop="20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_vote_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:text="Стали ли вы покупать больше отечественного товара и какого?"/>
+
+    <TextView
+        android:id="@+id/tv_vote_stat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorOnlinerGray"
+        android:textSize="13sp"
+        android:text="3597 человек уже сделали свой выбор!"/>
+
+    <LinearLayout
+        android:id="@+id/l_vote_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/comment_button_selector"
+        android:textAllCaps="false"
+        android:text="@string/vote"/>
+
+</LinearLayout>

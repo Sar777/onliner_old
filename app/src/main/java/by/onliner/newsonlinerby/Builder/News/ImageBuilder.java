@@ -33,7 +33,7 @@ public class ImageBuilder implements IBuilder<View, View> {
     public View build(View layout) {
         for (final Element child : element.getAllElements()) {
             View view = null;
-            if (child.className().indexOf("news-media__image") != -1) {
+            if (child.className().contains("news-media__image")) {
                 view = new ImageView(App.getContext());
                 ((ImageView)view).setScaleType(ImageView.ScaleType.FIT_CENTER);
                 ((ImageView)view).setAdjustViewBounds(true);
@@ -65,12 +65,12 @@ public class ImageBuilder implements IBuilder<View, View> {
                 else
                     continue;
             }
-            else if (child.className().indexOf("news-media__subtitle") != -1) {
+            else if (child.className().contains("news-media__subtitle")) {
                 view = new TextView(App.getContext());
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.setMargins(0, 0, 0, 25);
-                ((TextView)view).setLayoutParams(layoutParams);
+                view.setLayoutParams(layoutParams);
 
                 ((TextView)view).setGravity(Gravity.CENTER_HORIZONTAL);
                 ((TextView)view).setTextColor(ResourcesCompat.getColor(App.getContext().getResources(), R.color.colorOnlinerBlockquoteText, null));

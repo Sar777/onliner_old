@@ -15,7 +15,6 @@
 
 package by.onliner.newsonlinerby;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
@@ -66,11 +65,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
 
         // Assigning ViewPager View and setting the adapter
-        pager = (ViewPager) findViewById(R.id.pager);
+        pager = (ViewPager) findViewById(R.id.pager_news_list);
         pager.setOffscreenPageLimit(Numboftabs);
         pager.setAdapter(adapter);
 
-        tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs = (TabLayout) findViewById(R.id.tabs_news_list);
         tabs.setupWithViewPager(pager);
     }
 

@@ -27,7 +27,7 @@
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/colorTabText</item>
+        <item name="android:textColor">@color/colorOnlinerGray</item>
         <item name="textAllCaps">true</item>
     </style>
 

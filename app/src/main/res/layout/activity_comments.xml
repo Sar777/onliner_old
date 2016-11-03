@@ -36,11 +36,10 @@
             android:layout_centerInParent="true"/>
 
         <ListView
-            android:id="@+id/lv_comments"
+            android:id="@+id/lv_comments_list"
             android:transcriptMode="normal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="3dp">
+            android:layout_height="match_parent">
         </ListView>
     </RelativeLayout>
 

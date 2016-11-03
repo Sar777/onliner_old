@@ -67,6 +67,7 @@
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:background="@drawable/like_value_button_bg"
+                android:measureWithLargestChild="true"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -76,6 +77,9 @@
                     android:layout_marginRight="3dp"
                     android:src="@drawable/i_best_like"
                     android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:scaleX="2"
+                    android:scaleY="2"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -107,7 +111,7 @@
     <LinearLayout
         android:id="@+id/l_comment_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
     </LinearLayout>
 

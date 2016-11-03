@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,16 +23,17 @@ import java.util.LinkedHashMap;
 import by.onliner.newsonlinerby.Asynchronous.AsyncCommentParser;
 import by.onliner.newsonlinerby.Builder.News.BodyBuilder;
 import by.onliner.newsonlinerby.Listeners.ResponseListener;
+import by.onliner.newsonlinerby.Listeners.ViewNewsListener;
 import by.onliner.newsonlinerby.Managers.LikeMgr;
+import by.onliner.newsonlinerby.Managers.NewsMgr;
 import by.onliner.newsonlinerby.Parser.Parsers.BodyNewsParser;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
 import by.onliner.newsonlinerby.Structures.Comments.Like;
 import by.onliner.newsonlinerby.Structures.News.News;
 import by.onliner.newsonlinerby.Tabs.TabBase;
-import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpStatus;
 
 public class ViewNewsActivity extends AppCompatActivity implements View.OnClickListener {
-    private static String ASYNC_CLIENT_TAG = "FULL_VIEW_NEWS";
 
     public static String INTENT_URL_TAG = "URL";
     public static String INTENT_COMMENTS_TAG = "COMMENTS";
@@ -45,9 +45,11 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private ProgressBar mProgressBar;
     private View mContainerNews;
     private Button mButtonComment;
+    private ViewGroup mRepeatGroup;
 
     private News mContent;
     private LinkedHashMap<Integer, Comment> mComments;
+    private String mUrl;
 
     private int mShortAnimationDuration;
 
@@ -68,7 +70,9 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         mComments = new LinkedHashMap<>();
 
         // Views
-        mProgressBar = (ProgressBar)findViewById(R.id.progressBarLoading);
+        mProgressBar = (ProgressBar)findViewById(R.id.pb_news_list_loading);
+        mRepeatGroup = (ViewGroup)findViewById(R.id.l_view_news_repeat);
+
         mContainerNews = findViewById(R.id.scrollView_content_news);
         mContainerNews.setVisibility(View.GONE);
 
@@ -78,45 +82,9 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         Intent intent = getIntent();
-        String url = intent.getStringExtra(TabBase.INTENT_URL_TAG);
+        mUrl = intent.getStringExtra(TabBase.INTENT_URL_TAG);
 
-        mClient.get(url, null, new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                mProgressBar.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                mContent = new BodyNewsParser().parse(new String(responseBody));
-                new AsyncBodyBuilder().execute();
-
-                // Парсинг комментариев
-                new AsyncCommentParser(new String(responseBody), new ResponseListener<LinkedHashMap<Integer, Comment>>() {
-                    @Override
-                    public void onResponse(LinkedHashMap response) {
-                        mComments = response;
-
-                        // Запрос на получение спискай лайков
-                        LikeMgr.getInstance().getAsyncLikes(mContent.getLikesAPIUrl(), new ResponseListener<ArrayList<Like>>() {
-                            @Override
-                            public void onResponse(ArrayList<Like> response) {
-                                for (Like like : response) {
-                                    Comment comment = mComments.get(like.getCommentId());
-                                    if (comment != null)
-                                        comment.setLikes(like);
-                                }
-                            }
-                        });
-                    }
-                }).execute();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                mProgressBar.setVisibility(View.GONE);
-            }
-        }).setTag(ASYNC_CLIENT_TAG);
+        LoadingContent();
     }
 
     @Override
@@ -130,9 +98,56 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
             }
+            case R.id.btn_load_repeat: {
+                LoadingContent();
+                break;
+            }
             default:
                 break;
         }
+    }
+
+    /**
+     * Загрузка и обработка новости
+     */
+    private void LoadingContent() {
+        mRepeatGroup.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
+        NewsMgr.getInstance().getNewsByUrl(mUrl, new ViewNewsListener() {
+            @Override
+            public void onResponse(int statusCode, String response) {
+                if (statusCode == HttpStatus.SC_OK) {
+                    mContent = new BodyNewsParser().parse(response);
+                    new AsyncBodyBuilder().execute();
+
+                    // Парсинг комментариев
+                    new AsyncCommentParser(response, new ResponseListener<LinkedHashMap<Integer, Comment>>() {
+                        @Override
+                        public void onResponse(LinkedHashMap response) {
+                            mComments = response;
+
+                            // Запрос на получение спискай лайков
+                            LikeMgr.getInstance().getAsyncLikes(mContent.getLikesAPIUrl(), new ResponseListener<ArrayList<Like>>() {
+                                @Override
+                                public void onResponse(ArrayList<Like> response) {
+                                    for (Like like : response) {
+                                        Comment comment = mComments.get(like.getCommentId());
+                                        if (comment != null)
+                                            comment.setLikes(like);
+                                    }
+                                }
+                            });
+                        }
+                    }).execute();
+                }
+                // Ошибка при загрузке
+                else {
+                    mRepeatGroup.setVisibility(View.VISIBLE);
+                    mProgressBar.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     // Асинхронный разбор и постройка Layout c содержимым новости
@@ -159,11 +174,11 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                     error(R.drawable.ic_broken_image).
                     into((ImageView) findViewById(R.id.i_full_news_image));
 
-            VisibleNewsCountainer();
+            VisibleNewsContainer();
         }
     }
 
-    private void VisibleNewsCountainer() {
+    private void VisibleNewsContainer() {
         mContainerNews.setAlpha(0f);
         mContainerNews.setVisibility(View.VISIBLE);
 

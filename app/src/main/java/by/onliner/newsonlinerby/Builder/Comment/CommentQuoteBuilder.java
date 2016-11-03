@@ -24,12 +24,12 @@ public class CommentQuoteBuilder implements IBuilder<CommentQuote, View> {
         View view = LayoutInflater.from(App.getContext()).inflate(R.layout.layout_comment_quote, null);
         CardView cardView = (CardView)view.findViewById(R.id.cv_comment_quote);
 
-        View baseView = newQuote(quote.getText(), quote.getAuthor(), cardView);
+        View baseView = newQuote(quote.getText(), quote.getAuthor());
         cardView.addView(baseView, 0);
 
         quote = quote.getQuote();
         while (quote != null) {
-            View childView = newQuote(quote.getText(), quote.getAuthor(), null);
+            View childView = newQuote(quote.getText(), quote.getAuthor());
             ((ViewGroup)baseView).addView(childView, 0);
             baseView = childView;
             quote = quote.getQuote();
@@ -38,7 +38,7 @@ public class CommentQuoteBuilder implements IBuilder<CommentQuote, View> {
         return view;
     }
 
-    private ViewGroup newQuote(String text, String author, ViewGroup root) {
+    private ViewGroup newQuote(String text, String author) {
         LinearLayout layout = new LinearLayout(App.getContext());
         layout.setPadding(25, 0, 16, 16);
         layout.setBackgroundResource(R.drawable.test_borders);

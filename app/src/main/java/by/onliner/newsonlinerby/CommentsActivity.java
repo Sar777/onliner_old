@@ -3,9 +3,7 @@ package by.onliner.newsonlinerby;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -42,7 +40,7 @@ public class CommentsActivity extends AppCompatActivity {
 
         mCommentListAdapter = new CommentListAdapter(this, mComments, mProject);
 
-        lvMain = (ListView) findViewById(R.id.lv_comments);
+        lvMain = (ListView) findViewById(R.id.lv_comments_list);
         lvMain.setAdapter(mCommentListAdapter);
         findViewById(R.id.pb_comment_list).setVisibility(View.GONE);
     }

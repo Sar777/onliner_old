@@ -69,14 +69,14 @@ public class TabBase extends Fragment implements View.OnClickListener {
         newsListAdapter = new NewsListAdapter(getContext(), mProjectId);
 
         // Views
-        btnLoadContent = (Button)myFragmentView.findViewById(R.id.btnLoadContent);
+        btnLoadContent = (Button)myFragmentView.findViewById(R.id.bt_loadContent);
         btnLoadContent.setOnClickListener(this);
 
         mLinerRepeatGroup = (ViewGroup)myFragmentView.findViewById(R.id.l_group_repeat);
 
-        progressBarStatus = (ProgressBar)myFragmentView.findViewById(R.id.progressBarLoading);
+        progressBarStatus = (ProgressBar)myFragmentView.findViewById(R.id.pb_news_list_loading);
 
-        lvMain = (ElasticListView)myFragmentView.findViewById(R.id.lvMain);
+        lvMain = (ElasticListView)myFragmentView.findViewById(R.id.lv_news_list);
         lvMain.setHorizontalFadingEdgeEnabled(true);
         lvMain.setClickable(true);
         lvMain.setAdapter(newsListAdapter);
@@ -122,7 +122,6 @@ public class TabBase extends Fragment implements View.OnClickListener {
         return myFragmentView;
     }
 
-
     /**
      * Получнеие полного списка новостей
      */
@@ -154,7 +153,7 @@ public class TabBase extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnLoadContent:
+            case R.id.bt_loadContent:
                 loadingNews(false);
                 break;
             default:

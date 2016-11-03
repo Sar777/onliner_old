@@ -114,11 +114,15 @@ public class BodyBuilder implements IBuilder<View, View> {
                     break;
                 }
                 case "div": {
-                    // Images & Media
+                    // Изображения по одному
                     if (element.className().indexOf("news-media_extended") != -1 || element.className().indexOf("news-media_condensed") != -1)
                         new ImageBuilder(element).build(layout);
+                    // Слайдер изображений
                     else if (element.className().indexOf("news-media__gallery") != -1)
                         new ImageSliderBuilder(element, mActivity).build(layout);
+                    // Голосование
+                    else if (element.className().indexOf("news-vote") != -1 && element.attr("data-post-id") != "")
+                        layout.addView(new VoteBuilder().build(element));
                     else if (element.className().indexOf("news-header__title") != -1) {
                         TextView textView = new TextView(App.getContext());
 
@@ -130,7 +134,7 @@ public class BodyBuilder implements IBuilder<View, View> {
                         textView.setText(element.text());
                         textView.setTextSize(18);
                         textView.setTypeface(null, Typeface.BOLD);
-                        ((LinearLayout)layout).addView(textView);
+                        layout.addView(textView);
                     }
                     break;
                 }

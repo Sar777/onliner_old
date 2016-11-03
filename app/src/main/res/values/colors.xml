@@ -12,7 +12,7 @@
     <color name="colorViewsList">#ff2400</color>
     <color name="colorBlueOnliner">#004d99</color>
     <color name="colorTabBlackOnliner">#333</color>
-    <color name="colorTabText">#999</color>
+    <color name="colorOnlinerGray">#999</color>
     <color name="colorTabIndicator">#3e4753</color>
     <color name="colorTabLayout">#f4f4f4</color>
     <color name="colorOnlinerNewsLinkText">#4365ff</color>
