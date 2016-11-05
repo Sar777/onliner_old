@@ -1,4 +1,4 @@
-package by.onliner.newsonlinerby.Builder.Comment;
+package by.onliner.newsonlinerby.Builders.Comment;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import by.onliner.newsonlinerby.App;
-import by.onliner.newsonlinerby.Builder.IBuilder;
+import by.onliner.newsonlinerby.Builders.IBuilder;
 import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.Comments.CommentQuote;
 

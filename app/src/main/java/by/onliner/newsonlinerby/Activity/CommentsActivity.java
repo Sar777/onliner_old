@@ -1,4 +1,4 @@
-package by.onliner.newsonlinerby;
+package by.onliner.newsonlinerby.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +9,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.Adapters.CommentListAdapter;
+import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
 
 /**

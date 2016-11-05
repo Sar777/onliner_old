@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="by.onliner.newsonlinerby.ViewNewsActivity"
+    tools:context="by.onliner.newsonlinerby.Activity.ViewNewsActivity"
     tools:showIn="@layout/activity_view_news">
 
     <ProgressBar

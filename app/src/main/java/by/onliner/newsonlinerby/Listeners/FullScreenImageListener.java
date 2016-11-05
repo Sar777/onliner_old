@@ -7,7 +7,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.App;
-import by.onliner.newsonlinerby.FullScreenImageActivity;
+import by.onliner.newsonlinerby.Activity.FullScreenImageActivity;
 
 /**
  * Обработка откытия полного размера изображения в новом окне

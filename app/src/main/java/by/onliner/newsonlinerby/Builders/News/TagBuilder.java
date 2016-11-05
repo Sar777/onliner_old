@@ -1,8 +1,8 @@
-package by.onliner.newsonlinerby.Builder.News;
+package by.onliner.newsonlinerby.Builders.News;
 
 import android.view.View;
 
-import by.onliner.newsonlinerby.Builder.IBuilder;
+import by.onliner.newsonlinerby.Builders.IBuilder;
 
 /**
  * Created by Mi Air on 16.10.2016.

@@ -1,4 +1,4 @@
-package by.onliner.newsonlinerby.Builder;
+package by.onliner.newsonlinerby.Builders;
 
 /**
  * Created by Mi Air on 13.10.2016.

@@ -1,8 +1,8 @@
-package by.onliner.newsonlinerby;
+package by.onliner.newsonlinerby.Activity;
 
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -13,14 +13,10 @@ import android.webkit.WebViewClient;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
 
+import by.onliner.newsonlinerby.App;
+import by.onliner.newsonlinerby.R;
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.client.CookieStore;
-import cz.msebera.android.httpclient.client.protocol.ClientContext;
-import cz.msebera.android.httpclient.protocol.HttpContext;
-
-import static by.onliner.newsonlinerby.Constants.Constant.mProfileURL;
 
 public class AuthActivity extends AppCompatActivity {
 

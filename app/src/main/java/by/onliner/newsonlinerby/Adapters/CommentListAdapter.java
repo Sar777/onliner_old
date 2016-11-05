@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.App;
-import by.onliner.newsonlinerby.Builder.Comment.CommentQuoteBuilder;
+import by.onliner.newsonlinerby.Builders.Comment.CommentQuoteBuilder;
 import by.onliner.newsonlinerby.Common.Common;
 import by.onliner.newsonlinerby.Listeners.LikeCommentListener;
 import by.onliner.newsonlinerby.Managers.LikeMgr;

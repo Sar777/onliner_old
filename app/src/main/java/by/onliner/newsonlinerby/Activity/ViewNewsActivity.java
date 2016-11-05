@@ -1,4 +1,4 @@
-package by.onliner.newsonlinerby;
+package by.onliner.newsonlinerby.Activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -14,19 +14,20 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.loopj.android.http.AsyncHttpClient;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Asynchronous.AsyncCommentParser;
-import by.onliner.newsonlinerby.Builder.News.BodyBuilder;
+import by.onliner.newsonlinerby.Builders.News.BodyBuilder;
 import by.onliner.newsonlinerby.Listeners.ResponseListener;
 import by.onliner.newsonlinerby.Listeners.ViewNewsListener;
 import by.onliner.newsonlinerby.Managers.LikeMgr;
 import by.onliner.newsonlinerby.Managers.NewsMgr;
 import by.onliner.newsonlinerby.Parser.Parsers.BodyNewsParser;
+import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
 import by.onliner.newsonlinerby.Structures.Comments.Like;
 import by.onliner.newsonlinerby.Structures.News.News;
@@ -41,8 +42,6 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     public static String INTENT_URL_TAG = "URL";
     public static String INTENT_COMMENTS_TAG = "COMMENTS";
     public static String INTENT_PROJECT_TAG = "PROJECT";
-
-    private AsyncHttpClient mClient = new AsyncHttpClient();
 
     // Views
     private ProgressBar mProgressBar;
