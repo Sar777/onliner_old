@@ -37,7 +37,7 @@ import by.onliner.newsonlinerby.Listeners.NewsListResponse;
 import by.onliner.newsonlinerby.Managers.NewsMgr;
 import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.News.News;
-import by.onliner.newsonlinerby.ViewNewsActivity;
+import by.onliner.newsonlinerby.Activity.ViewNewsActivity;
 
 /**
  * The type Tab base.

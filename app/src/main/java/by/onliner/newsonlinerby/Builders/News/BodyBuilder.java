@@ -1,4 +1,4 @@
-package by.onliner.newsonlinerby.Builder.News;
+package by.onliner.newsonlinerby.Builders.News;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -18,7 +18,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import by.onliner.newsonlinerby.App;
-import by.onliner.newsonlinerby.Builder.IBuilder;
+import by.onliner.newsonlinerby.Builders.IBuilder;
 import by.onliner.newsonlinerby.Common.Common;
 import by.onliner.newsonlinerby.CustomViews.QuoteTextView;
 import by.onliner.newsonlinerby.R;

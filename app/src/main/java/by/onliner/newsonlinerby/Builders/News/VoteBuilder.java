@@ -1,4 +1,4 @@
-package by.onliner.newsonlinerby.Builder.News;
+package by.onliner.newsonlinerby.Builders.News;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 import org.jsoup.nodes.Element;
 
 import by.onliner.newsonlinerby.App;
-import by.onliner.newsonlinerby.Builder.IBuilder;
+import by.onliner.newsonlinerby.Builders.IBuilder;
 import by.onliner.newsonlinerby.R;
 
 /**

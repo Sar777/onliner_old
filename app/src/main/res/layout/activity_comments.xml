@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
-    tools:context="by.onliner.newsonlinerby.CommentsActivity">
+    tools:context="by.onliner.newsonlinerby.Activity.CommentsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

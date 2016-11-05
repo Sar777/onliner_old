@@ -1,4 +1,4 @@
-package by.onliner.newsonlinerby.Builder.News;
+package by.onliner.newsonlinerby.Builders.News;
 
 import android.app.Activity;
 import android.os.Handler;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import by.onliner.newsonlinerby.App;
-import by.onliner.newsonlinerby.Builder.IBuilder;
+import by.onliner.newsonlinerby.Builders.IBuilder;
 import by.onliner.newsonlinerby.Listeners.FullScreenImageListener;
 import by.onliner.newsonlinerby.R;
 

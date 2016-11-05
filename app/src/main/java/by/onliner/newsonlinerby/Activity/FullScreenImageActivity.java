@@ -1,4 +1,4 @@
-package by.onliner.newsonlinerby;
+package by.onliner.newsonlinerby.Activity;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.Adapters.ImageSliderAdapter;
 import by.onliner.newsonlinerby.Listeners.FullScreenImageListener;
+import by.onliner.newsonlinerby.R;
 
 /**
  * Показ полноразмерного изображения
