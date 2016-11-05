@@ -40,7 +40,7 @@ public class CommentQuoteBuilder implements IBuilder<CommentQuote, View> {
 
     private ViewGroup newQuote(String text, String author) {
         LinearLayout layout = new LinearLayout(App.getContext());
-        layout.setPadding(25, 0, 16, 16);
+        layout.setPadding(20, 0, 16, 16);
         layout.setBackgroundResource(R.drawable.test_borders);
         layout.setOrientation(LinearLayout.VERTICAL);
 
@@ -49,7 +49,7 @@ public class CommentQuoteBuilder implements IBuilder<CommentQuote, View> {
         TextView textViewComment = new TextView(App.getContext());
         textViewComment.setTextColor(ResourcesCompat.getColor(App.getContext().getResources(), R.color.colorOnlinerBlockquoteText, null));
         textViewComment.setTextSize(13);
-        textViewComment.setPadding(15, 10, 0, 0);
+        textViewComment.setPadding(0, 10, 0, 0);
 
         textViewComment.setText(text);
 

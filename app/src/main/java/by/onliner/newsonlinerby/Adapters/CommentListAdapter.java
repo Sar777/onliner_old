@@ -71,10 +71,14 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
         if (comment.getLikes().getCount() > 0) {
             view.findViewById(R.id.l_like_group).setVisibility(View.VISIBLE);
             ((TextView) view.findViewById(R.id.tv_comment_likes_count)).setText(comment.getLikes().getCount().toString());
-            if (comment.getLikes().isBest())
-                ((ImageView) view.findViewById(R.id.img_like_type)).setImageDrawable(ContextCompat.getDrawable(App.getContext(), R.drawable.i_best_like));
-            else
-                ((ImageView) view.findViewById(R.id.img_like_type)).setImageDrawable(ContextCompat.getDrawable(App.getContext(), R.drawable.i_default_like));
+            if (comment.getLikes().isBest()) {
+                ((ImageView) view.findViewById(R.id.img_like_best)).setVisibility(View.VISIBLE);
+                ((ImageView) view.findViewById(R.id.img_like_default)).setVisibility(View.GONE);
+            }
+            else {
+                ((ImageView) view.findViewById(R.id.img_like_default)).setVisibility(View.VISIBLE);
+                ((ImageView) view.findViewById(R.id.img_like_best)).setVisibility(View.GONE);
+            }
         }
         else
             view.findViewById(R.id.l_like_group).setVisibility(View.GONE);
@@ -84,14 +88,14 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
         TextView commentTextView = new TextView(App.getContext());
         commentTextView.setTextColor(Color.BLACK);
         commentTextView.setText(Common.fromHtml(comment.getText()));
-        commentTextView.setPadding(30, 40, 30, 0);
+        commentTextView.setPadding(20, 40, 30, 0);
 
         // Формирование цитаты в комментарии
         if (comment.getQuote() != null) {
             View quoteView = new CommentQuoteBuilder().build(comment.getQuote());
             if (quoteView != null) {
                 ((ViewGroup) view.findViewById(R.id.l_comment_text)).addView(quoteView, 0);
-                commentTextView.setPadding(30, 0, 30, 0);
+                commentTextView.setPadding(20, 0, 30, 0);
             }
         }
 

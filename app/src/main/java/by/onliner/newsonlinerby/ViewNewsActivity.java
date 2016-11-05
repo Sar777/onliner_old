@@ -48,6 +48,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private ProgressBar mProgressBar;
     private View mContainerNews;
     private Button mButtonComment;
+    private Button mButtonRepeat;
     private ViewGroup mRepeatGroup;
 
     private News mContent;
@@ -81,6 +82,9 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
         mButtonComment = (Button)findViewById(R.id.btn_comment_full_news);
         mButtonComment.setOnClickListener(this);
+
+        mButtonRepeat = (Button)findViewById(R.id.btn_load_repeat);
+        mButtonRepeat.setOnClickListener(this);
 
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
