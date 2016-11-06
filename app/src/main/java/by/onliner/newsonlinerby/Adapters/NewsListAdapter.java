@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Managers.NewsMgr;
 import by.onliner.newsonlinerby.R;
-import by.onliner.newsonlinerby.Structures.HeaderNews;
+import by.onliner.newsonlinerby.Structures.News.HeaderNews;
 import by.onliner.newsonlinerby.Structures.News.News;
 
 public class NewsListAdapter extends BaseAdapter {

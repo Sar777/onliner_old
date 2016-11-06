@@ -6,8 +6,9 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Activity.FullScreenImageActivity;
+import by.onliner.newsonlinerby.App;
+import by.onliner.newsonlinerby.R;
 
 /**
  * Обработка откытия полного размера изображения в новом окне
@@ -28,5 +29,6 @@ public class FullScreenImageListener implements View.OnClickListener {
         Intent intent = new Intent(App.getContext(), FullScreenImageActivity.class);
         intent.putStringArrayListExtra(INTENT_FULL_SCREEN_URL, mImageUrls);
         mActivity.startActivity(intent);
+        mActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }

@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import by.onliner.newsonlinerby.Parser.IContentParser;
-import by.onliner.newsonlinerby.Structures.HeaderNews;
+import by.onliner.newsonlinerby.Structures.News.HeaderNews;
 
 /**
  * Парсинг заголовка новости

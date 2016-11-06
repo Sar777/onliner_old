@@ -8,7 +8,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 
 import by.onliner.newsonlinerby.Parser.IContentParser;
-import by.onliner.newsonlinerby.Structures.HeaderNews;
+import by.onliner.newsonlinerby.Structures.News.HeaderNews;
 import by.onliner.newsonlinerby.Structures.News.News;
 
 /**
