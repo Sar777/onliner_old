@@ -17,16 +17,16 @@ package by.onliner.newsonlinerby.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import by.onliner.newsonlinerby.Enums.NewsType;
-import by.onliner.newsonlinerby.Tabs.TabAuto;
-import by.onliner.newsonlinerby.Tabs.TabBase;
-import by.onliner.newsonlinerby.Tabs.TabPeople;
-import by.onliner.newsonlinerby.Tabs.TabRealt;
-import by.onliner.newsonlinerby.Tabs.TabTechnologies;
+import by.onliner.newsonlinerby.Fragments.Tabs.TabAuto;
+import by.onliner.newsonlinerby.Fragments.Tabs.TabBase;
+import by.onliner.newsonlinerby.Fragments.Tabs.TabPeople;
+import by.onliner.newsonlinerby.Fragments.Tabs.TabRealt;
+import by.onliner.newsonlinerby.Fragments.Tabs.TabTechnologies;
 
-public class ViewPagerAdapter extends FragmentPagerAdapter {
+public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
     int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created

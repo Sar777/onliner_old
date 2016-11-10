@@ -45,7 +45,7 @@ public class ImageBuilder implements IBuilder<View, View> {
                     continue;
 
                 view = new ImageView(App.getContext());
-                ((ImageView)view).setScaleType(ImageView.ScaleType.FIT_CENTER);
+                ((ImageView)view).setScaleType(ImageView.ScaleType.FIT_START);
                 ((ImageView)view).setAdjustViewBounds(true);
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -63,13 +63,12 @@ public class ImageBuilder implements IBuilder<View, View> {
                 view.setOnClickListener(new FullScreenImageListener(mActivity, new ArrayList<>(Arrays.asList(child.attr("src")))));
 
                 {
-                    Handler uiHandler = new Handler(Looper.getMainLooper());
                     final View finalView = view;
-                    uiHandler.post(new Runnable() {
-                        @Override
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
                         public void run() {
                             Picasso.with(App.getContext()).
                                     load(child.attr("src")).
+                                    resize(0, 300).
                                     error(R.drawable.ic_broken_image).
                                     into((ImageView) finalView);
                         }

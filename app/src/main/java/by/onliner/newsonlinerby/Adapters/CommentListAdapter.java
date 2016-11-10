@@ -2,7 +2,6 @@ package by.onliner.newsonlinerby.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,12 +71,12 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
             view.findViewById(R.id.l_like_group).setVisibility(View.VISIBLE);
             ((TextView) view.findViewById(R.id.tv_comment_likes_count)).setText(comment.getLikes().getCount().toString());
             if (comment.getLikes().isBest()) {
-                ((ImageView) view.findViewById(R.id.img_like_best)).setVisibility(View.VISIBLE);
-                ((ImageView) view.findViewById(R.id.img_like_default)).setVisibility(View.GONE);
+                view.findViewById(R.id.img_like_best).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.img_like_default).setVisibility(View.GONE);
             }
             else {
-                ((ImageView) view.findViewById(R.id.img_like_default)).setVisibility(View.VISIBLE);
-                ((ImageView) view.findViewById(R.id.img_like_best)).setVisibility(View.GONE);
+                view.findViewById(R.id.img_like_default).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.img_like_best).setVisibility(View.GONE);
             }
         }
         else

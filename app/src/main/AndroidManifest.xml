@@ -28,7 +28,7 @@
             android:theme="@style/Onliner.BY" />
         <activity android:name=".Activity.CommentsActivity" />
         <activity android:name=".Activity.AuthActivity" />
-        <activity android:name=".Activity.FullScreenImageActivity"></activity>
+        <activity android:name=".Activity.FullScreenImageActivity" />
     </application>
 
 </manifest>

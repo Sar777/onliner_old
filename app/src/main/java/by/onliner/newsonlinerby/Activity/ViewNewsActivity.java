@@ -22,6 +22,7 @@ import java.util.LinkedHashMap;
 import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Asynchronous.AsyncCommentParser;
 import by.onliner.newsonlinerby.Builders.News.BodyBuilder;
+import by.onliner.newsonlinerby.Fragments.Tabs.TabBase;
 import by.onliner.newsonlinerby.Listeners.ResponseListener;
 import by.onliner.newsonlinerby.Listeners.ViewNewsListener;
 import by.onliner.newsonlinerby.Managers.LikeMgr;
@@ -31,7 +32,6 @@ import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
 import by.onliner.newsonlinerby.Structures.Comments.Like;
 import by.onliner.newsonlinerby.Structures.News.News;
-import by.onliner.newsonlinerby.Tabs.TabBase;
 import cz.msebera.android.httpclient.HttpStatus;
 
 /**

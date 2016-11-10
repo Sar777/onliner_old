@@ -4,9 +4,9 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/img_recycler"
+        android:id="@+id/img_recycler_slider"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter"
+        android:scaleType="fitStart"
         android:adjustViewBounds="true"/>
 </LinearLayout>

@@ -114,9 +114,14 @@ public class BodyBuilder implements IBuilder<View, View> {
                     break;
                 }
                 case "div": {
-                    // Изображения по одному
-                    if (element.className().indexOf("news-media_extended") != -1 || element.className().indexOf("news-media_condensed") != -1)
-                        new ImageBuilder(element, mActivity).build(layout);
+                    // Изображения по одному и видео
+                    if (element.className().indexOf("news-media_extended") != -1 || element.className().indexOf("news-media_condensed") != -1) {
+                        // Видео
+                        if (element.getElementsByTag("iframe").size() > 0)
+                            new VideoBuilder(element, mActivity).build(layout);
+                        else
+                            new ImageBuilder(element, mActivity).build(layout);
+                    }
                     // Слайдер изображений
                     else if (element.className().indexOf("news-media__gallery") != -1)
                         new ImageSliderBuilder(element, mActivity).build(layout);

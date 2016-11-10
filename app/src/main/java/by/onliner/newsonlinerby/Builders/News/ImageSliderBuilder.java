@@ -23,18 +23,18 @@ import by.onliner.newsonlinerby.R;
  */
 
 public class ImageSliderBuilder implements IBuilder<LinearLayout, LinearLayout> {
-    private Element element;
+    private Element mElement;
     private Activity mActivity;
 
     public ImageSliderBuilder(Element element, Activity activity) {
-        this.element = element;
+        this.mElement = element;
         this.mActivity = activity;
     }
 
     @Override
     public LinearLayout build(LinearLayout layout) {
         final ArrayList<String> imagesUrl = new ArrayList<>();
-        for (Element imageElement : element.getElementsByTag("img")) {
+        for (Element imageElement : mElement.getElementsByTag("img")) {
             if (imageElement.attr("data-src").isEmpty())
                 continue;
 
@@ -52,7 +52,7 @@ public class ImageSliderBuilder implements IBuilder<LinearLayout, LinearLayout> 
         recyclerView.setLayoutManager(horizontalLayoutManagaer);
         recyclerView.setAdapter(new HorizontalRecyclerImageSliderAdapter(mActivity, imagesUrl));
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(App.getContext(), DividerItemDecoration.HORIZONTAL_LIST, R.drawable.recyler_decoration_yellow));
+        recyclerView.addItemDecoration(new DividerItemDecoration(App.getContext(), DividerItemDecoration.HORIZONTAL_LIST, R.drawable.recyler_decoration_yellow, 5));
 
         layout.addView(view);
         return layout;

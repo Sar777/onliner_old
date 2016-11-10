@@ -29,7 +29,7 @@ public class HorizontalRecyclerImageSliderAdapter extends RecyclerView.Adapter<H
 
         public MyViewHolder(View view) {
             super(view);
-            mImageView = (ImageView) view.findViewById(R.id.img_recycler);
+            mImageView = (ImageView) view.findViewById(R.id.img_recycler_slider);
             mImageView.setOnClickListener(new FullScreenImageListener(mActivity, mResource));
         }
     }
@@ -51,6 +51,7 @@ public class HorizontalRecyclerImageSliderAdapter extends RecyclerView.Adapter<H
         Picasso.with(App.getContext()).
                 load(mResource.get(position)).
                 error(R.drawable.ic_broken_image).
+                resize(0, 300).
                 into(holder.mImageView);
     }
 

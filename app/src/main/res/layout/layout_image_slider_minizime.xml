@@ -11,4 +11,20 @@
         android:layout_marginBottom="8dp">
     </android.support.v7.widget.RecyclerView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@drawable/i_shape_light_black">
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/i_slider_circle_indicator" />
+
+    </LinearLayout>
+
 </LinearLayout>

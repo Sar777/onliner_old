@@ -1,4 +1,4 @@
-package by.onliner.newsonlinerby.Tabs;
+package by.onliner.newsonlinerby.Fragments.Tabs;
 
 /**
  * Created by orion on 16.09.2016.
