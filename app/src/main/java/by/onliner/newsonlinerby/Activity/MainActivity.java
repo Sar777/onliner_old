@@ -17,6 +17,7 @@ package by.onliner.newsonlinerby.Activity;
 
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -71,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         tabs = (TabLayout) findViewById(R.id.tabs_news_list);
         tabs.setupWithViewPager(pager);
+
+        AppBarLayout appBarLayout = (AppBarLayout)findViewById(R.id.appBarLayout);
+        appBarLayout.setExpanded(true, true);
     }
 
     public ViewPager getPager() {

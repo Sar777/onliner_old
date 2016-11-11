@@ -23,6 +23,7 @@ import by.onliner.newsonlinerby.App;
 import by.onliner.newsonlinerby.Asynchronous.AsyncCommentParser;
 import by.onliner.newsonlinerby.Builders.News.BodyBuilder;
 import by.onliner.newsonlinerby.Fragments.Tabs.TabBase;
+import by.onliner.newsonlinerby.Listeners.CommentListListener;
 import by.onliner.newsonlinerby.Listeners.ResponseListener;
 import by.onliner.newsonlinerby.Listeners.ViewNewsListener;
 import by.onliner.newsonlinerby.Managers.LikeMgr;
@@ -99,7 +100,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_comment_full_news: {
                 Intent intent = new Intent(App.getContext(), CommentsActivity.class);
                 intent.putExtra(INTENT_URL_TAG, mContent.getHeader().getUrl());
-                intent.putExtra(INTENT_COMMENTS_TAG, new ArrayList<Comment>(mComments.values()));
+                intent.putExtra(INTENT_COMMENTS_TAG, new ArrayList<>(mComments.values()));
                 intent.putExtra(INTENT_PROJECT_TAG, mContent.getAttributes().getProject());
                 startActivity(intent);
                 break;
@@ -128,7 +129,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                     new AsyncBodyBuilder().execute();
 
                     // Парсинг комментариев
-                    new AsyncCommentParser(response, new ResponseListener<LinkedHashMap<Integer, Comment>>() {
+                    new AsyncCommentParser(response, new CommentListListener() {
                         @Override
                         public void onResponse(LinkedHashMap response) {
                             mComments = response;

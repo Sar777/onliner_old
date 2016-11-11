@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import java.util.LinkedHashMap;
 
+import by.onliner.newsonlinerby.Listeners.CommentListListener;
 import by.onliner.newsonlinerby.Listeners.ResponseListener;
 import by.onliner.newsonlinerby.Parser.Parsers.CommentsParser;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
@@ -15,9 +16,9 @@ import by.onliner.newsonlinerby.Structures.Comments.Comment;
 public class AsyncCommentParser extends AsyncTask<Void, LinkedHashMap<Integer, Comment>, LinkedHashMap<Integer, Comment> > {
 
     private final String content;
-    private final ResponseListener<LinkedHashMap<Integer, Comment>> responseListener;
+    private final CommentListListener responseListener;
 
-    public AsyncCommentParser(String content, ResponseListener<LinkedHashMap<Integer, Comment>> responseListener) {
+    public AsyncCommentParser(String content, CommentListListener responseListener) {
         this.content = content;
         this.responseListener = responseListener;
     }

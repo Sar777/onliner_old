@@ -24,7 +24,6 @@ import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.Comments.Comment;
 import by.onliner.newsonlinerby.Transforms.CircleTransform;
 
-
 /**
  * Адаптере для отображения комментариев к новости
  */
@@ -33,6 +32,18 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
     private LayoutInflater mInflater;
     private ArrayList<Comment> mObjects;
     private String mProject;
+
+    // Views
+    private Button mButtonLike;
+    private TextView mTextViewAuthor;
+    private TextView mTextViewDate;
+    private TextView mTextViewTopComment;
+    private TextView mTextViewLikeCount;
+    private ViewGroup mViewGroupCommentText;
+    private ViewGroup mViewGroupLikeGroup;
+    private ImageView mImageViewAvatar;
+    private ImageView mImageViewLikeBest;
+    private ImageView mImageViewLikeDefault;
 
     public CommentListAdapter(Context context, ArrayList<Comment> comments, String project) {
         mContext = context;
@@ -59,30 +70,47 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-        if (view == null)
+        if (view == null) {
             view = mInflater.inflate(R.layout.layout_item_comment, parent, false);
+        }
+
+        mButtonLike = (Button) view.findViewById(R.id.bt_like_comment);
+        mTextViewAuthor = (TextView) view.findViewById(R.id.tv_comment_author);
+        mTextViewDate = (TextView) view.findViewById(R.id.tv_comment_date);
+        mTextViewTopComment = (TextView) view.findViewById(R.id.tv_top_comment);
+        mTextViewLikeCount = (TextView) view.findViewById(R.id.tv_comment_likes_count);
+        mViewGroupCommentText = ((ViewGroup) view.findViewById(R.id.l_comment_text));
+        mViewGroupLikeGroup = ((ViewGroup) view.findViewById(R.id.l_like_group));
+        mImageViewAvatar = (ImageView)view.findViewById(R.id.img_avatar);
+        mImageViewLikeBest = (ImageView)view.findViewById(R.id.img_like_best);
+        mImageViewLikeDefault = (ImageView)view.findViewById(R.id.img_like_default);
 
         Comment comment = getComment(position);
 
-        ((TextView)view.findViewById(R.id.tv_comment_author)).setText(comment.getAuthor().getName());
-        ((TextView)view.findViewById(R.id.tv_comment_date)).setText(comment.getDate());
+        mTextViewAuthor.setText(comment.getAuthor().getName());
+        mTextViewDate.setText(comment.getDate());
+
+        if (comment.getLikes().isBest() && position == 0)
+            mTextViewTopComment.setVisibility(View.VISIBLE);
+        else
+            mTextViewTopComment.setVisibility(View.GONE);
 
         if (comment.getLikes().getCount() > 0) {
-            view.findViewById(R.id.l_like_group).setVisibility(View.VISIBLE);
-            ((TextView) view.findViewById(R.id.tv_comment_likes_count)).setText(comment.getLikes().getCount().toString());
+            mViewGroupLikeGroup.setVisibility(View.VISIBLE);
+            mTextViewLikeCount.setText(comment.getLikes().getCount().toString());
             if (comment.getLikes().isBest()) {
-                view.findViewById(R.id.img_like_best).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.img_like_default).setVisibility(View.GONE);
+                mImageViewLikeBest.setVisibility(View.VISIBLE);
+                mImageViewLikeDefault.setVisibility(View.GONE);
             }
             else {
-                view.findViewById(R.id.img_like_default).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.img_like_best).setVisibility(View.GONE);
+                mImageViewLikeDefault.setVisibility(View.VISIBLE);
+                mImageViewLikeBest.setVisibility(View.GONE);
             }
         }
         else
-            view.findViewById(R.id.l_like_group).setVisibility(View.GONE);
+            mViewGroupLikeGroup.setVisibility(View.GONE);
 
-        ((ViewGroup) view.findViewById(R.id.l_comment_text)).removeAllViews();
+        mViewGroupCommentText.removeAllViews();
 
         TextView commentTextView = new TextView(App.getContext());
         commentTextView.setTextColor(Color.BLACK);
@@ -93,23 +121,22 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
         if (comment.getQuote() != null) {
             View quoteView = new CommentQuoteBuilder().build(comment.getQuote());
             if (quoteView != null) {
-                ((ViewGroup) view.findViewById(R.id.l_comment_text)).addView(quoteView, 0);
+                mViewGroupCommentText.addView(quoteView, 0);
                 commentTextView.setPadding(20, 0, 30, 0);
             }
         }
 
-        ((ViewGroup) view.findViewById(R.id.l_comment_text)).addView(commentTextView);
+        mViewGroupCommentText.addView(commentTextView);
 
-        Button likeButton = (Button)view.findViewById(R.id.bt_like_comment);
-        likeButton.setTag(comment.getId());
-        likeButton.setOnClickListener(this);
+        mButtonLike.setTag(comment.getId());
+        mButtonLike.setOnClickListener(this);
 
         if (!comment.getAvatarURL().isEmpty())
             Picasso.with(mContext).
                    load(comment.getAvatarURL()).
                    error(R.drawable.ic_broken_image).
                    transform(new CircleTransform()).
-                   into(((ImageView)view.findViewById(R.id.img_avatar)));
+                   into(mImageViewAvatar);
 
         return view;
     }

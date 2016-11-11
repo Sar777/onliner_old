@@ -125,7 +125,7 @@ public class TabBase extends Fragment implements View.OnClickListener {
     /**
      * Получнеие полного списка новостей
      */
-    public void loadingNews(boolean pull) {
+    public void loadingNews(final boolean pull) {
         if (!pull) {
             lvMain.setVisibility(View.INVISIBLE);
             progressBarStatus.setVisibility(View.VISIBLE);
@@ -140,8 +140,10 @@ public class TabBase extends Fragment implements View.OnClickListener {
                     // Обновление списка
                     newsListAdapter.notifyDataSetChanged();
                 } else {
-                    mLinerRepeatGroup.setVisibility(View.VISIBLE);
-                    progressBarStatus.setVisibility(View.GONE);
+                    if (!pull) {
+                        mLinerRepeatGroup.setVisibility(View.VISIBLE);
+                        progressBarStatus.setVisibility(View.GONE);
+                    }
                 }
 
                 progressBarStatus.setVisibility(View.GONE);
