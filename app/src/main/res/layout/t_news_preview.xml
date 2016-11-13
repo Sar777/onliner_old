@@ -3,15 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.eschao.android.widget.elasticlistview.ElasticListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/lv_news_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadingEdge="none"
         android:scrollbars="none"
-        android:overScrollMode="never"
-        android:dividerHeight="3dp"
-        android:divider="#ffda50"/>
+        android:overScrollMode="never" />
 
     <ProgressBar
         android:id="@+id/pb_news_list_loading"

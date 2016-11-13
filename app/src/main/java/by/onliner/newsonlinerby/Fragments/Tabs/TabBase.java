@@ -15,26 +15,22 @@
 
 package by.onliner.newsonlinerby.Fragments.Tabs;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.eschao.android.widget.elasticlistview.ElasticListView;
-import com.eschao.android.widget.elasticlistview.LoadFooter;
-import com.eschao.android.widget.elasticlistview.LoadFooter.DefaultLoadStateListener;
-import com.eschao.android.widget.elasticlistview.OnLoadListener;
+import java.util.ArrayList;
 
-import by.onliner.newsonlinerby.Activity.ViewNewsActivity;
 import by.onliner.newsonlinerby.Adapters.NewsListAdapter;
 import by.onliner.newsonlinerby.Listeners.NewsListResponse;
+import by.onliner.newsonlinerby.Listeners.OnLoadMoreListener;
 import by.onliner.newsonlinerby.Managers.NewsMgr;
 import by.onliner.newsonlinerby.R;
 import by.onliner.newsonlinerby.Structures.News.News;
@@ -47,18 +43,17 @@ public class TabBase extends Fragment implements View.OnClickListener {
 
     // Intents
     public static String INTENT_URL_TAG = "URL";
-    public static String INTENT_FRAGMENT = "ACTIVITY";
 
-    private NewsListAdapter newsListAdapter;
+    private NewsListAdapter mNewsListAdapter;
 
     private View myFragmentView;
 
     // Views
     private Button btnLoadContent;
     private ViewGroup mLinerRepeatGroup;
+    private RecyclerView mRecyclerView;
 
     private ProgressBar progressBarStatus;
-    private ElasticListView lvMain;
 
     public TabBase() {
     }
@@ -66,7 +61,6 @@ public class TabBase extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myFragmentView = inflater.inflate(R.layout.t_news_preview, container, false);
-        newsListAdapter = new NewsListAdapter(getContext(), mProjectId);
 
         // Views
         btnLoadContent = (Button)myFragmentView.findViewById(R.id.bt_loadContent);
@@ -76,47 +70,24 @@ public class TabBase extends Fragment implements View.OnClickListener {
 
         progressBarStatus = (ProgressBar)myFragmentView.findViewById(R.id.pb_news_list_loading);
 
-        lvMain = (ElasticListView)myFragmentView.findViewById(R.id.lv_news_list);
-        lvMain.setHorizontalFadingEdgeEnabled(true);
-        lvMain.setClickable(true);
-        lvMain.setAdapter(newsListAdapter);
+        mRecyclerView = (RecyclerView) myFragmentView.findViewById(R.id.lv_news_list);
+        mRecyclerView.setHasFixedSize(true);
 
-        lvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                News item = (News)lvMain.getItemAtPosition(position);
-                Intent intent = new Intent(getContext(), ViewNewsActivity.class);
-                intent.putExtra(INTENT_URL_TAG, item.getAttributes().getUrl());
-                intent.putExtra(INTENT_FRAGMENT, myFragmentView.getId());
-                startActivity(intent);
-            }
-        });
+        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(horizontalLayoutManagaer);
 
-        DefaultLoadStateListener listener = new LoadFooter.DefaultLoadStateListener() {
-            @Override
-            public void onPullingUp(View view) {
-                View progress = view.findViewById(R.id.pb_footer_loading);
-                progress.setVisibility(View.GONE);
-            }
+        mNewsListAdapter = new NewsListAdapter(getContext(), mProjectId, mRecyclerView);
 
+        mNewsListAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onLoading(View view) {
-                View progress = view.findViewById(R.id.pb_footer_loading);
-                progress.setVisibility(View.VISIBLE);
-                TextView text = (TextView)view.findViewById(R.id.tv_footer_text);
-                text.setText(R.string.footerLoading);
-            }
-        };
-
-        lvMain.enableUpdateHeader(false);
-        lvMain.enableLoadFooter(true);
-        lvMain.getLoadFooter().setOnLoadStateListener(listener).setContentView(R.layout.layout_news_footer_load, true);
-        lvMain.setOnLoadListener(new OnLoadListener() {
-            @Override
-            public void onLoad() {
+            public void onLoadMore() {
+                mNewsListAdapter.getResource().add(null);
+                mNewsListAdapter.notifyItemInserted(mNewsListAdapter.getResource().size() - 1);
                 loadingNews(true);
             }
         });
+
+        mRecyclerView.setAdapter(mNewsListAdapter);
 
         loadingNews(false);
         return myFragmentView;
@@ -127,18 +98,28 @@ public class TabBase extends Fragment implements View.OnClickListener {
      */
     public void loadingNews(final boolean pull) {
         if (!pull) {
-            lvMain.setVisibility(View.INVISIBLE);
+            mRecyclerView.setVisibility(View.INVISIBLE);
             progressBarStatus.setVisibility(View.VISIBLE);
             mLinerRepeatGroup.setVisibility(View.GONE);
         }
 
         NewsMgr.getInstance().getLoadingNewsList(mProjectId, pull, new NewsListResponse() {
             @Override
-            public void onResult(boolean success) {
+            public void onResult(boolean success, ArrayList<News> news) {
                 if (success) {
-                    lvMain.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+
+                    // Скрываем прогрессбар
+                    if (pull) {
+                        mNewsListAdapter.getResource().remove(mNewsListAdapter.getResource().size() - 1);
+                        mNewsListAdapter.notifyItemRemoved(mNewsListAdapter.getResource().size());
+                    }
+
+                    mNewsListAdapter.getResource().addAll(news);
+
                     // Обновление списка
-                    newsListAdapter.notifyDataSetChanged();
+                    mNewsListAdapter.notifyItemRangeInserted(mNewsListAdapter.getResource().size(), news.size());
+                    mNewsListAdapter.setLoaded();
                 } else {
                     if (!pull) {
                         mLinerRepeatGroup.setVisibility(View.VISIBLE);
@@ -147,7 +128,6 @@ public class TabBase extends Fragment implements View.OnClickListener {
                 }
 
                 progressBarStatus.setVisibility(View.GONE);
-                lvMain.notifyLoaded();
             }
         });
     }

@@ -144,6 +144,10 @@ public class BodyBuilder implements IBuilder<View, View> {
                     break;
                 }
                 case "blockquote": {
+                    // Ignore instagram
+                    if (element.className().indexOf("instagram-media") != -1)
+                        continue;
+
                     QuoteTextView textView = new QuoteTextView(App.getContext());
                     textView.setText(element.text());
                     layout.addView(textView);

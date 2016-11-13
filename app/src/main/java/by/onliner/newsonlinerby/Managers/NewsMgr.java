@@ -54,13 +54,12 @@ public class NewsMgr {
             String project = projectId;
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                mNews.get(project).addAll(new NewsListParser(getUrl(projectId)).parse(new String(responseBody)));
-                listener.onResult(true);
+                listener.onResult(true, new NewsListParser(getUrl(projectId)).parse(new String(responseBody)));
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                listener.onResult(false);
+                listener.onResult(false, null);
             }
         });
     }
@@ -115,10 +114,15 @@ public class NewsMgr {
      */
     private News getLastNews(String project) {
         ArrayList<News> projectNews = mNews.get(project);
-        if (projectNews == null || projectNews.size() == 0)
+        if (projectNews.isEmpty())
             return null;
 
-        return projectNews.get(projectNews.size() - 1);
+        for (int i = projectNews.size() - 1; i > 0; --i) {
+            if (projectNews.get(i) != null)
+                return projectNews.get(i);
+        }
+
+        return null;
     }
 
     /**
@@ -131,7 +135,7 @@ public class NewsMgr {
         if (projectNews == null || projectNews.size() == 0)
             return;
 
-        projectNews.clear();;
+        projectNews.clear();
     }
 
     /**

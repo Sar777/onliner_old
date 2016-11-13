@@ -18,7 +18,6 @@ import by.onliner.newsonlinerby.Structures.Comments.Comment;
  */
 public class CommentsActivity extends AppCompatActivity {
     private ArrayList<Comment> mComments = new ArrayList<>();
-    private Comment mTopComment;
 
     private CommentListAdapter mCommentListAdapter;
 
@@ -47,7 +46,6 @@ public class CommentsActivity extends AppCompatActivity {
         mProject = getIntent().getStringExtra(ViewNewsActivity.INTENT_PROJECT_TAG);
 
         // Топ коммпентарий
-        mTopComment = null;
         for (Comment comment : mComments) {
             if (comment.getLikes().isBest()) {
                 mComments.add(0, comment);
