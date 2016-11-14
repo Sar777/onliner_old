@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/pb_loadin_view_news"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        style="@android:style/Widget.Holo.ProgressBar.Large"/>
+
+    <LinearLayout
+        android:id="@+id/l_group_repeat_loading_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorOnlinerGray"
+            android:gravity="center"
+            android:text="@string/repeat_load_info" />
+
+        <Button
+            android:id="@+id/bt_repeat_load_image"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:textColor="@android:color/white"
+            android:background="@drawable/comment_button_selector"
+            android:padding="10dp"
+            android:text="@string/repeat"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_view_news"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="3dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter" />
+</RelativeLayout>

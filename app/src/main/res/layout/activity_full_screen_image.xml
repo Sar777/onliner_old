@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     android:background="@android:color/black"
-    tools:context="by.onliner.newsonlinerby.Activity.FullScreenImageActivity">
+    tools:context="by.onliner.news.by.onliner.news.Activity.FullScreenImageActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
