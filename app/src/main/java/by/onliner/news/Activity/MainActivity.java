@@ -77,10 +77,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         appBarLayout.setExpanded(true, true);
     }
 
-    public ViewPager getPager() {
-        return pager;
-    }
-
     @Override
     public void onBackPressed() {
         int count = getFragmentManager().getBackStackEntryCount();

@@ -3,13 +3,16 @@ package by.onliner.news.Managers;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import by.onliner.news.App;
 import by.onliner.news.Listeners.NewsListResponse;
-import by.onliner.news.Listeners.ViewNewsListener;
 import by.onliner.news.Parser.Parsers.NewsListParser;
 import by.onliner.news.Structures.News.News;
 import cz.msebera.android.httpclient.Header;
@@ -68,21 +71,18 @@ public class NewsMgr {
      * Получение новости по url
      *
      * @param url              Адрес новости
-     * @param viewNewsListener Обработчик загруженных данных
+     * @return Содержимое новости в html
      */
-    public void getNewsByUrl(String url, final ViewNewsListener viewNewsListener) {
-        App.getAsyncHttpClient().get(url, null, new AsyncHttpResponseHandler() {
-            ViewNewsListener listener = viewNewsListener;
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                listener.onResponse(statusCode, new String(responseBody));
-            }
+    public String getNewsByUrl(String url) {
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(url).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                listener.onResponse(statusCode, null);
-            }
-        });
+        return doc.html();
     }
 
     /**

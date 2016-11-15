@@ -53,26 +53,13 @@ public class BodyBuilder implements IBuilder<View, View> {
         for (Element element : doc.getAllElements()) {
             switch (element.tagName()) {
                 case "p": {
-                    if (element.ownText().isEmpty()) {
+                    /*if (element.ownText().isEmpty()) {
                         // Youtube
                         if (element.getElementsByTag("iframe").size() > 0)
                             new VideoBuilder(element, mActivity).build(layout);
                         continue;
-                    }
+                    }*/
 
-                    Spanned result = Common.fromHtml(element.html());
-
-                    TextView textView = new TextView(App.getContext());
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(0, 0, 0, 25);
-                    textView.setLayoutParams(layoutParams);
-
-                    textView.setText(result);
-                    textView.setTextColor(Color.BLACK);
-                    textView.setLinkTextColor(ResourcesCompat.getColor(App.getContext().getResources(), R.color.colorOnlinerNewsLinkText, null));
-                    textView.setTextSize(15);
-
-                    layout.addView(textView);
                     break;
                 }
                 case "ul": {
@@ -119,10 +106,10 @@ public class BodyBuilder implements IBuilder<View, View> {
                     // Изображения по одному и видео
                     if (element.className().indexOf("news-media_extended") != -1 || element.className().indexOf("news-media_condensed") != -1) {
                         // Видео
-                        if (element.getElementsByTag("iframe").size() > 0)
+                        /*if (element.getElementsByTag("iframe").size() > 0)
                             new VideoBuilder(element, mActivity).build(layout);
                         else
-                            new ImageBuilder(element, mActivity).build(layout);
+                            new ImageBuilder(element, mActivity).build(layout);*/
                     }
                     // Слайдер изображений
                     else if (element.className().indexOf("news-media__gallery") != -1)

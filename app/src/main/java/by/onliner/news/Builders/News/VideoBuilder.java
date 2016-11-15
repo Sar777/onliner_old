@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.google.android.youtube.player.YouTubeThumbnailView;
 
@@ -17,28 +16,27 @@ import by.onliner.news.Common.Common;
 import by.onliner.news.Common.Config;
 import by.onliner.news.Listeners.YoutubeThumbnailListener;
 import by.onliner.news.R;
+import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 
 /**
  * Добавление плеера Youtube на экран
  */
-public class VideoBuilder implements IBuilder<LinearLayout, LinearLayout> {
-    private Element mElement;
+public class VideoBuilder implements IBuilder<Element, ViewObject> {
     private Activity mActivity;
 
-    public VideoBuilder(Element element, Activity activity) {
-        this.mElement = element;
-        this.mActivity = activity;
+    public VideoBuilder() {
+        this.mActivity = null;
     }
 
     @Override
-    public LinearLayout build(LinearLayout layout) {
-        Element element = mElement.getElementsByTag("iframe").first();
-        if (element == null)
-            return layout;
+    public ViewObject build(Element element) {
+        Element frameElement = element.getElementsByTag("iframe").first();
+        if (frameElement == null)
+            return null;
 
-        final String youtubeVideoId = Common.getYoutubeVideoId(element.attr("src"));
+        final String youtubeVideoId = Common.getYoutubeVideoId(frameElement.attr("src"));
         if (youtubeVideoId.isEmpty())
-            return layout;
+            return null;
 
         LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View view = inflater.inflate(R.layout.layout_youtube_player, null);
@@ -50,7 +48,6 @@ public class VideoBuilder implements IBuilder<LinearLayout, LinearLayout> {
             }
         }, 2000);
 
-        layout.addView(view);
-        return layout;
+        return null;
     }
 }

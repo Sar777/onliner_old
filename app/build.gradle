@@ -21,8 +21,8 @@ android {
     }
     sourceSets {
         main {
-                res.srcDirs = ['src/main/res']
-            }
+            res.srcDirs = ['src/main/res', 'src/main/res/layout/news_content']
+        }
     }
 }
 
