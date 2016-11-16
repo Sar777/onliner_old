@@ -1,9 +1,11 @@
 package by.onliner.news.Structures.News;
 
+import java.io.Serializable;
+
 /**
  * Дополнительные атрибуты для новости
  */
-public class NewsAttributes {
+public class NewsAttributes implements Serializable {
     /**
      * Айди новости
      */

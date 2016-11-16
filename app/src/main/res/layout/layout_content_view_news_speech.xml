@@ -7,12 +7,13 @@
     android:layout_marginRight="8dp">
 
     <TextView
-        android:id="@+id/tv_content_news_title"
+        android:id="@+id/tv_content_news_speech"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="8dp"
-        android:textStyle="bold"
-        android:textSize="18sp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/colorOnlinerGray"
+        android:textStyle="italic|bold"
+        android:textSize="15sp" />
 
 </RelativeLayout>

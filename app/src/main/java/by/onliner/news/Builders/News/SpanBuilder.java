@@ -25,6 +25,9 @@ public class SpanBuilder implements IBuilder<Element, ViewObject> {
         if (!element.hasText())
             return null;
 
+        if (element.parent().className().equals("news-entry__speech"))
+            return null;
+
         return new SpanViewObject(Common.fromHtml(element.html()));
     }
 }

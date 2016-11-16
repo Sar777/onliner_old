@@ -6,15 +6,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import by.onliner.news.Parser.IContentParser;
-import by.onliner.news.Structures.News.HeaderNews;
+import by.onliner.news.Structures.News.NewsHeader;
 
 /**
  * Парсинг заголовка новости
  */
-public class HeaderParser implements IContentParser<Element, HeaderNews> {
+public class HeaderParser implements IContentParser<Element, NewsHeader> {
     @Override
-    public HeaderNews parse(Element element) {
-        HeaderNews data = new HeaderNews();
+    public NewsHeader parse(Element element) {
+        NewsHeader data = new NewsHeader();
 
         if (!element.attr("data-post-date").isEmpty())
             data.setPostDateUnix(Integer.parseInt(element.attr("data-post-date")));

@@ -18,13 +18,13 @@ public class BodyNewsParser implements IContentParser<String, News> {
     public News parse(String data) {
         Document doc = Jsoup.parse(data);
 
+        Element wrapperElement = doc.getElementsByClass("news-container").first();
+        if (wrapperElement == null)
+            return null;
+
         News news = new News();
         news.getAttributes().setId(Integer.parseInt(doc.getElementsByClass("news_view_count").first().attr("news_id")));
         news.getAttributes().setProject(doc.getElementById("commentsList").attr("data-project"));
-
-        Element wrapperElement = doc.getElementsByClass("news-container").first();
-        if (wrapperElement == null)
-            return news;
 
         for (Element element : wrapperElement.getAllElements()) {
             if (element.className().isEmpty())

@@ -6,16 +6,19 @@ import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 
+import by.onliner.news.Structures.News.News;
 import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 
 /**
  * Фабрика компонентов окна чтения новости
  */
 public class NewsContentFactory {
-    public static ArrayList<ViewObject> build(String html) {
-        Document document = Jsoup.parse(html);
-
+    public static ArrayList<ViewObject> create(News news) {
+        Document document = Jsoup.parse(news.getContent());
         ArrayList<ViewObject> viewObjects = new ArrayList<>(document.getAllElements().size());
+
+        // Блок заголовка новости
+        viewObjects.add(new HeaderBuilder().build(news.getHeader()));
 
         // Выбор билдера для обработки элемента
         for (Element element : document.getAllElements()) {
@@ -58,7 +61,10 @@ public class NewsContentFactory {
                     }
                     // Заголовок
                     else if (element.className().indexOf("news-header__title") != -1)
-                        viewObjects.add(new ImageBuilder().build(element));
+                        viewObjects.add(new TitleBuilder().build(element));
+                    //
+                    else if (element.className().indexOf("news-entry__speech") != -1)
+                        viewObjects.add(new SpeechBuilder().build(element));
                     // Голосование
                     else if (element.className().indexOf("news-vote") != -1 && !element.attr("data-post-id").isEmpty())
                         viewObjects.add(new VoteBuilder().build(element));

@@ -1,9 +1,11 @@
 package by.onliner.news.Structures.News;
 
+import java.io.Serializable;
+
 /**
  * Заголовок новости
  */
-public class HeaderNews {
+public class NewsHeader implements Serializable {
     /**
      * Название
      */
@@ -38,7 +40,7 @@ public class HeaderNews {
      */
     private HeaderAttributes attributes;
 
-    public HeaderNews() {
+    public NewsHeader() {
         this.title = "";
         this.views = 0;
         this.comments = 0;
@@ -49,7 +51,7 @@ public class HeaderNews {
         this.attributes = new HeaderAttributes();
     }
 
-    public HeaderNews(String title, Integer views, Integer comments, String postDate, Integer postDateUnix, String image, String url, HeaderAttributes attributes) {
+    public NewsHeader(String title, Integer views, Integer comments, String postDate, Integer postDateUnix, String image, String url, HeaderAttributes attributes) {
         this.title = title;
         this.views = views;
         this.comments = comments;
@@ -60,7 +62,7 @@ public class HeaderNews {
         this.attributes = attributes;
     }
 
-    public HeaderNews(HeaderNews headerNews) {
+    public NewsHeader(NewsHeader headerNews) {
         this.title = headerNews.title;
         this.views = headerNews.getViews();
         this.comments = headerNews.getComments();

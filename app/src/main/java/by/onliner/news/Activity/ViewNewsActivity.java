@@ -13,11 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -28,7 +24,6 @@ import by.onliner.news.Fragments.Tabs.TabBase;
 import by.onliner.news.Loaders.AsyncNewsContentLoader;
 import by.onliner.news.R;
 import by.onliner.news.Structures.Comments.Comment;
-import by.onliner.news.Structures.News.News;
 import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 
 /**
@@ -41,20 +36,15 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     public static String INTENT_PROJECT_TAG = "PROJECT";
 
     private static final int LOADER_CONTENT_ID = 1;
+    private static final int LOADER_COMMENTS_ID = 2;
 
-    private News mNews;
+    private String mURL;
+    private String mProjectId;
 
     // Adapters
     private NewsContentAdapter mNewsContentAdapter;
 
     // Views
-    // Header
-    private ImageView mHeaderImageView;
-    private TextView mTextViewPostDate;
-    private TextView mTextViewComments;
-    private TextView mTextViewViews;
-    private TextView mTextViewTitle;
-
     private ViewGroup mBaseLayout;
     private ProgressBar mProgressBar;
     private Button mButtonComment;
@@ -63,7 +53,6 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private RecyclerView mRecyclerContent;
 
     private LinkedHashMap<Integer, Comment> mComments;
-    private String mUrl;
 
     private int mShortAnimationDuration;
 
@@ -84,14 +73,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         mComments = new LinkedHashMap<>();
 
         // Views
-        // Header
-        mHeaderImageView = (ImageView)findViewById(R.id.i_full_news_image);
-        mTextViewPostDate = (TextView)findViewById(R.id.tv_full_view_date);
-        mTextViewComments = (TextView)findViewById(R.id.tv_full_view_comments);
-        mTextViewViews = (TextView)findViewById(R.id.tv_full_view_views);
-        mTextViewTitle = (TextView)findViewById(R.id.tv_full_view_title);
-
-        mBaseLayout = (ViewGroup)findViewById(R.id.content_view_news);
+        mBaseLayout = (ViewGroup)findViewById(R.id.l_view_news_content);
         mBaseLayout.setVisibility(View.GONE);
 
         mProgressBar = (ProgressBar)findViewById(R.id.pb_news_list_loading);
@@ -112,18 +94,23 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         Intent intent = getIntent();
-        mUrl = intent.getStringExtra(TabBase.INTENT_URL_TAG);
+        mURL = intent.getStringExtra(TabBase.INTENT_URL_TAG);
+        mProjectId = intent.getStringExtra(TabBase.INTENT_URL_PROJECT);
 
         Bundle bundle = new Bundle();
-        bundle.putString("URL", mUrl);
+        bundle.putString("URL", mURL);
         getLoaderManager().initLoader(LOADER_CONTENT_ID, bundle, this).forceLoad();
     }
 
     @Override
     public Loader<ArrayList<ViewObject>> onCreateLoader(int id, Bundle args) {
         Loader<ArrayList<ViewObject>> loader = null;
-        if (id == LOADER_CONTENT_ID)
+        if (id == LOADER_CONTENT_ID) {
+            mRepeatGroup.setVisibility(View.GONE);
+            mProgressBar.setVisibility(View.VISIBLE);
+
             loader = new AsyncNewsContentLoader(this, args);
+        }
 
         return loader;
     }
@@ -131,17 +118,11 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onLoadFinished(Loader<ArrayList<ViewObject>> loader, ArrayList<ViewObject> views) {
         if (loader.getId() == LOADER_CONTENT_ID) {
-            mNews = ((AsyncNewsContentLoader)loader).getNews();
-
-            mTextViewPostDate.setText(mNews.getHeader().getPostDate());
-            mTextViewComments.setText(mNews.getHeader().getComments().toString());
-            mTextViewViews.setText(mNews.getHeader().getViews().toString());
-            mTextViewTitle.setText(mNews.getHeader().getTitle());
-
-            Picasso.with(App.getContext()).
-                    load(mNews.getHeader().getImage()).
-                    error(R.drawable.ic_broken_image).
-                    into(mHeaderImageView);
+            if (views == null) {
+                mRepeatGroup.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.GONE);
+                return;
+            }
 
             mNewsContentAdapter = new NewsContentAdapter(this, views);
             mRecyclerContent.setAdapter(mNewsContentAdapter);
@@ -162,8 +143,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
-    public void onLoaderReset(android.content.Loader<ArrayList<ViewObject>> loader) {
-
+    public void onLoaderReset(Loader<ArrayList<ViewObject>> loader) {
     }
 
     @Override
@@ -171,14 +151,16 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.btn_comment_full_news: {
                 Intent intent = new Intent(App.getContext(), CommentsActivity.class);
-                intent.putExtra(INTENT_URL_TAG, mNews.getHeader().getUrl());
+                intent.putExtra(INTENT_URL_TAG, mURL);
+                intent.putExtra(INTENT_PROJECT_TAG, mProjectId);
                 intent.putExtra(INTENT_COMMENTS_TAG, new ArrayList<>(mComments.values()));
-                intent.putExtra(INTENT_PROJECT_TAG, mNews.getAttributes().getProject());
                 startActivity(intent);
                 break;
             }
             case R.id.btn_load_repeat: {
-                LoadingContent();
+                Bundle bundle = new Bundle();
+                bundle.putString("URL", mURL);
+                getLoaderManager().restartLoader(LOADER_CONTENT_ID, bundle, this).forceLoad();
                 break;
             }
             default:

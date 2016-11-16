@@ -1,14 +1,16 @@
 package by.onliner.news.Structures.News;
 
 
+import java.io.Serializable;
+
 /**
  * Содержимое новости
  */
-public class News {
+public class News implements Serializable {
     /**
      * Содержанеие заголовка новости где хранится информация о видео, изображении и так далее
      */
-    private HeaderNews mHeader;
+    private NewsHeader mHeader;
     /**
      * Атрибуты новости
      */
@@ -20,17 +22,17 @@ public class News {
 
     public News() {
         this.mAttributes = new NewsAttributes();
-        this.mHeader = new HeaderNews();
+        this.mHeader = new NewsHeader();
         this.mContent = "";
     }
 
-    public News(HeaderNews header) {
+    public News(NewsHeader header) {
         this.mAttributes = new NewsAttributes();
         this.mHeader = header;
         this.mContent = "";
     }
 
-    public News(NewsAttributes attributes, HeaderNews header, String content) {
+    public News(NewsAttributes attributes, NewsHeader header, String content) {
         this.mAttributes = attributes;
         this.mHeader = header;
         this.mContent = content;
@@ -56,7 +58,7 @@ public class News {
      * Получение заголовка новости
      * @return Заголовок новости
      */
-    public HeaderNews getHeader() {
+    public NewsHeader getHeader() {
         return mHeader;
     }
 
@@ -64,7 +66,7 @@ public class News {
      * Установка заголовка новости
      * @param header Заголовк новости
      */
-    public void setHeader(HeaderNews header) {
+    public void setHeader(NewsHeader header) {
         this.mHeader = header;
     }
 

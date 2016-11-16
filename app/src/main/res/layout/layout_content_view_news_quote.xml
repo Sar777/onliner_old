@@ -4,16 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
-    android:layout_marginBottom="16dp">
+    android:layout_marginBottom="16dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
 
     <by.onliner.news.CustomViews.QuoteTextView
         android:id="@+id/tv_content_news_quote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:textColor="@color/colorOnlinerGray"
         android:gravity="center_horizontal"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         android:paddingRight="16dp"
         android:paddingLeft="16dp"
         android:textSize="16sp"

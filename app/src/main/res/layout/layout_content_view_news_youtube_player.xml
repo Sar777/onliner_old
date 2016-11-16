@@ -2,30 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="200dp"
     android:layout_marginTop="5dp"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
 
     <com.google.android.youtube.player.YouTubeThumbnailView
         android:id="@+id/youtube_view_news_thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:visibility="visible"/>
 
-    <RelativeLayout
-        android:id="@+id/relative_over_youtube_thumbnail"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@android:color/transparent"
-        android:visibility="invisible">
-
-        <ImageView
-            android:id="@+id/bt_view_news_youtube_player"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_youtube_button"/>
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/bt_view_news_youtube_player"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:src="@drawable/ic_youtube_button"/>
 
 </RelativeLayout>
