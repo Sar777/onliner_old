@@ -6,8 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import by.onliner.news.App;
@@ -42,15 +40,6 @@ public class QuoteTextView extends TextView {
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(4);
-
-        setGravity(View.TEXT_ALIGNMENT_GRAVITY);
-        setTextSize(16);
-        setTextColor(ResourcesCompat.getColor(App.getContext().getResources(), R.color.colorOnlinerBlockquoteText, null));
-        setPadding(0, 40, 0, 40);
-
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(0, 20, 0, 40);
-        setLayoutParams(layoutParams);
 
         borders = new Border[2];
         borders[0] = new Border(BORDER_BOTTOM);

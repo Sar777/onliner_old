@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="8dp"
+    android:orientation="vertical">
 
     <ProgressBar
         android:id="@+id/pb_view_news_loading"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
+        android:layout_gravity="center"
+        android:visibility="visible"
         style="@android:style/Widget.Holo.ProgressBar.Large"/>
 
     <LinearLayout
@@ -47,9 +49,7 @@
         android:id="@+id/img_view_news"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="3dp"
+        android:paddingBottom="5dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter" />
 
@@ -57,9 +57,8 @@
         android:id="@+id/tv_view_news_img_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/img_view_news"
-        android:layout_marginTop="4dp"
         android:gravity="center"
         android:textSize="12sp"
+        android:layout_marginTop="5dp"
         android:textColor="@color/colorOnlinerGray" />
-</RelativeLayout>
+</LinearLayout>

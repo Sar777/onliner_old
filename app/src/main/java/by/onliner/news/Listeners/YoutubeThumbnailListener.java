@@ -34,7 +34,7 @@ public class YoutubeThumbnailListener implements YouTubeThumbnailView.OnInitiali
                 youTubeThumbnailView.setVisibility(View.VISIBLE);
                 mView.findViewById(R.id.relative_over_youtube_thumbnail).setVisibility(View.VISIBLE);
 
-                mView.findViewById(R.id.btn_youtube_player).setOnClickListener(new View.OnClickListener() {
+                mView.findViewById(R.id.bt_view_news_youtube_player).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = YouTubeStandalonePlayer.createVideoIntent(mActivity, Config.DEVELOPER_YOUTUBE_KEY, mYoutubeVideoId);

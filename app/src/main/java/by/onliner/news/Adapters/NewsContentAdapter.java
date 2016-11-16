@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -17,12 +18,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import by.onliner.news.App;
+import by.onliner.news.Common.Config;
+import by.onliner.news.CustomViews.QuoteTextView;
 import by.onliner.news.Enums.ViewNewsType;
 import by.onliner.news.Listeners.FullScreenImageListener;
+import by.onliner.news.Listeners.YoutubeThumbnailListener;
 import by.onliner.news.R;
 import by.onliner.news.Structures.News.ViewsObjects.ImageViewObject;
+import by.onliner.news.Structures.News.ViewsObjects.QuoteViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.SpanViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
+import by.onliner.news.Structures.News.ViewsObjects.YoutubeViewObject;
 
 import static by.onliner.news.Enums.ViewNewsType.values;
 
@@ -44,14 +50,16 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         ViewNewsType viewNewsType = values()[viewType];
         switch (viewNewsType) {
-            case TYPE_VIEW_SPAN: {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_span, parent, false);
-                return new NewsContentAdapter.SpanViewHolder(view);
-            }
-            case TYPE_VIEW_IMAGE: {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_image, parent, false);
-                return new NewsContentAdapter.ImageViewHolder(view);
-            }
+            case TYPE_VIEW_SPAN:
+                return new NewsContentAdapter.SpanViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_span, parent, false));
+            case TYPE_VIEW_QUOTE:
+                return new NewsContentAdapter.QuoteViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_quote, parent, false));
+            case TYPE_VIEW_HR:
+                return new NewsContentAdapter.HRViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_hr, parent, false));
+            case TYPE_VIEW_IMAGE:
+                return new NewsContentAdapter.ImageViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_image, parent, false));
+            case TYPE_VIEW_YOUTUBE_PLAYER:
+                return new NewsContentAdapter.YoutubeVideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_youtube_player, parent, false));
             default:
                 break;
         }
@@ -67,9 +75,16 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TYPE_VIEW_SPAN:
                 ((SpanViewHolder)holder).bind(holder, position);
                 break;
+            case TYPE_VIEW_QUOTE:
+                ((QuoteViewHolder)holder).bind(holder, position);
+                break;
             case TYPE_VIEW_IMAGE:
                 ((ImageViewHolder)holder).bind(holder, position);
                 break;
+            case TYPE_VIEW_YOUTUBE_PLAYER:
+                ((YoutubeVideoViewHolder)holder).bind(holder, position);
+                break;
+            case TYPE_VIEW_HR:
             default:
                 break;
         }
@@ -95,7 +110,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void bind(final RecyclerView.ViewHolder holder, final int position) {
-            SpanViewObject spanView = (SpanViewObject)mResource.get(position);
+            final SpanViewObject spanView = (SpanViewObject)mResource.get(position);
             mTextView.setText(spanView.getText());
         }
     }
@@ -126,8 +141,10 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             loadingImage();
 
-            if (!imageViewObject.getDescription().isEmpty())
+            if (!imageViewObject.getDescription().isEmpty()) {
+                mTextViewDescription.setVisibility(View.VISIBLE);
                 mTextViewDescription.setText(imageViewObject.getDescription());
+            }
             else
                 mTextViewDescription.setVisibility(View.GONE);
 
@@ -180,13 +197,39 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private class QuoteViewHolder extends RecyclerView.ViewHolder {
+        private QuoteTextView mQuoteTextView;
+
         public QuoteViewHolder(View itemView) {
             super(itemView);
+
+            mQuoteTextView = (QuoteTextView) itemView.findViewById(R.id.tv_content_news_quote);
+        }
+
+        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+            final QuoteViewObject quoteViewObject = (QuoteViewObject) mResource.get(position);
+            mQuoteTextView.setText(quoteViewObject.getText());
         }
     }
 
     private class YoutubeVideoViewHolder extends RecyclerView.ViewHolder {
+        private YouTubeThumbnailView mYouTubeThumbnailView;
+        private ImageView mImageViewPlay;
+
         public YoutubeVideoViewHolder(View itemView) {
+            super(itemView);
+
+            mYouTubeThumbnailView = (YouTubeThumbnailView)itemView.findViewById(R.id.youtube_view_news_thumbnail);
+            mImageViewPlay = (ImageView)itemView.findViewById(R.id.bt_view_news_youtube_player);
+        }
+
+        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+            final YoutubeViewObject youtubeViewObject = (YoutubeViewObject) mResource.get(position);
+            mYouTubeThumbnailView.initialize(Config.DEVELOPER_YOUTUBE_KEY, new YoutubeThumbnailListener(mActivity, mImageViewPlay, youtubeViewObject.getVideoId()));
+        }
+    }
+
+    private class HRViewHolder extends RecyclerView.ViewHolder {
+        public HRViewHolder(View itemView) {
             super(itemView);
         }
     }

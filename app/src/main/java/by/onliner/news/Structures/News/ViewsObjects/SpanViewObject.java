@@ -19,8 +19,4 @@ public class SpanViewObject extends ViewObject {
     public Spanned getText() {
         return mText;
     }
-
-    public void setText(Spanned text) {
-        mText = text;
-    }
 }
