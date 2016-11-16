@@ -6,16 +6,11 @@ import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 
-import by.onliner.news.Common.Common;
-import by.onliner.news.Structures.News.ViewsObjects.HRViewObject;
-import by.onliner.news.Structures.News.ViewsObjects.QuoteViewObject;
-import by.onliner.news.Structures.News.ViewsObjects.SpanViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 
 /**
- * Created by orion on 15.11.16.
+ * Фабрика компонентов окна чтения новости
  */
-
 public class NewsContentFactory {
     public static ArrayList<ViewObject> build(String html) {
         Document document = Jsoup.parse(html);
@@ -26,20 +21,24 @@ public class NewsContentFactory {
         for (Element element : document.getAllElements()) {
             switch (element.tagName()) {
                 case "p": {
-                    if (element.ownText().isEmpty()) {
-                        // Youtube
-                        if (element.getElementsByTag("iframe").size() > 0) {
-                            ViewObject object = new VideoBuilder().build(element);
-                            if (object != null)
-                                viewObjects.add(object);
-                        }
-                    }
-
-                    viewObjects.add(new SpanViewObject(Common.fromHtml(element.html())));
+                    ViewObject object = new SpanBuilder().build(element);
+                    if (object != null)
+                        viewObjects.add(object);
                     break;
                 }
-                case "hr": {
-                    viewObjects.add(new HRViewObject());
+                case "hr":
+                    viewObjects.add(new HRBuilder().build(element));
+                    break;
+                case "h2":
+                    viewObjects.add(new H2Builder().build(element));
+                    break;
+                case "ul":
+                    viewObjects.add(new ULBuilder().build(element));
+                    break;
+                case "blockquote": {
+                    ViewObject object = new QuoteBuilder().build(element);
+                    if (object != null)
+                        viewObjects.add(object);
                     break;
                 }
                 case "div": {
@@ -57,14 +56,12 @@ public class NewsContentFactory {
                                 viewObjects.add(object);
                         }
                     }
-                    break;
-                }
-                case "blockquote": {
-                    // Ignore instagram
-                    if (element.className().indexOf("instagram-media") != -1)
-                        continue;
-
-                    viewObjects.add(new QuoteViewObject(element.text()));
+                    // Заголовок
+                    else if (element.className().indexOf("news-header__title") != -1)
+                        viewObjects.add(new ImageBuilder().build(element));
+                    // Голосование
+                    else if (element.className().indexOf("news-vote") != -1 && !element.attr("data-post-id").isEmpty())
+                        viewObjects.add(new VoteBuilder().build(element));
                     break;
                 }
                 default:

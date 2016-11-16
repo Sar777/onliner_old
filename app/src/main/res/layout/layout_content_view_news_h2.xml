@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:paddingTop="8dp"
-        android:textSize="15sp"
-        android:textColorLink="@color/colorOnlinerNewsLinkText"/>
+        android:paddingBottom="8dp"
+        android:textStyle="bold"
+        android:textSize="18sp" />
 
 </RelativeLayout>

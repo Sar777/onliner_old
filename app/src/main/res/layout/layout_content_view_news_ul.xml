@@ -5,11 +5,11 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tv_content_news_h2"
+        android:id="@+id/tv_content_news_ul"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
-        android:paddingTop="8dp"
+        android:paddingLeft="10dp"
         android:textSize="15sp"
         android:textColorLink="@color/colorOnlinerNewsLinkText"/>
 

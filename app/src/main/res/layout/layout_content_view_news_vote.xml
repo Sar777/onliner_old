@@ -7,25 +7,25 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_vote_title"
+        android:id="@+id/tv_view_news_vote_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:text="Стали ли вы покупать больше отечественного товара и какого?"/>
+        android:text=""/>
 
     <TextView
-        android:id="@+id/tv_vote_stat"
+        android:id="@+id/tv_view_news_vote_stat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:textColor="@color/colorOnlinerGray"
         android:textSize="13sp"
-        android:text="3597 человек уже сделали свой выбор!"/>
+        android:text=""/>
 
     <LinearLayout
-        android:id="@+id/l_vote_options"
+        android:id="@+id/l_view_news_vote_options"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -33,6 +33,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/bt_view_news_vote"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"

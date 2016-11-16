@@ -1,6 +1,7 @@
 package by.onliner.news.Adapters;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubeThumbnailView;
@@ -24,10 +26,14 @@ import by.onliner.news.Enums.ViewNewsType;
 import by.onliner.news.Listeners.FullScreenImageListener;
 import by.onliner.news.Listeners.YoutubeThumbnailListener;
 import by.onliner.news.R;
+import by.onliner.news.Structures.News.ViewsObjects.H2ViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ImageViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.QuoteViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.SpanViewObject;
+import by.onliner.news.Structures.News.ViewsObjects.TitleViewObject;
+import by.onliner.news.Structures.News.ViewsObjects.ULViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
+import by.onliner.news.Structures.News.ViewsObjects.VoteViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.YoutubeViewObject;
 
 import static by.onliner.news.Enums.ViewNewsType.values;
@@ -56,10 +62,16 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 return new NewsContentAdapter.QuoteViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_quote, parent, false));
             case TYPE_VIEW_HR:
                 return new NewsContentAdapter.HRViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_hr, parent, false));
+            case TYPE_VIEW_H2:
+                return new NewsContentAdapter.H2ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_h2, parent, false));
+            case TYPE_VIEW_UL:
+                return new NewsContentAdapter.ULViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_ul, parent, false));
             case TYPE_VIEW_IMAGE:
                 return new NewsContentAdapter.ImageViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_image, parent, false));
             case TYPE_VIEW_YOUTUBE_PLAYER:
                 return new NewsContentAdapter.YoutubeVideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_youtube_player, parent, false));
+            case TYPE_VIEW_VOTE:
+                return new NewsContentAdapter.VoteViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_vote, parent, false));
             default:
                 break;
         }
@@ -78,11 +90,23 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TYPE_VIEW_QUOTE:
                 ((QuoteViewHolder)holder).bind(holder, position);
                 break;
+            case TYPE_VIEW_H2:
+                ((H2ViewHolder)holder).bind(holder, position);
+                break;
+            case TYPE_VIEW_UL:
+                ((ULViewHolder)holder).bind(holder, position);
+                break;
+            case TYPE_VIEW_TITLE:
+                ((TitleViewHolder)holder).bind(holder, position);
+                break;
             case TYPE_VIEW_IMAGE:
                 ((ImageViewHolder)holder).bind(holder, position);
                 break;
             case TYPE_VIEW_YOUTUBE_PLAYER:
                 ((YoutubeVideoViewHolder)holder).bind(holder, position);
+                break;
+            case TYPE_VIEW_VOTE:
+                ((VoteViewHolder)holder).bind(holder, position);
                 break;
             case TYPE_VIEW_HR:
             default:
@@ -106,7 +130,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public SpanViewHolder(View itemView) {
             super(itemView);
 
-            mTextView = (TextView) itemView.findViewById(R.id.tv_content_news_spawn);
+            mTextView = (TextView) itemView.findViewById(R.id.tv_content_news_h2);
         }
 
         public void bind(final RecyclerView.ViewHolder holder, final int position) {
@@ -148,7 +172,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             else
                 mTextViewDescription.setVisibility(View.GONE);
 
-            mImageView.setOnClickListener(this);
+            mImageView.setOnClickListener(new FullScreenImageListener(mActivity, new ArrayList<>(Arrays.asList(mUrl))));
             mButtonLoadingRepeat.setOnClickListener(this);
         }
 
@@ -162,7 +186,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     into(mImageView, new Callback() {
                         @Override
                         public void onSuccess() {
-                            mProgressBarRLoading.setVisibility(View.GONE);
+                           mProgressBarRLoading.setVisibility(View.GONE);
                         }
 
                         @Override
@@ -176,14 +200,9 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.img_view_news: {
-                    new FullScreenImageListener(mActivity, new ArrayList<>(Arrays.asList(mUrl)));
-                    break;
-                }
-                case R.id.bt_view_news_repeat_loading: {
+                case R.id.bt_view_news_repeat_loading:
                     loadingImage();
                     break;
-                }
                 default:
                     break;
             }
@@ -208,6 +227,82 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public void bind(final RecyclerView.ViewHolder holder, final int position) {
             final QuoteViewObject quoteViewObject = (QuoteViewObject) mResource.get(position);
             mQuoteTextView.setText(quoteViewObject.getText());
+        }
+    }
+
+    private class H2ViewHolder extends RecyclerView.ViewHolder {
+        private TextView mTextView;
+
+        public H2ViewHolder(View itemView) {
+            super(itemView);
+
+            mTextView = (TextView) itemView.findViewById(R.id.tv_content_news_h2);
+        }
+
+        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+            final H2ViewObject h2ViewObject = (H2ViewObject) mResource.get(position);
+            mTextView.setText(h2ViewObject.getText());
+        }
+    }
+
+    private class ULViewHolder extends RecyclerView.ViewHolder {
+        private TextView mTextView;
+
+        public ULViewHolder(View itemView) {
+            super(itemView);
+
+            mTextView = (TextView) itemView.findViewById(R.id.tv_content_news_ul);
+        }
+
+        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+            final ULViewObject ulViewObject = (ULViewObject) mResource.get(position);
+            mTextView.setText(ulViewObject.getText());
+        }
+    }
+
+    private class TitleViewHolder extends RecyclerView.ViewHolder {
+        private TextView mTextView;
+
+        public TitleViewHolder(View itemView) {
+            super(itemView);
+
+            mTextView = (TextView) itemView.findViewById(R.id.tv_content_news_title);
+        }
+
+        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+            final TitleViewObject titleViewObject = (TitleViewObject) mResource.get(position);
+            mTextView.setText(titleViewObject.getText());
+        }
+    }
+
+    private class VoteViewHolder extends RecyclerView.ViewHolder {
+        private TextView mTextViewTitle;
+        private TextView mTextViewState;
+        private ViewGroup mLayoutOptions;
+
+        public VoteViewHolder(View itemView) {
+            super(itemView);
+
+            mTextViewTitle = (TextView) itemView.findViewById(R.id.tv_view_news_vote_title);
+            mTextViewState = (TextView) itemView.findViewById(R.id.tv_view_news_vote_stat);
+            mLayoutOptions = (ViewGroup) itemView.findViewById(R.id.l_view_news_vote_options);
+        }
+
+        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+            final VoteViewObject voteViewObject = (VoteViewObject) mResource.get(position);
+
+            mTextViewTitle.setText(voteViewObject.getTitle());
+            mTextViewState.setText(voteViewObject.getState());
+            mLayoutOptions.removeAllViews();
+
+            for (String option : voteViewObject.getOptions()) {
+
+                RadioButton radioButton = new RadioButton(mLayoutOptions.getContext());
+                radioButton.setTextColor(Color.BLACK);
+                radioButton.setTextSize(13);
+                radioButton.setText(option);
+                mLayoutOptions.addView(radioButton);
+            }
         }
     }
 
