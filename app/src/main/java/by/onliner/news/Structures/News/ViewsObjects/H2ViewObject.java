@@ -17,4 +17,9 @@ public class H2ViewObject extends ViewObject {
     public String getText() {
         return mText;
     }
+
+    @Override
+    public boolean isValid() {
+        return !mText.isEmpty();
+    }
 }

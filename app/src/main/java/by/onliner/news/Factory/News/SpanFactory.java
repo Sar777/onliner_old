@@ -1,22 +1,22 @@
-package by.onliner.news.Builders.News;
+package by.onliner.news.Factory.News;
 
 import org.jsoup.nodes.Element;
 
-import by.onliner.news.Builders.IBuilder;
 import by.onliner.news.Common.Common;
+import by.onliner.news.Factory.IFactoryViewObjects;
 import by.onliner.news.Structures.News.ViewsObjects.SpanViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 
 /**
  * Добавление <p> </p>
  */
-public class SpanBuilder implements IBuilder<Element, ViewObject> {
+public class SpanFactory implements IFactoryViewObjects<Element, ViewObject> {
     @Override
-    public ViewObject build(Element element) {
+    public ViewObject create(Element element) {
         if (element.ownText().isEmpty()) {
             // Youtube
             if (element.getElementsByTag("iframe").size() > 0)
-                return new VideoBuilder().build(element);
+                return new VideoFactory().create(element);
         }
 
         if (element.html().isEmpty())

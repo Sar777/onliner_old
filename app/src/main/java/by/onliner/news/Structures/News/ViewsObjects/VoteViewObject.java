@@ -31,4 +31,9 @@ public class VoteViewObject extends ViewObject {
     public ArrayList<String> getOptions() {
         return mOptions;
     }
+
+    @Override
+    public boolean isValid() {
+        return !mTitle.isEmpty() && !mOptions.isEmpty();
+    }
 }

@@ -9,4 +9,9 @@ public class HRViewObject extends ViewObject {
     public HRViewObject() {
         super(ViewNewsType.TYPE_VIEW_HR);
     }
+
+    @Override
+    public boolean isValid() {
+        return true;
+    }
 }

@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 
-import by.onliner.news.Builders.News.NewsContentFactory;
+import by.onliner.news.Factory.News.NewsContentFactory;
 import by.onliner.news.Managers.NewsMgr;
 import by.onliner.news.Parser.Parsers.BodyNewsParser;
 import by.onliner.news.Structures.News.News;

@@ -1,18 +1,18 @@
-package by.onliner.news.Builders.News;
+package by.onliner.news.Factory.News;
 
 import org.jsoup.nodes.Element;
 
-import by.onliner.news.Builders.IBuilder;
 import by.onliner.news.Common.Common;
+import by.onliner.news.Factory.IFactoryViewObjects;
 import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.YoutubeViewObject;
 
 /**
  * Добавление плеера Youtube на экран
  */
-public class VideoBuilder implements IBuilder<Element, ViewObject> {
+public class VideoFactory implements IFactoryViewObjects<Element, ViewObject> {
     @Override
-    public ViewObject build(Element element) {
+    public ViewObject create(Element element) {
         Element frameElement = element.getElementsByTag("iframe").first();
         if (frameElement == null)
             return null;

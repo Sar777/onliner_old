@@ -16,4 +16,9 @@ public class SpeechViewObject extends ViewObject {
     public String getText() {
         return mText;
     }
+
+    @Override
+    public boolean isValid() {
+        return !mText.isEmpty();
+    }
 }

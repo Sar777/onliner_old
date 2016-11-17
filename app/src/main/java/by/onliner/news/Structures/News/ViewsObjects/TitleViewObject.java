@@ -17,4 +17,9 @@ public class TitleViewObject extends ViewObject {
     public String getText() {
         return mText;
     }
+
+    @Override
+    public boolean isValid() {
+        return !mText.isEmpty();
+    }
 }

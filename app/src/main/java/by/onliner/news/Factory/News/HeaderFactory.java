@@ -1,6 +1,6 @@
-package by.onliner.news.Builders.News;
+package by.onliner.news.Factory.News;
 
-import by.onliner.news.Builders.IBuilder;
+import by.onliner.news.Factory.IFactoryViewObjects;
 import by.onliner.news.Structures.News.NewsHeader;
 import by.onliner.news.Structures.News.ViewsObjects.HeaderViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
@@ -8,9 +8,9 @@ import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 /**
  * Формирование элемента с изображением
  */
-public class HeaderBuilder implements IBuilder<NewsHeader, ViewObject> {
+public class HeaderFactory implements IFactoryViewObjects<NewsHeader, ViewObject> {
     @Override
-    public ViewObject build(NewsHeader header) {
+    public ViewObject create(NewsHeader header) {
         return new HeaderViewObject(header);
     }
 }

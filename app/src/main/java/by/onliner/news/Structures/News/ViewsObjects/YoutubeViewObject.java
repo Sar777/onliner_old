@@ -18,4 +18,9 @@ public class YoutubeViewObject extends ViewObject {
     public String getVideoId() {
         return mVideoId;
     }
+
+    @Override
+    public boolean isValid() {
+        return !mVideoId.isEmpty();
+    }
 }

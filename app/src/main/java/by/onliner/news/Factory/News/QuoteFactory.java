@@ -1,17 +1,17 @@
-package by.onliner.news.Builders.News;
+package by.onliner.news.Factory.News;
 
 import org.jsoup.nodes.Element;
 
-import by.onliner.news.Builders.IBuilder;
+import by.onliner.news.Factory.IFactoryViewObjects;
 import by.onliner.news.Structures.News.ViewsObjects.QuoteViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 
 /**
  * Тег <blockquote> </blockquote>
  */
-public class QuoteBuilder implements IBuilder<Element, ViewObject> {
+public class QuoteFactory implements IFactoryViewObjects<Element, ViewObject> {
     @Override
-    public ViewObject build(Element element) {
+    public ViewObject create(Element element) {
         if (element.className().indexOf("instagram-media") != -1)
             return null;
 

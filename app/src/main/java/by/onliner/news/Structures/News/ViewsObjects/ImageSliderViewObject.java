@@ -25,4 +25,9 @@ public class ImageSliderViewObject extends ViewObject {
     public String getDescription() {
         return mDescription;
     }
+
+    @Override
+    public boolean isValid() {
+        return !mImageURLs.isEmpty();
+    }
 }

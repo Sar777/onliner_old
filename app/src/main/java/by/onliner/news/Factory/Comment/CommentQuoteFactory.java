@@ -1,4 +1,4 @@
-package by.onliner.news.Builders.Comment;
+package by.onliner.news.Factory.Comment;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -11,16 +11,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import by.onliner.news.App;
-import by.onliner.news.Builders.IBuilder;
+import by.onliner.news.Factory.IFactoryViewObjects;
 import by.onliner.news.R;
 import by.onliner.news.Structures.Comments.CommentQuote;
 
 /**
  * Формирование цитат в комментариях
  */
-public class CommentQuoteBuilder implements IBuilder<CommentQuote, View> {
+public class CommentQuoteFactory implements IFactoryViewObjects<CommentQuote, View> {
     @Override
-    public View build(CommentQuote quote) {
+    public View create(CommentQuote quote) {
         View view = LayoutInflater.from(App.getContext()).inflate(R.layout.layout_comment_quote, null);
         CardView cardView = (CardView)view.findViewById(R.id.cv_comment_quote);
 

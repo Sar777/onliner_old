@@ -50,4 +50,9 @@ public class HeaderViewObject extends ViewObject {
     public String getImageUrl() {
         return mImageUrl;
     }
+
+    @Override
+    public boolean isValid() {
+        return !mTitle.isEmpty() && !mImageUrl.isEmpty();
+    }
 }

@@ -19,4 +19,9 @@ public class ULViewObject extends ViewObject {
     public Spanned getText() {
         return mText;
     }
+
+    @Override
+    public boolean isValid() {
+        return mText.length() != 0;
+    }
 }

@@ -16,8 +16,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import by.onliner.news.App;
-import by.onliner.news.Builders.Comment.CommentQuoteBuilder;
 import by.onliner.news.Common.Common;
+import by.onliner.news.Factory.Comment.CommentQuoteFactory;
 import by.onliner.news.Listeners.LikeCommentListener;
 import by.onliner.news.Managers.LikeMgr;
 import by.onliner.news.R;
@@ -119,7 +119,7 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
 
         // Формирование цитаты в комментарии
         if (comment.getQuote() != null) {
-            View quoteView = new CommentQuoteBuilder().build(comment.getQuote());
+            View quoteView = new CommentQuoteFactory().create(comment.getQuote());
             if (quoteView != null) {
                 mViewGroupCommentText.addView(quoteView, 0);
                 commentTextView.setPadding(20, 0, 30, 0);

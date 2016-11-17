@@ -23,4 +23,9 @@ public class ImageViewObject extends ViewObject {
     public String getDescription() {
         return mDescription;
     }
+
+    @Override
+    public boolean isValid() {
+        return !mURL.isEmpty();
+    }
 }

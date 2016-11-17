@@ -1,10 +1,10 @@
-package by.onliner.news.Builders.News;
+package by.onliner.news.Factory.News;
 
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 
-import by.onliner.news.Builders.IBuilder;
+import by.onliner.news.Factory.IFactoryViewObjects;
 import by.onliner.news.Structures.News.ViewsObjects.ImageSliderViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 
@@ -12,9 +12,9 @@ import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
  * Created by Mi Air on 18.10.2016.
  */
 
-public class ImageSliderBuilder implements IBuilder<Element, ViewObject> {
+public class ImageSliderFactory implements IFactoryViewObjects<Element, ViewObject> {
     @Override
-    public ViewObject build(Element element) {
+    public ViewObject create(Element element) {
         final ArrayList<String> imagesUrls = new ArrayList<>();
         for (Element imageElement : element.getElementsByTag("img")) {
             if (imageElement.attr("data-src").isEmpty())
@@ -24,7 +24,7 @@ public class ImageSliderBuilder implements IBuilder<Element, ViewObject> {
         }
 
         if (imagesUrls.isEmpty())
-            throw new ExceptionInInitializerError("ImageSliderBuilder empty images url container");
+            throw new ExceptionInInitializerError("ImageSliderFactory empty images url container");
 
         String imageDescription = "";
         Element elementDesc = element.getElementsByClass("news-media__subtitle").first();

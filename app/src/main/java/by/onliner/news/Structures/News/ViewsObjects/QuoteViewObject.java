@@ -17,4 +17,9 @@ public class QuoteViewObject extends ViewObject {
     public String getText() {
         return mText;
     }
+
+    @Override
+    public boolean isValid() {
+        return !mText.isEmpty();
+    }
 }
