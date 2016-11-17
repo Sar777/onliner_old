@@ -3,12 +3,15 @@ package by.onliner.news.Adapters;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -25,12 +28,14 @@ import java.util.Arrays;
 
 import by.onliner.news.App;
 import by.onliner.news.Common.Config;
+import by.onliner.news.Common.DividerItemDecoration;
 import by.onliner.news.CustomViews.QuoteTextView;
 import by.onliner.news.Enums.ViewNewsType;
 import by.onliner.news.Listeners.FullScreenImageListener;
 import by.onliner.news.R;
 import by.onliner.news.Structures.News.ViewsObjects.H2ViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.HeaderViewObject;
+import by.onliner.news.Structures.News.ViewsObjects.ImageSliderViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ImageViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.QuoteViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.SpanViewObject;
@@ -77,12 +82,14 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 return new NewsContentAdapter.H2ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_h2, parent, false));
             case TYPE_VIEW_UL:
                 return new NewsContentAdapter.ULViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_ul, parent, false));
-            case TYPE_VIEW_IMAGE:
-                return new NewsContentAdapter.ImageViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_image, parent, false));
-            case TYPE_VIEW_YOUTUBE_PLAYER:
-                return new NewsContentAdapter.YoutubeVideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_youtube_player, parent, false));
             case TYPE_VIEW_VOTE:
                 return new NewsContentAdapter.VoteViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_vote, parent, false));
+            case TYPE_VIEW_IMAGE:
+                return new NewsContentAdapter.ImageViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_image, parent, false));
+            case TYPE_VIEW_IMAGE_SLIDER:
+                return new NewsContentAdapter.ImageSliderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_image_slider, parent, false));
+            case TYPE_VIEW_YOUTUBE_PLAYER:
+                return new NewsContentAdapter.YoutubeVideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_youtube_player, parent, false));
             default:
                 break;
         }
@@ -116,14 +123,17 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TYPE_VIEW_UL:
                 ((ULViewHolder)holder).bind(holder, position);
                 break;
+            case TYPE_VIEW_VOTE:
+                ((VoteViewHolder)holder).bind(holder, position);
+                break;
             case TYPE_VIEW_IMAGE:
                 ((ImageViewHolder)holder).bind(holder, position);
                 break;
+            case TYPE_VIEW_IMAGE_SLIDER:
+                ((ImageSliderViewHolder)holder).bind(holder, position);
+                break;
             case TYPE_VIEW_YOUTUBE_PLAYER:
                 ((YoutubeVideoViewHolder)holder).bind(holder, position);
-                break;
-            case TYPE_VIEW_VOTE:
-                ((VoteViewHolder)holder).bind(holder, position);
                 break;
             case TYPE_VIEW_HR:
             default:
@@ -213,7 +223,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public ImageViewHolder(View itemView) {
             super(itemView);
 
-            mImageView = (ImageView) itemView.findViewById(R.id.img_view_news);
+            mImageView = (ImageView) itemView.findViewById(R.id.img_view_news_image);
             mTextViewDescription = (TextView) itemView.findViewById(R.id.tv_view_news_img_description);
             mProgressBarRLoading = (ProgressBar) itemView.findViewById(R.id.pb_view_news_loading);
             mLayoutRepeatGroup = (ViewGroup) itemView.findViewById(R.id.l_view_news_repeat);
@@ -272,8 +282,69 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private class ImageSliderViewHolder extends RecyclerView.ViewHolder {
+        private RecyclerView mRecyclerViewImages;
+        private TextView mTextViewDescription;
+        private ViewGroup mLinearLayoutIndicator;
+
         public ImageSliderViewHolder(View itemView) {
             super(itemView);
+
+            mRecyclerViewImages = (RecyclerView) itemView.findViewById(R.id.recycler_view_news_image_slider);
+            mTextViewDescription = (TextView) itemView.findViewById(R.id.tv_view_news_img_description);
+            mLinearLayoutIndicator = (ViewGroup) itemView.findViewById(R.id.l_view_news_indicator_images);
+        }
+
+        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+            final ImageSliderViewObject imageSliderViewObject = (ImageSliderViewObject) mResource.get(position);
+
+            if (!imageSliderViewObject.getDescription().isEmpty()) {
+                mTextViewDescription.setVisibility(View.VISIBLE);
+                mTextViewDescription.setText(imageSliderViewObject.getDescription());
+            }
+            else
+                mTextViewDescription.setVisibility(View.GONE);
+
+            mLinearLayoutIndicator.removeAllViews();
+            for (int i = 0; i < imageSliderViewObject.getImageURLs().size(); ++i) {
+                ImageView imageView = new ImageView(mActivity);
+                imageView.setMinimumWidth(i == 0 ? 42 : 30);
+                imageView.setMinimumHeight(i == 0 ? 42 : 30);
+                imageView.setImageResource(R.drawable.i_slider_circle_indicator);
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(0, 0, 25, 0);
+                imageView.setLayoutParams(layoutParams);
+
+                mLinearLayoutIndicator.addView(imageView);
+            }
+
+            mRecyclerViewImages.setOnClickListener(new FullScreenImageListener(mActivity, new ArrayList<>(imageSliderViewObject.getImageURLs())));
+
+            LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
+            mRecyclerViewImages.setLayoutManager(horizontalLayoutManagaer);
+            mRecyclerViewImages.setAdapter(new HorizontalRecyclerImageSliderAdapter(mActivity, imageSliderViewObject.getImageURLs()));
+
+            mRecyclerViewImages.addItemDecoration(new DividerItemDecoration(App.getContext(), DividerItemDecoration.HORIZONTAL_LIST, R.drawable.recyler_decoration_yellow, 5));
+            mRecyclerViewImages.addOnScrollListener(new OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    LinearLayoutManager linearLayoutManager = ((LinearLayoutManager)mRecyclerViewImages.getLayoutManager());
+
+                    for (int i = 0; i < mLinearLayoutIndicator.getChildCount(); ++i)
+                    {
+                        ImageView imageView = (ImageView)mLinearLayoutIndicator.getChildAt(i);
+                        if (i == linearLayoutManager.findFirstVisibleItemPosition()) {
+                            imageView.setMinimumWidth(42);
+                            imageView.setMinimumHeight(42);
+                        }
+                        else  {
+                            imageView.setMinimumWidth(30);
+                            imageView.setMinimumHeight(30);
+                        }
+                    }
+                }
+            });
         }
     }
 

@@ -68,6 +68,9 @@ public class NewsContentFactory {
                     // Голосование
                     else if (element.className().indexOf("news-vote") != -1 && !element.attr("data-post-id").isEmpty())
                         viewObjects.add(new VoteBuilder().build(element));
+                    // Слайдер изображений
+                    else if (element.className().indexOf("news-media__gallery") != -1)
+                        viewObjects.add(new ImageSliderBuilder().build(element));
                     break;
                 }
                 default:
