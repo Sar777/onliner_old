@@ -2,7 +2,6 @@ package by.onliner.news;
 
 import android.app.Application;
 import android.content.Context;
-import android.webkit.WebView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
@@ -15,8 +14,6 @@ public class App extends Application {
     private static Context mContext;
     private static AsyncHttpClient mClient = new AsyncHttpClient(true, 80, 443);
     private static PersistentCookieStore mCookieStore;
-
-    private static WebView webView;
 
     @Override
     public void onCreate() {
@@ -42,13 +39,5 @@ public class App extends Application {
 
     public static PersistentCookieStore getCookieStore() {
         return mCookieStore;
-    }
-
-    public static WebView getWebView() {
-        return webView;
-    }
-
-    public static void setWebView(WebView webView1) {
-        webView = webView1;
     }
 }

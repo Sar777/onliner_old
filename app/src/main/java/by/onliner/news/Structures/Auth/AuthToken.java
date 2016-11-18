@@ -1,4 +1,4 @@
-package by.onliner.news.Structures;
+package by.onliner.news.Structures.Auth;
 
 /**
  * Токен авторизации

@@ -30,7 +30,7 @@
     </style>
 
     <style name="Onliner.BY" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorAccent">@color/colorCommentsList</item>
+        <item name="colorAccent">@color/colorBlueOnliner</item>
     </style>
 
     <style name="Onliner.BY.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

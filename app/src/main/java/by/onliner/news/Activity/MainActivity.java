@@ -15,6 +15,7 @@
 
 package by.onliner.news.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.AppBarLayout;
@@ -28,8 +29,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import by.onliner.news.Adapters.ViewPagerAdapter;
+import by.onliner.news.App;
 import by.onliner.news.R;
 
 /**
@@ -37,11 +41,16 @@ import by.onliner.news.R;
  */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    ViewPager pager;
-    ViewPagerAdapter adapter;
-    TabLayout tabs;
-    CharSequence Titles[];
-    int Numboftabs = 4;
+    // Views
+    NavigationView mNavigationView;
+    private Button mButtonAuth;
+
+    private ViewPager mPager;
+    private ViewPagerAdapter mAdapter;
+
+    private TabLayout mTabs;
+    private CharSequence mTitles[];
+    private final static int Numboftabs = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,19 +68,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
-        Titles = new CharSequence[] { getString(R.string.tabAuto),  getString(R.string.tabPeoples),  getString(R.string.tabRealt),  getString(R.string.tabTechnologies) };
+        View headerNavigationView = mNavigationView.getHeaderView(0);
 
-        adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
+        mButtonAuth = (Button)headerNavigationView.findViewById(R.id.bt_auth_account);
+        mButtonAuth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(App.getContext(), AuthActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        pager = (ViewPager) findViewById(R.id.pager_news_list);
-        pager.setOffscreenPageLimit(Numboftabs);
-        pager.setAdapter(adapter);
+        mTitles = new CharSequence[] { getString(R.string.tabAuto),  getString(R.string.tabPeoples),  getString(R.string.tabRealt),  getString(R.string.tabTechnologies) };
 
-        tabs = (TabLayout) findViewById(R.id.tabs_news_list);
-        tabs.setupWithViewPager(pager);
+        mAdapter = new ViewPagerAdapter(getSupportFragmentManager(), mTitles, Numboftabs);
+
+        mPager = (ViewPager) findViewById(R.id.pager_news_list);
+        mPager.setOffscreenPageLimit(Numboftabs);
+        mPager.setAdapter(mAdapter);
+
+        mTabs = (TabLayout) findViewById(R.id.tabs_news_list);
+        mTabs.setupWithViewPager(mPager);
 
         AppBarLayout appBarLayout = (AppBarLayout)findViewById(R.id.appBarLayout);
         appBarLayout.setExpanded(true, true);
@@ -97,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                pager.getAdapter().notifyDataSetChanged();
+                mPager.getAdapter().notifyDataSetChanged();
                 break;
             default:
                 break;

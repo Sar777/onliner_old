@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
-    tools:context="by.onliner.news.by.onliner.news.Activity.AuthActivity">
+    tools:context="by.onliner.news.Activity.AuthActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,11 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <WebView
-        android:id="@+id/webview_auth"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </WebView>
+    <include layout="@layout/layout_content_auth" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -38,4 +38,6 @@
     <string name="refresh">Обновить</string>
     <string name="vote">Голосовать</string>
     <string name="top_comment">Лучший комментарий</string>
+    <string name="auth">Авторизоваться</string>
+    <string name="registration">Регистрация</string>
 </resources>
