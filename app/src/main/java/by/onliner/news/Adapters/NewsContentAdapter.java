@@ -28,7 +28,6 @@ import java.util.Arrays;
 
 import by.onliner.news.App;
 import by.onliner.news.Common.Config;
-import by.onliner.news.Common.DividerItemDecoration;
 import by.onliner.news.CustomViews.QuoteTextView;
 import by.onliner.news.Enums.ViewNewsType;
 import by.onliner.news.Listeners.FullScreenImageListener;
@@ -307,8 +306,8 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mLinearLayoutIndicator.removeAllViews();
             for (int i = 0; i < imageSliderViewObject.getImageURLs().size(); ++i) {
                 ImageView imageView = new ImageView(mActivity);
-                imageView.setMinimumWidth(i == 0 ? 42 : 30);
-                imageView.setMinimumHeight(i == 0 ? 42 : 30);
+                imageView.setMinimumWidth(i == 0 ? 35 : 20);
+                imageView.setMinimumHeight(i == 0 ? 35 : 20);
                 imageView.setImageResource(R.drawable.i_slider_circle_indicator);
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -323,8 +322,6 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
             mRecyclerViewImages.setLayoutManager(horizontalLayoutManagaer);
             mRecyclerViewImages.setAdapter(new HorizontalRecyclerImageSliderAdapter(mActivity, imageSliderViewObject.getImageURLs()));
-
-            mRecyclerViewImages.addItemDecoration(new DividerItemDecoration(App.getContext(), DividerItemDecoration.HORIZONTAL_LIST, R.drawable.recyler_decoration_yellow, 5));
             mRecyclerViewImages.addOnScrollListener(new OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -335,12 +332,12 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     {
                         ImageView imageView = (ImageView)mLinearLayoutIndicator.getChildAt(i);
                         if (i == linearLayoutManager.findFirstVisibleItemPosition()) {
-                            imageView.setMinimumWidth(42);
-                            imageView.setMinimumHeight(42);
+                            imageView.setMinimumWidth(35);
+                            imageView.setMinimumHeight(35);
                         }
                         else  {
-                            imageView.setMinimumWidth(30);
-                            imageView.setMinimumHeight(30);
+                            imageView.setMinimumWidth(20);
+                            imageView.setMinimumHeight(20);
                         }
                     }
                 }
