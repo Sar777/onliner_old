@@ -70,7 +70,7 @@ public class NewsMgr {
     /**
      * Получение новости по url
      *
-     * @param url              Адрес новости
+     * @param url Адрес новости
      * @return Содержимое новости в html
      */
     public String getNewsByUrl(String url) {
@@ -81,6 +81,9 @@ public class NewsMgr {
             e.printStackTrace();
             return "";
         }
+
+        if (doc == null)
+            return null;
 
         return doc.html();
     }

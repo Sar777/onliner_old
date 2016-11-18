@@ -16,13 +16,18 @@ import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 public class NewsContentFactory {
     public static ArrayList<ViewObject> create(News news) {
         Document document = Jsoup.parse(news.getContent());
-        ArrayList<ViewObject> viewObjects = new ArrayList<>(document.getAllElements().size());
+
+        Element rootElement = document.getElementsByClass("news-text").first();
+        if (rootElement == null)
+            throw new IllegalArgumentException("News content factory not found news-text container from html");
+
+        ArrayList<ViewObject> viewObjects = new ArrayList<>(rootElement.getAllElements().size());
 
         // Блок заголовка новости
         viewObjects.add(new HeaderFactory().create(news.getHeader()));
 
         // Выбор фабрики
-        for (Element element : document.getAllElements()) {
+        for (Element element : rootElement.getAllElements()) {
             switch (element.tagName()) {
                 case "p":
                     viewObjects.add(new SpanFactory().create(element));

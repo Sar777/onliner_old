@@ -60,7 +60,7 @@
         </android.support.v7.widget.RecyclerView>
 
         <Button
-            android:id="@+id/btn_comment_full_news"
+            android:id="@+id/bt_view_news_comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -68,6 +68,6 @@
             android:background="#1a6dbb"
             android:visibility="visible"
             android:padding="10dp"
-            android:text="@string/comments" />
+            android:text="@string/mComments" />
     </RelativeLayout>
 </RelativeLayout>

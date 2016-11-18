@@ -18,6 +18,7 @@ import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 
 public class AsyncNewsContentLoader extends AsyncTaskLoader<ArrayList<ViewObject>> {
     private String mUrl;
+    private News mNews;
 
     public AsyncNewsContentLoader(Context context, Bundle args) {
         super(context);
@@ -30,10 +31,14 @@ public class AsyncNewsContentLoader extends AsyncTaskLoader<ArrayList<ViewObject
         if (content.isEmpty())
             return null;
 
-        News news = new BodyNewsParser().parse(content);
-        if (news == null)
+        mNews = new BodyNewsParser().parse(content);
+        if (mNews == null)
             return null;
 
-        return NewsContentFactory.create(news);
+        return NewsContentFactory.create(mNews);
+    }
+
+    public final News getNews() {
+        return mNews;
     }
 }

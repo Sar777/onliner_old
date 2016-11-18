@@ -22,7 +22,7 @@ public class BodyNewsParser implements IContentParser<String, News> {
         if (wrapperElement == null)
             return null;
 
-        News news = new News();
+        News news = new News(data);
         news.getAttributes().setId(Integer.parseInt(doc.getElementsByClass("news_view_count").first().attr("news_id")));
         news.getAttributes().setProject(doc.getElementById("commentsList").attr("data-project"));
 
@@ -30,10 +30,8 @@ public class BodyNewsParser implements IContentParser<String, News> {
             if (element.className().isEmpty())
                 continue;
 
-            if (element.className().indexOf("news-text") != -1) // Content
-                news.setContent(element.html());
             // Header
-            else if (element.className().indexOf("news-header__title") != -1) // Title
+            if (element.className().indexOf("news-header__title") != -1) // Title
                 news.getHeader().setTitle(element.text());
             else if (element.className().indexOf("news-header__button_views") != -1)
                  news.getHeader().setViews(Integer.parseInt(element.text().replaceAll(" ", "").trim()));

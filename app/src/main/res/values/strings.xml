@@ -29,7 +29,7 @@
     <string name="tv_unknown">Unknown</string>
     <string name="default_title"><![CDATA[<Title>]]></string>
     <string name="repeat">Повторить</string>
-    <string name="comments">Высказаться</string>
+    <string name="mComments">Высказаться</string>
     <string name="like">Лайк!</string>
     <string name="default_text"><![CDATA[<Text>]]></string>
     <string name="default_author"><![CDATA[<Author>]]></string>

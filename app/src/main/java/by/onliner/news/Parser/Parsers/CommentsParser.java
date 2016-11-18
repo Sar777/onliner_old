@@ -12,11 +12,11 @@ import by.onliner.news.Structures.Comments.Comment;
 /**
  * Парсинг комментариев
  */
-public class CommentsParser implements IContentParser<String, LinkedHashMap<Integer, Comment>> {
+public class CommentsParser implements IContentParser<String, LinkedHashMap<String, Comment>> {
     @Override
-    public LinkedHashMap<Integer, Comment> parse(String data) {
+    public LinkedHashMap<String, Comment> parse(String data) {
         Document doc = Jsoup.parse(data);
-        LinkedHashMap<Integer, Comment> commentList = new LinkedHashMap<>();
+        LinkedHashMap<String, Comment> commentList = new LinkedHashMap<>();
 
         for (Element element : doc.getElementById("commentsList").getElementsByClass("news-comment__item")) {
             Comment comment = new Comment();
@@ -38,7 +38,7 @@ public class CommentsParser implements IContentParser<String, LinkedHashMap<Inte
             element.getElementsByClass("news-comment__cite").remove();
             comment.setText(element.getElementsByClass("news-comment__speech").first().html());
 
-            commentList.put(comment.getId(), comment);
+            commentList.put(comment.getId().toString(), comment);
         }
 
         return commentList;

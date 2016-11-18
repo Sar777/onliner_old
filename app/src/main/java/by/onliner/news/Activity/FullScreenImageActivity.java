@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import by.onliner.news.Adapters.ImageSliderAdapter;
 import by.onliner.news.Listeners.FullScreenImageListener;
 import by.onliner.news.R;
-import by.onliner.news.Structures.User.User;
 
 /**
  * Показ полноразмерного изображения
@@ -55,14 +53,5 @@ public class FullScreenImageActivity extends AppCompatActivity {
                 ((TextView)findViewById(R.id.tv_fullscreen_counter)).setText(String.format("%d из %d", position + 1, mImageSliderAdapter.getCount()));
             }
         });
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                User user = User.createUser("", "");
-                Log.e("ORION", user.getEmail());
-            }
-        }).start();
     }
 }

@@ -1,5 +1,7 @@
 package by.onliner.news.Structures.Comments;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -7,44 +9,24 @@ import java.io.Serializable;
  */
 public class Like implements Serializable {
     /**
-     * Уникальный айди комментария
-     */
-    private Integer mCommentId;
-    /**
      * Количество лайков
      */
+    @SerializedName("counter")
     private Integer mCount;
     /**
      * Является ли комментария лучшим(топ)
      */
+    @SerializedName("best")
     private Boolean mIsBest;
 
     public Like() {
-        this.mCommentId = 0;
         this.mCount = 0;
         this.mIsBest = false;
     }
 
-    public Like(Integer commentId, Integer mCount, Boolean best) {
-        this.mCommentId = commentId;
+    public Like(Integer mCount, Boolean best) {
         this.mCount = mCount;
         this.mIsBest = best;
-    }
-
-    /**
-     * Получение айди комментария
-     * @return Айди комментария
-     */
-    public Integer getCommentId() {
-        return mCommentId;
-    }
-
-    /**
-     * Установка айди комментария
-     * @param commentId Айди комментрия
-     */
-    public void setCommentId(Integer commentId) {
-        this.mCommentId = commentId;
     }
 
     /**

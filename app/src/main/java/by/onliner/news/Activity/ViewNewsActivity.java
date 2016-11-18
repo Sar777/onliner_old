@@ -21,9 +21,11 @@ import java.util.LinkedHashMap;
 import by.onliner.news.Adapters.NewsContentAdapter;
 import by.onliner.news.App;
 import by.onliner.news.Fragments.Tabs.TabBase;
+import by.onliner.news.Loaders.AsyncNewsCommentLoader;
 import by.onliner.news.Loaders.AsyncNewsContentLoader;
 import by.onliner.news.R;
 import by.onliner.news.Structures.Comments.Comment;
+import by.onliner.news.Structures.News.News;
 import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 
 /**
@@ -52,7 +54,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private ViewGroup mRepeatGroup;
     private RecyclerView mRecyclerContent;
 
-    private LinkedHashMap<Integer, Comment> mComments;
+    private LinkedHashMap<String, Comment> mComments;
 
     private int mShortAnimationDuration;
 
@@ -81,7 +83,8 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
         mRepeatGroup = (ViewGroup)findViewById(R.id.l_view_news_repeat);
 
-        mButtonComment = (Button)findViewById(R.id.btn_comment_full_news);
+        mButtonComment = (Button)findViewById(R.id.bt_view_news_comments);
+        mButtonComment.setEnabled(false);
         mButtonComment.setOnClickListener(this);
 
         mButtonRepeat = (Button)findViewById(R.id.btn_load_repeat);
@@ -127,6 +130,9 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             mNewsContentAdapter = new NewsContentAdapter(this, views);
             mRecyclerContent.setAdapter(mNewsContentAdapter);
 
+            // Запуск обработки комментариев
+            loadingComments(((AsyncNewsContentLoader)loader).getNews());
+
             // Показ главного окна
             mBaseLayout.setAlpha(0f);
             mBaseLayout.setVisibility(View.VISIBLE);
@@ -149,7 +155,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_comment_full_news: {
+            case R.id.bt_view_news_comments: {
                 Intent intent = new Intent(App.getContext(), CommentsActivity.class);
                 intent.putExtra(INTENT_URL_TAG, mURL);
                 intent.putExtra(INTENT_PROJECT_TAG, mProjectId);
@@ -168,45 +174,25 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    /**
-     * Загрузка и обработка новости
-     */
-    private void LoadingContent() {
-        mRepeatGroup.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.VISIBLE);
+    private void loadingComments(News news) {
+        Bundle bundle = new Bundle();
+        bundle.putString("Html", news.getContent());
+        bundle.putString("Project", news.getAttributes().getProject());
+        bundle.putString("PostId", news.getAttributes().getId().toString());
+        getLoaderManager().restartLoader(LOADER_COMMENTS_ID, bundle, new LoaderCallbacks<LinkedHashMap<String, Comment>>() {
+            @Override
+            public Loader<LinkedHashMap<String, Comment>> onCreateLoader(int i, Bundle bundle) {
+                return new AsyncNewsCommentLoader(App.getContext(), bundle);
+            }
 
-//                if (statusCode == HttpStatus.SC_OK) {
-//                    mNews = new BodyNewsParser().parse(response);
-//                    new AsyncBodyBuilder().execute();
-//
-//                    // Парсинг комментариев
-//                    new AsyncCommentParser(response, new CommentListListener() {
-//                        @Override
-//                        public void onResponse(LinkedHashMap response) {
-//                            mComments = response;
-//
-//                            // Запрос на получение спискай лайков
-//                            LikeMgr.getInstance().getAsyncLikes(mNews.getLikesAPIUrl(), new ResponseListener<ArrayList<Like>>() {
-//                                @Override
-//                                public void onResponse(ArrayList<Like> response) {
-//                                    if (response == null)
-//                                        return;
-//
-//                                    for (Like like : response) {
-//                                        Comment comment = mComments.get(like.getCommentId());
-//                                        if (comment != null)
-//                                            comment.setLikes(like);
-//                                    }
-//                                }
-//                            });
-//                        }
-//                    }).execute();
-//                }
-//                // Ошибка при загрузке
-//                else {
-//                    mRepeatGroup.setVisibility(View.VISIBLE);
-//                    mProgressBar.setVisibility(View.GONE);
-//                }
-//            }
+            @Override
+            public void onLoadFinished(Loader<LinkedHashMap<String, Comment>> loader, LinkedHashMap<String, Comment> result) {
+                mComments = result;
+                mButtonComment.setEnabled(true);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<LinkedHashMap<String, Comment>> loader) { }
+        }).forceLoad();
     }
 }

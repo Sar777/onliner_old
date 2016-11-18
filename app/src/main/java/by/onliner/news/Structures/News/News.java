@@ -20,10 +20,10 @@ public class News implements Serializable {
      */
     private String mContent;
 
-    public News() {
+    public News(String content) {
         this.mAttributes = new NewsAttributes();
         this.mHeader = new NewsHeader();
-        this.mContent = "";
+        this.mContent = content;
     }
 
     public News(NewsHeader header) {
@@ -84,13 +84,5 @@ public class News implements Serializable {
      */
     public String getContent() {
         return mContent;
-    }
-
-    /**
-     * Формирование ссылки для запроса на получение лайков для комментариев
-     * @return Ссылка для получения лайков
-     */
-    public String getLikesAPIUrl() {
-        return "https://" + getAttributes().getProject() + ".onliner.by/sdapi/news.api/" + getAttributes().getProject() + "/posts/" + getAttributes().getId() + "/likes";
     }
 }
