@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
+    android:id="@+id/l_auth_base"
     tools:context="by.onliner.news.Activity.AuthActivity">
 
     <android.support.design.widget.AppBarLayout

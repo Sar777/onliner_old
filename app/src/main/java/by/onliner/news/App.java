@@ -4,7 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
+
+import by.onliner.news.Structures.Credentials.Credentials;
 
 /**
  * Created by Mi Air on 13.10.2016.
@@ -13,7 +14,8 @@ import com.loopj.android.http.PersistentCookieStore;
 public class App extends Application {
     private static Context mContext;
     private static AsyncHttpClient mClient = new AsyncHttpClient(true, 80, 443);
-    private static PersistentCookieStore mCookieStore;
+
+    private static Credentials mCredentials;
 
     @Override
     public void onCreate() {
@@ -24,9 +26,6 @@ public class App extends Application {
 
         mClient.addHeader("Accept", "application/json, text/javascript, */*; q=0.01; charset=utf-8");
         mClient.addHeader("Content-Type", "application/json");
-
-        mCookieStore = new PersistentCookieStore(this);
-        mClient.setCookieStore(mCookieStore);
     }
 
     public static Context getContext(){
@@ -37,7 +36,11 @@ public class App extends Application {
         return mClient;
     }
 
-    public static PersistentCookieStore getCookieStore() {
-        return mCookieStore;
+    public static Credentials getCredentials() {
+        return mCredentials;
+    }
+
+    public static void setCredentials(Credentials credentials) {
+        App.mCredentials = credentials;
     }
 }

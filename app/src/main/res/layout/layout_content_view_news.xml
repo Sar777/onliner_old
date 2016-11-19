@@ -68,6 +68,6 @@
             android:background="#1a6dbb"
             android:visibility="visible"
             android:padding="10dp"
-            android:text="@string/mComments" />
+            android:text="@string/comments" />
     </RelativeLayout>
 </RelativeLayout>

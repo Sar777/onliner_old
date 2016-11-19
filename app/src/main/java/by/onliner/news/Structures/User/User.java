@@ -5,13 +5,6 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.IOException;
-
-import by.onliner.news.Services.ServiceFactory;
-import by.onliner.news.Services.User.UserService;
-import by.onliner.news.Structures.Credentials.Credentials;
-import retrofit2.Response;
-
 /**
  * Описание пользователя авторизованного
  */
@@ -58,38 +51,7 @@ public class User {
         return this.mEmail;
     }
 
-    public static User createUser(String username, String password) {
-        String accessToken = Credentials.Network.getAccessToken(username, password);
-        String userId = Network.getUserIdByToken(accessToken);
-        if (userId == null)
-            return null;
-
-        User user = null;
-        try {
-            Response<User> response = ServiceFactory.createRetrofitService(UserService.class, UserService.USER_API).getUser(ServiceFactory.getAccessToken(accessToken), userId).execute();
-            if (!response.isSuccessful())
-                return null;
-
-            user = response.body();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return user;
-    }
-
-    public static class Network {
-        public static String getUserIdByToken(String token) {
-            try {
-                Response<User> response = ServiceFactory.createRetrofitService(UserService.class, UserService.USER_API).getUser(ServiceFactory.getAccessToken(token)).execute();
-                if (!response.isSuccessful())
-                    return null;
-
-                return response.body().getId();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
+    public static User GetUserInfo(String username, String password) {
+        return null;
     }
 }

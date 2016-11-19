@@ -18,7 +18,6 @@ package by.onliner.news.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -93,8 +92,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mTabs = (TabLayout) findViewById(R.id.tabs_news_list);
         mTabs.setupWithViewPager(mPager);
 
-        AppBarLayout appBarLayout = (AppBarLayout)findViewById(R.id.appBarLayout);
-        appBarLayout.setExpanded(true, true);
+        // Проверка авторизации
+        navBarLoggedCheck();
+    }
+
+    private void navBarLoggedCheck() {
+
     }
 
     @Override

@@ -6,4 +6,5 @@ package by.onliner.news.Constants;
 
 public class Constant {
     public static final String mProfileURL = "https://profile.onliner.by";
+    public static final String mDomain = "https://onliner.by";
 }
