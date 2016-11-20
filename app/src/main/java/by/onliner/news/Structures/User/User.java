@@ -1,16 +1,29 @@
 package by.onliner.news.Structures.User;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.IOException;
+
+import by.onliner.news.App;
+import by.onliner.news.Constants.Constant;
+import by.onliner.news.Listeners.User.OnUserUpdateListener;
+import by.onliner.news.Services.ServiceFactory;
+import by.onliner.news.Services.User.UserService;
 
 /**
  * Описание пользователя авторизованного
  */
 public class User {
     @SerializedName("avatar")
-    private final UserAvatar avatar;
+    private final UserAvatar mAvatar;
     @SerializedName("email")
     private final String mEmail;
     @SerializedName("id")
@@ -23,7 +36,7 @@ public class User {
     public User(@NonNull String id, @NonNull String username, @NonNull UserAvatar avatar, @Nullable String phone, @Nullable String email) {
         this.mId = id;
         this.mUsername = username;
-        this.avatar = avatar;
+        this.mAvatar = avatar;
         this.mPhone = phone;
         this.mEmail = email;
     }
@@ -40,7 +53,7 @@ public class User {
 
     @NonNull
     public String getAvatarUrl() {
-        return this.avatar.getUrlLarge();
+        return this.mAvatar.getUrlLarge();
     }
 
     public String getPhone() {
@@ -51,7 +64,42 @@ public class User {
         return this.mEmail;
     }
 
-    public static User GetUserInfo(String username, String password) {
-        return null;
+    public void saveToDB() {
+        SQLiteDatabase db = App.getDBUserHelper().getWritableDatabase();
+        db.delete(Constant.mTableNameUser, null, null);
+
+        ContentValues cv = new ContentValues();
+        cv.put("json", new Gson().toJson(this));
+        db.insert(Constant.mTableNameUser, null, cv);
+
+        App.getDBUserHelper().close();
+    }
+
+    public static User create() {
+        SQLiteDatabase db = App.getDBUserHelper().getWritableDatabase();
+        Cursor cursor = db.query(Constant.mTableNameUser, null, null, null, null, null, null);
+
+        User user = null;
+        if (cursor.moveToFirst())
+            user = new Gson().fromJson(cursor.getString(0), User.class);
+
+        cursor.close();
+        App.getDBUserHelper().close();
+        return user;
+    }
+
+    public static void getUser(final String token, final OnUserUpdateListener listener) {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                final UserService service = ServiceFactory.createRetrofitService(UserService.class, UserService.USER_API);
+                try {
+                    User tempUser = service.getUser(token).execute().body();
+                    listener.onUpdate(service.getUser(token, tempUser.getId()).execute().body());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

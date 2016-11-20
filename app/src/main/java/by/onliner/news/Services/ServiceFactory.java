@@ -36,8 +36,4 @@ public class ServiceFactory {
         T service = restAdapter.create(clazz);
         return service;
     }
-
-    public static final String getAccessToken(String token) {
-        return String.format("Bearer %s", token);
-    }
 }

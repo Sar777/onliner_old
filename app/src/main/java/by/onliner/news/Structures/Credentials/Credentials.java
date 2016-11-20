@@ -1,12 +1,18 @@
 package by.onliner.news.Structures.Credentials;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
 
+import by.onliner.news.App;
+import by.onliner.news.Constants.Constant;
 import by.onliner.news.Listeners.Credentials.OnCredentialsRefreshListener;
 import by.onliner.news.Services.Credential.CredentialService;
 import by.onliner.news.Services.ServiceFactory;
@@ -21,16 +27,29 @@ public class Credentials {
     @SerializedName("refresh_token")
     private final String mRefreshToken;
 
-    private String mDateStore;
+    private long mDateStore;
 
     public Credentials(@NonNull String accessToken, @NonNull String refreshToken) {
         this.mAccessToken = accessToken;
         this.mRefreshToken = refreshToken;
+
+        this.mDateStore = System.currentTimeMillis() / 1000L;
+    }
+
+    public void saveToDB() {
+        SQLiteDatabase db = App.getDBUserHelper().getWritableDatabase();
+        db.delete(Constant.mTableNameCredentials, null, null);
+
+        ContentValues cv = new ContentValues();
+        cv.put("json", new Gson().toJson(this));
+        db.insert(Constant.mTableNameCredentials, null, cv);
+
+        App.getDBCredentials().close();
     }
 
     @NonNull
     public String getAccessToken() {
-        return this.mAccessToken;
+        return String.format("%s %s", Constant.mOnlinerMagic, this.mAccessToken);
     }
 
     @NonNull
@@ -39,15 +58,11 @@ public class Credentials {
     }
 
     @NonNull
-    public String getDateStore() {
+    public long getDateStore() {
         return mDateStore;
     }
 
-    public void setDateStore(String date) {
-        mDateStore = date;
-    }
-
-    public static void RefreshCredintialsIfNeed(final String username, final String password, final OnCredentialsRefreshListener listener) {
+    public static void getCredintials(final String username, final String password, final OnCredentialsRefreshListener listener) {
         new Handler().post(new Runnable() {
             @Override
             public void run() {
@@ -60,5 +75,18 @@ public class Credentials {
                 }
             }
         });
+    }
+
+    public static Credentials create() {
+        SQLiteDatabase db = App.getDBCredentials().getReadableDatabase();
+        Cursor cursor = db.query(Constant.mTableNameCredentials, null, null, null, null, null, null);
+
+        Credentials credentials = null;
+        if (cursor.moveToFirst())
+            credentials = new Gson().fromJson(cursor.getString(0), Credentials.class);
+
+        cursor.close();
+        App.getDBCredentials().close();
+        return credentials;
     }
 }

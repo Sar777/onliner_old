@@ -26,6 +26,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +39,7 @@ import by.onliner.news.R;
 /**
  * Главное окно
  */
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
     // Views
     NavigationView mNavigationView;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
+        drawer.addDrawerListener(this);
         toggle.syncState();
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -91,13 +93,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mTabs = (TabLayout) findViewById(R.id.tabs_news_list);
         mTabs.setupWithViewPager(mPager);
-
-        // Проверка авторизации
-        navBarLoggedCheck();
     }
 
-    private void navBarLoggedCheck() {
+    private void navBarLoggin() {
+        if (App.getLoggedUser() == null)
+            return;
 
+        Log.e("ORION", App.getLoggedUser().getAvatarUrl());
     }
 
     @Override
@@ -152,5 +154,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+        // Проверка авторизации
+        navBarLoggin();
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
     }
 }

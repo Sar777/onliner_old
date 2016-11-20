@@ -4,16 +4,22 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import by.onliner.news.App;
 import by.onliner.news.Listeners.Auth.OnLoginCompleteListener;
 import by.onliner.news.Listeners.Auth.OnLoginValidateAccount;
+import by.onliner.news.Listeners.Credentials.OnCredentialsRefreshListener;
+import by.onliner.news.Listeners.User.OnUserUpdateListener;
 import by.onliner.news.Managers.AuthMgr;
 import by.onliner.news.R;
+import by.onliner.news.Structures.Credentials.Credentials;
+import by.onliner.news.Structures.User.User;
 
 public class AuthActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -74,7 +80,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         mAuthGroup.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
 
-        AuthMgr.getInstance().validateAccount("XXXXX", "XXXXX", new OnLoginValidateAccount() {
+        AuthMgr.getInstance().validateAccount("", "", new OnLoginValidateAccount() {
             @Override
             public void onValidate(boolean success) {
                 if (!success) {
@@ -84,24 +90,34 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 }
 
-                /*Credentials.RefreshCredintialsIfNeed("jsv01548@noicd.com", "123456789", new OnCredentialsRefreshListener() {
-                    @Override
-                    public void onRefresh(Credentials credentials) {
-                        App.setCredentials(credentials);
-                    }
-                });*/
-
-                AuthMgr.getInstance().loginAccount("XXXX", "XXXX", new OnLoginCompleteListener() {
+                AuthMgr.getInstance().loginAccount("", "", new OnLoginCompleteListener() {
                     @Override
                     public void onLoginStatus(boolean success) {
-                        if (success) {
-                            onBackPressed();
+                        if (!success) {
+                            mAuthGroup.setVisibility(View.VISIBLE);
+                            mProgressBar.setVisibility(View.GONE);
+                            showSnackbar(R.string.auth_fail_unknown);
                             return;
                         }
 
-                        mAuthGroup.setVisibility(View.VISIBLE);
-                        mProgressBar.setVisibility(View.GONE);
-                        showSnackbar(R.string.auth_fail_unknown);
+                        Log.e("ORION", "loginAccount");
+
+                        Credentials.getCredintials("", "", new OnCredentialsRefreshListener() {
+                            @Override
+                            public void onRefresh(Credentials credentials) {
+                                App.setCredentials(credentials);
+                                Log.e("ORION", "setCredentials");
+                                User.getUser(credentials.getAccessToken(), new OnUserUpdateListener() {
+                                    @Override
+                                    public void onUpdate(User user) {
+                                        App.setLoggedUser(user);
+                                        Log.e("ORION", "GetUser");
+                                    }
+                                });
+                            }
+                        });
+
+                        onBackPressed();
                     }
                 });
             }
