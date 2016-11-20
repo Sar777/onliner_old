@@ -33,6 +33,8 @@ public class AsyncNewsCommentLoader extends AsyncTaskLoader<LinkedHashMap<String
     public LinkedHashMap<String, Comment> loadInBackground() {
         LinkedHashMap<String, Comment> comments = new CommentsParser().parse(mContent);
         HashMap<String, Like> likes = LikeMgr.getInstance().getLikes(mProject, mPostId);
+        if (likes == null)
+            return comments;
 
         for (Map.Entry<String, Like> like : likes.entrySet()) {
             Comment comment = comments.get(like.getKey());

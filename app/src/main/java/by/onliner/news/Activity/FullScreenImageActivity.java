@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import by.onliner.news.Adapters.ImageSliderAdapter;
-import by.onliner.news.Listeners.FullScreenImageListener;
+import by.onliner.news.Listeners.OnFullScreenImageListener;
 import by.onliner.news.R;
 
 /**
@@ -33,7 +33,7 @@ public class FullScreenImageActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<String> urls = getIntent().getExtras().getStringArrayList(FullScreenImageListener.INTENT_FULL_SCREEN_URL);
+        ArrayList<String> urls = getIntent().getExtras().getStringArrayList(OnFullScreenImageListener.INTENT_FULL_SCREEN_URL);
         mImageSliderAdapter = new ImageSliderAdapter(this, urls);
 
         ((TextView)findViewById(R.id.tv_fullscreen_counter)).setText(String.format("1 из %d", mImageSliderAdapter.getCount()));

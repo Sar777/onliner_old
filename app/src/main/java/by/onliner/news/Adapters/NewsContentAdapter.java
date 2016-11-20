@@ -30,7 +30,7 @@ import by.onliner.news.App;
 import by.onliner.news.Common.Config;
 import by.onliner.news.CustomViews.QuoteTextView;
 import by.onliner.news.Enums.ViewNewsType;
-import by.onliner.news.Listeners.FullScreenImageListener;
+import by.onliner.news.Listeners.OnFullScreenImageListener;
 import by.onliner.news.R;
 import by.onliner.news.Structures.News.ViewsObjects.H2ViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.HeaderViewObject;
@@ -243,7 +243,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             else
                 mTextViewDescription.setVisibility(View.GONE);
 
-            mImageView.setOnClickListener(new FullScreenImageListener(mActivity, new ArrayList<>(Arrays.asList(mUrl))));
+            mImageView.setOnClickListener(new OnFullScreenImageListener(mActivity, new ArrayList<>(Arrays.asList(mUrl))));
             mButtonLoadingRepeat.setOnClickListener(this);
         }
 
@@ -317,7 +317,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 mLinearLayoutIndicator.addView(imageView);
             }
 
-            mRecyclerViewImages.setOnClickListener(new FullScreenImageListener(mActivity, new ArrayList<>(imageSliderViewObject.getImageURLs())));
+            mRecyclerViewImages.setOnClickListener(new OnFullScreenImageListener(mActivity, new ArrayList<>(imageSliderViewObject.getImageURLs())));
 
             LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
             mRecyclerViewImages.setLayoutManager(horizontalLayoutManagaer);

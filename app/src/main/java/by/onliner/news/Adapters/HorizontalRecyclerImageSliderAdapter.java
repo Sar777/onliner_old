@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import by.onliner.news.App;
-import by.onliner.news.Listeners.FullScreenImageListener;
+import by.onliner.news.Listeners.OnFullScreenImageListener;
 import by.onliner.news.R;
 
 /**
@@ -30,7 +30,7 @@ public class HorizontalRecyclerImageSliderAdapter extends RecyclerView.Adapter<H
         public MyViewHolder(View view) {
             super(view);
             mImageView = (ImageView) view.findViewById(R.id.img_recycler_slider);
-            mImageView.setOnClickListener(new FullScreenImageListener(mActivity, mResource));
+            mImageView.setOnClickListener(new OnFullScreenImageListener(mActivity, mResource));
         }
     }
 

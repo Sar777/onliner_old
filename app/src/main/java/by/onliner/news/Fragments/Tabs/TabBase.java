@@ -29,8 +29,8 @@ import android.widget.ProgressBar;
 import java.util.ArrayList;
 
 import by.onliner.news.Adapters.NewsListAdapter;
-import by.onliner.news.Listeners.NewsListResponse;
 import by.onliner.news.Listeners.OnLoadMoreListener;
+import by.onliner.news.Listeners.OnNewsListResponse;
 import by.onliner.news.Managers.NewsMgr;
 import by.onliner.news.R;
 import by.onliner.news.Structures.News.News;
@@ -104,7 +104,7 @@ public class TabBase extends Fragment implements View.OnClickListener {
             mLinerRepeatGroup.setVisibility(View.GONE);
         }
 
-        NewsMgr.getInstance().getLoadingNewsList(mProjectId, pull, new NewsListResponse() {
+        NewsMgr.getInstance().getLoadingNewsList(mProjectId, pull, new OnNewsListResponse() {
             @Override
             public void onResult(boolean success, ArrayList<News> news) {
                 if (success) {

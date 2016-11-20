@@ -74,7 +74,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         mAuthGroup.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
 
-        AuthMgr.getInstance().validateAccount("jsv01548@noicd.com", "123456789", new OnLoginValidateAccount() {
+        AuthMgr.getInstance().validateAccount("XXXXX", "XXXXX", new OnLoginValidateAccount() {
             @Override
             public void onValidate(boolean success) {
                 if (!success) {
@@ -91,7 +91,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });*/
 
-                AuthMgr.getInstance().loginAccount("jsv01548@noicd.com", "123456789", new OnLoginCompleteListener() {
+                AuthMgr.getInstance().loginAccount("XXXX", "XXXX", new OnLoginCompleteListener() {
                     @Override
                     public void onLoginStatus(boolean success) {
                         if (success) {

@@ -8,6 +8,6 @@ import by.onliner.news.Structures.Comments.Comment;
  * Created by orion on 11.11.16.
  */
 
-public interface CommentListListener {
+public interface OnCommentListListener {
     void onResponse(LinkedHashMap<Integer, Comment> comments);
 }

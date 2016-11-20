@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
+import by.onliner.news.Common.Common;
 import by.onliner.news.Parser.IContentParser;
 import by.onliner.news.Structures.News.News;
 import by.onliner.news.Structures.News.NewsHeader;
@@ -15,10 +16,10 @@ import by.onliner.news.Structures.News.NewsHeader;
  * Парсинг списка новостей
  */
 public class NewsListParser implements IContentParser<String, ArrayList<News>> {
-    private String mUrl;
+    private String mProject;
 
-    public NewsListParser(String url) {
-        this.mUrl = url;
+    public NewsListParser(String project) {
+        this.mProject = project;
     }
 
     @Override
@@ -30,7 +31,8 @@ public class NewsListParser implements IContentParser<String, ArrayList<News>> {
         for (Element element : elements) {
             NewsHeader header = new HeaderParser().parse(element);
             News news = new News(header);
-            news.getAttributes().setUrl(mUrl + news.getHeader().getUrl());
+            news.getAttributes().setUrl(Common.getUrlByProject(mProject) + news.getHeader().getUrl());
+            news.getAttributes().setProject(mProject);
 
             if (!news.getHeader().isValid())
                 continue;

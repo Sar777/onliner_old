@@ -78,4 +78,13 @@ public class NewsAttributes implements Serializable {
     public void setUrl(String url) {
         this.mUrl = url;
     }
+
+    @Override
+    public String toString() {
+        return "NewsAttributes{" +
+                "mId=" + mId +
+                ", mProject='" + mProject + '\'' +
+                ", mUrl='" + mUrl + '\'' +
+                '}';
+    }
 }

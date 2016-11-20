@@ -85,4 +85,13 @@ public class News implements Serializable {
     public String getContent() {
         return mContent;
     }
+
+    @Override
+    public String toString() {
+        return "News{" +
+                "mHeader=" + mHeader +
+                ", mAttributes=" + mAttributes +
+                ", mContent='" + mContent + '\'' +
+                '}';
+    }
 }

@@ -10,7 +10,7 @@ import by.onliner.news.Structures.Comments.Like;
  * Created by orion on 18.11.16.
  */
 
-public class LikeResponse {
+public class LikesObjectListResponse {
 
     @SerializedName("comments")
     private HashMap<String, Like> mLikes;

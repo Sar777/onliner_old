@@ -208,4 +208,18 @@ public class NewsHeader implements Serializable {
     public void setAttributes(HeaderAttributes attributes) {
         this.attributes = attributes;
     }
+
+    @Override
+    public String toString() {
+        return "NewsHeader{" +
+                "title='" + title + '\'' +
+                ", views=" + views +
+                ", comments=" + comments +
+                ", postDate='" + postDate + '\'' +
+                ", postDateUnix=" + postDateUnix +
+                ", image='" + image + '\'' +
+                ", url='" + url + '\'' +
+                ", attributes=" + attributes +
+                '}';
+    }
 }

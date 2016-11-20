@@ -70,7 +70,7 @@
                     android:id="@+id/l_like_group"
                     android:layout_width="wrap_content"
                     android:layout_height="21dip"
-                    android:layout_toLeftOf="@+id/bt_like_comment"
+                    android:layout_toLeftOf="@+id/l_like_button_group"
                     android:layout_centerInParent="true"
                     android:layout_marginRight="8dp"
                     android:gravity="center"
@@ -118,19 +118,43 @@
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/bt_like_comment"
-                    android:layout_width="40dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
+                <RelativeLayout
+                    android:id="@+id/l_like_button_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="10sp"
-                    android:background="@drawable/like_button_bg"
-                    android:text="@string/like"
-                    tools:ignore="SmallSp" />
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp">
+
+                    <ProgressBar
+                        android:id="@+id/pb_like_progress"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"/>
+
+                    <Button
+                        android:id="@+id/bt_like_comment"
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="10sp"
+                        android:background="@drawable/like_button_bg"
+                        android:text="@string/like"
+                        android:visibility="visible"
+                        tools:ignore="SmallSp" />
+
+                    <Button
+                        android:id="@+id/bt_deslike_comment"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ic_deslike_red"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

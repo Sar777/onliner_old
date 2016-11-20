@@ -12,7 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import by.onliner.news.App;
-import by.onliner.news.Listeners.NewsListResponse;
+import by.onliner.news.Common.Common;
+import by.onliner.news.Listeners.OnNewsListResponse;
 import by.onliner.news.Parser.Parsers.NewsListParser;
 import by.onliner.news.Structures.News.News;
 import cz.msebera.android.httpclient.Header;
@@ -44,7 +45,7 @@ public class NewsMgr {
      * @param pull         подгрузка
      * @param listResponse обработка
      */
-    public void getLoadingNewsList(final String projectId, boolean pull, final NewsListResponse listResponse) {
+    public void getLoadingNewsList(final String projectId, boolean pull, final OnNewsListResponse listResponse) {
         RequestParams params = new RequestParams();
         if (pull)
             params.put("fromDate", getLastNews(projectId).getHeader().getPostDateUnix());
@@ -52,17 +53,15 @@ public class NewsMgr {
             clearAllProjectNews(projectId);
 
         // сеть
-        App.getAsyncHttpClient().get(getUrl(projectId), params, new AsyncHttpResponseHandler() {
-            NewsListResponse listener = listResponse;
-            String project = projectId;
+        App.getAsyncHttpClient().get(Common.getUrlByProject(projectId), params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                listener.onResult(true, new NewsListParser(getUrl(projectId)).parse(new String(responseBody)));
+                listResponse.onResult(true, new NewsListParser(projectId).parse(new String(responseBody)));
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                listener.onResult(false, null);
+                listResponse.onResult(false, null);
             }
         });
     }
@@ -97,17 +96,6 @@ public class NewsMgr {
     public ArrayList<News> getNewsList(String projectId) {
         return mNews.get(projectId);
     }
-
-    /**
-     * Формирование адреса новости по категории
-     *
-     * @param project Категория
-     * @return Сформировання строку
-     */
-    private static String getUrl(String project) {
-        return "https://" + project + ".onliner.by";
-    }
-
 
     /**
      * Получение последней новости по по категории

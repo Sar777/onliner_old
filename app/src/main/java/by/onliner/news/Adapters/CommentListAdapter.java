@@ -1,28 +1,33 @@
 package by.onliner.news.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import by.onliner.news.Activity.AuthActivity;
 import by.onliner.news.App;
 import by.onliner.news.Common.Common;
 import by.onliner.news.Factory.Comment.CommentQuoteFactory;
-import by.onliner.news.Listeners.LikeCommentListener;
+import by.onliner.news.Listeners.OnLikeCommentListener;
 import by.onliner.news.Managers.LikeMgr;
 import by.onliner.news.R;
+import by.onliner.news.Services.Likes.LikeCommentResponse;
 import by.onliner.news.Structures.Comments.Comment;
 import by.onliner.news.Transforms.CircleTransform;
+import cz.msebera.android.httpclient.HttpStatus;
 
 /**
  * Адаптере для отображения комментариев к новости
@@ -35,6 +40,8 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
 
     // Views
     private Button mButtonLike;
+    private Button mButtonDeslike;
+    private ProgressBar mProgressBar;
     private TextView mTextViewAuthor;
     private TextView mTextViewDate;
     private TextView mTextViewTopComment;
@@ -75,6 +82,12 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
         }
 
         mButtonLike = (Button) view.findViewById(R.id.bt_like_comment);
+        mButtonLike.setOnClickListener(this);
+
+        mButtonDeslike = (Button) view.findViewById(R.id.bt_deslike_comment);
+        mButtonDeslike.setOnClickListener(this);
+
+        mProgressBar = (ProgressBar) view.findViewById(R.id.pb_like_progress);
         mTextViewAuthor = (TextView) view.findViewById(R.id.tv_comment_author);
         mTextViewDate = (TextView) view.findViewById(R.id.tv_comment_date);
         mTextViewTopComment = (TextView) view.findViewById(R.id.tv_top_comment);
@@ -90,10 +103,14 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
         mTextViewAuthor.setText(comment.getAuthor().getName());
         mTextViewDate.setText(comment.getDate());
 
-        if (comment.getLikes().isBest() && position == 0)
+        if (comment.getLikes().isBest() && position == 0) {
             mTextViewTopComment.setVisibility(View.VISIBLE);
-        else
+            mButtonLike.setVisibility(View.GONE);
+        }
+        else {
             mTextViewTopComment.setVisibility(View.GONE);
+            mButtonLike.setVisibility(View.VISIBLE);
+        }
 
         if (comment.getLikes().getCount() > 0) {
             mViewGroupLikeGroup.setVisibility(View.VISIBLE);
@@ -129,7 +146,16 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
         mViewGroupCommentText.addView(commentTextView);
 
         mButtonLike.setTag(comment.getId());
-        mButtonLike.setOnClickListener(this);
+        mButtonDeslike.setTag(comment.getId());
+
+        if (comment.getLikes().getIsLike() != null && comment.getLikes().getIsLike()) {
+            mButtonLike.setVisibility(View.GONE);
+            mButtonDeslike.setVisibility(View.VISIBLE);
+        }
+        else {
+            mButtonLike.setVisibility(View.VISIBLE);
+            mButtonDeslike.setVisibility(View.GONE);
+        }
 
         if (!comment.getAvatarURL().isEmpty())
             Picasso.with(mContext).
@@ -148,17 +174,96 @@ public class CommentListAdapter extends BaseAdapter implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.bt_like_comment: {
-                LikeMgr.getInstance().asyncLikeComment(view.getTag().toString(), mProject, new LikeCommentListener() {
-                    @Override
-                    public void OnResponse(int code, String json) {
-                        Log.e("ORION", "CODE: " + code + " RESP: " + json);
-                    }
-                });
+            case R.id.bt_like_comment:
+                likeComment(view.getTag().toString());
                 break;
-            }
+            case R.id.bt_deslike_comment:
+                deslikeComment(view.getTag().toString());
+                break;
             default:
                 break;
+        }
+    }
+
+    private void authStartActivity() {
+        Intent intent = new Intent(mButtonLike.getContext(), AuthActivity.class);
+        mButtonLike.getContext().startActivity(intent);
+    }
+
+    private void likeComment(String comment_id) {
+        likeButtonView(true, false);
+
+        LikeMgr.getInstance().likeComment(comment_id, mProject, new OnLikeCommentListener() {
+            @Override
+            public void OnResponse(int errCode, LikeCommentResponse response) {
+                if (errCode == HttpStatus.SC_UNAUTHORIZED) {
+                    authStartActivity();
+                    likeButtonView(true, true);
+                    return;
+                }
+
+                if (response == null) {
+                    Snackbar.make(mButtonLike, R.string.like_comment_error, Snackbar.LENGTH_LONG).show();
+                    likeButtonView(true, true);
+                    return;
+                }
+
+                if (response.getErrors() != null && !response.getErrors().isEmpty()) {
+                    Snackbar.make(mButtonLike, response.getErrors(), Snackbar.LENGTH_LONG).show();
+                    likeButtonView(true, true);
+                    return;
+                }
+
+                mTextViewLikeCount.setText(response.getLikes());
+            }
+        });
+    }
+
+    private void deslikeComment(String comment_id) {
+        likeButtonView(false, false);
+
+        LikeMgr.getInstance().deslikeComment(comment_id, mProject, new OnLikeCommentListener() {
+            @Override
+            public void OnResponse(int errCode, LikeCommentResponse response) {
+                if (errCode == HttpStatus.SC_UNAUTHORIZED) {
+                    authStartActivity();
+                    likeButtonView(false, true);
+                    return;
+                }
+
+                if (response == null) {
+                    Snackbar.make(mButtonLike, R.string.like_comment_error, Snackbar.LENGTH_LONG).show();
+                    likeButtonView(false, true);
+                    return;
+                }
+
+                if (response.getErrors() != null && !response.getErrors().isEmpty()) {
+                    Snackbar.make(mButtonLike, response.getErrors(), Snackbar.LENGTH_LONG).show();
+                    likeButtonView(false, true);
+                    return;
+                }
+
+                mTextViewLikeCount.setText(response.getLikes());
+            }
+        });
+    }
+
+    private void likeButtonView(boolean like, boolean enable) {
+        if (enable) {
+            if (like)
+                mButtonLike.setVisibility(View.VISIBLE);
+            else
+                mButtonDeslike.setVisibility(View.VISIBLE);
+
+            mProgressBar.setVisibility(View.GONE);
+        }
+        else {
+            if (like)
+                mButtonLike.setVisibility(View.GONE);
+            else
+                mButtonDeslike.setVisibility(View.GONE);
+
+            mProgressBar.setVisibility(View.VISIBLE);
         }
     }
 }

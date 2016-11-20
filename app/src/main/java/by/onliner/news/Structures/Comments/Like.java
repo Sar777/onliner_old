@@ -19,14 +19,18 @@ public class Like implements Serializable {
     @SerializedName("best")
     private Boolean mIsBest;
 
+    @SerializedName("like")
+    private Boolean mIsLike;
+
     public Like() {
         this.mCount = 0;
         this.mIsBest = false;
     }
 
-    public Like(Integer mCount, Boolean best) {
-        this.mCount = mCount;
+    public Like(Integer count, Boolean best, Boolean like) {
+        this.mCount = count;
         this.mIsBest = best;
+        this.mIsLike = like;
     }
 
     /**
@@ -59,5 +63,21 @@ public class Like implements Serializable {
      */
     public void setBest(Boolean best) {
         this.mIsBest = best;
+    }
+
+    /**
+     * Является ли комментр лайкнутым
+     * @return Лайкнутый коммент
+     */
+    public Boolean getIsLike() {
+        return mIsLike;
+    }
+
+    /**
+     * Установка лайка для комментария
+     * @param like Лайк комментарий
+     */
+    public void setIsLike(Boolean like) {
+        this.mIsLike = like;
     }
 }

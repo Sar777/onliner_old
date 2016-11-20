@@ -13,13 +13,13 @@ import by.onliner.news.R;
 /**
  * Обработка откытия полного размера изображения в новом окне
  */
-public class FullScreenImageListener implements View.OnClickListener {
+public class OnFullScreenImageListener implements View.OnClickListener {
     public static String INTENT_FULL_SCREEN_URL = "URL";
 
     private Activity mActivity;
     private ArrayList<String> mImageUrls;
 
-    public FullScreenImageListener(Activity activity, ArrayList<String> imageUrls) {
+    public OnFullScreenImageListener(Activity activity, ArrayList<String> imageUrls) {
         this.mActivity = activity;
         this.mImageUrls = new ArrayList<>(imageUrls);
     }

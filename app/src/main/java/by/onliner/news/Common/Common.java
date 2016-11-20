@@ -29,4 +29,8 @@ public class Common {
 
         return "";
     }
+
+    public static String getUrlByProject(String project) {
+        return "https://" + project + ".onliner.by";
+    }
 }
