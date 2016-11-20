@@ -57,7 +57,7 @@ public class LikeMgr {
             public void onResponse(Call<LikeCommentResponse> call, Response<LikeCommentResponse> response) {
                 LikeCommentResponse likeCommentResponse = null;
                 try {
-                    if (!response.isSuccessful())
+                    if (!response.isSuccessful() && response.raw().code() == HttpStatus.SC_BAD_REQUEST)
                         likeCommentResponse = new Gson().fromJson(response.errorBody().string(), LikeCommentResponse.class);
                     else
                         likeCommentResponse = response.body();
