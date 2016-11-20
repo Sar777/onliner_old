@@ -2,14 +2,15 @@ package by.onliner.news.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
-import by.onliner.news.Adapters.CommentListAdapter;
+import by.onliner.news.Adapters.CommentsListAdapter;
 import by.onliner.news.R;
 import by.onliner.news.Structures.Comments.Comment;
 
@@ -19,10 +20,10 @@ import by.onliner.news.Structures.Comments.Comment;
 public class CommentsActivity extends AppCompatActivity {
     private ArrayList<Comment> mComments = new ArrayList<>();
 
-    private CommentListAdapter mCommentListAdapter;
+    private CommentsListAdapter mCommentListAdapter;
 
     // Views
-    private ListView lvMain;
+    private RecyclerView mRecyclerView;
     private ProgressBar mProgressBarLoading;
 
     private String mProject;
@@ -53,10 +54,12 @@ public class CommentsActivity extends AppCompatActivity {
             }
         }
 
-        mCommentListAdapter = new CommentListAdapter(this, mComments, mProject);
+        mRecyclerView = (RecyclerView) findViewById(R.id.lv_comments_list);
+        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(horizontalLayoutManagaer);
 
-        lvMain = (ListView) findViewById(R.id.lv_comments_list);
-        lvMain.setAdapter(mCommentListAdapter);
+        mCommentListAdapter = new CommentsListAdapter(this, mProject, mComments);
+        mRecyclerView.setAdapter(mCommentListAdapter);
 
         mProgressBarLoading = (ProgressBar)findViewById(R.id.pb_comment_list);
         mProgressBarLoading.setVisibility(View.GONE);

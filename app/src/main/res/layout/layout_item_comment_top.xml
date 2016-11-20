@@ -10,7 +10,7 @@
         android:layout_margin="8dp"
         app:cardElevation="3dp">
 
-        <include layout="@layout/layout_comment_item"/>
+        <include layout="@layout/layout_comment_item_top"/>
 
     </android.support.v7.widget.CardView>
 </RelativeLayout>

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
-    tools:context="by.onliner.news.by.onliner.news.Activity.CommentsActivity">
+    tools:context="by.onliner.news.Activity.CommentsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -35,14 +35,14 @@
             style="@android:style/Widget.Holo.ProgressBar.Large"
             android:layout_centerInParent="true"/>
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/lv_comments_list"
             android:transcriptMode="normal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp">
-        </ListView>
+        </android.support.v7.widget.RecyclerView>
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

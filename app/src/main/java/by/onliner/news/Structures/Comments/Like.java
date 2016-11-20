@@ -46,7 +46,7 @@ public class Like implements Serializable {
      * @param count Количетсво лайков
      */
     public void setCount(Integer count) {
-        this.mCount = count;
+        this.mCount = Integer.valueOf(count);
     }
 
     /**

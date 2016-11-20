@@ -26,7 +26,11 @@ public class CommentsParser implements IContentParser<String, LinkedHashMap<Stri
                 continue;
 
             comment.setId(Integer.parseInt(element.attr("data-comment-id")));
-            comment.setDate(element.getElementsByClass("news-comment__time").first().text());
+            Element commentTime = element.getElementsByClass("news-comment__time").first();
+            if (commentTime == null)
+                continue;;
+
+            comment.setDate(commentTime.text());
             comment.setAvatarURL(element.getElementsByClass("news-comment__image").first().attr("data-avatar").replace("url(", "").replace(")", ""));
 
             comment.getAuthor().setId(Integer.parseInt(element.attr("data-author-id")));
