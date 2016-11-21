@@ -17,16 +17,38 @@
             android:id="@+id/img_nav_header_avatar"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
             android:src="@drawable/ic_profile_user"/>
 
         <Button
             android:id="@+id/bt_auth_account"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
             android:text="Войти"
             android:textAllCaps="false"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:visibility="visible"/>
 
+        <TextView
+            android:id="@+id/tv_nav_bar_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textColor="@android:color/white"
+            android:visibility="gone"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_logout_account"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="@string/logout"
+        android:textAllCaps="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:color/transparent"
+        android:visibility="gone"/>
 </RelativeLayout>

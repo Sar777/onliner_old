@@ -11,18 +11,26 @@ public class LikeCommentResponse {
     private String mLikes;
 
     @SerializedName("errors")
-    private String mErrors;
+    private String mError;
 
-    public LikeCommentResponse(String likes, String errors) {
+    @SerializedName("user")
+    public String[] mUser;
+
+    public LikeCommentResponse(String likes, String error, String[] user) {
         this.mLikes = likes;
-        this.mErrors = errors;
+        this.mError = error;
+        this.mUser = user;
     }
 
     public String getLikes() {
         return mLikes;
     }
 
-    public String getErrors() {
-        return mErrors;
+    public String getError() {
+        return mError;
+    }
+
+    public String[] getUser() {
+        return mUser;
     }
 }

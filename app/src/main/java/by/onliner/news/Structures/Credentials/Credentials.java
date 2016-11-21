@@ -36,15 +36,18 @@ public class Credentials {
         this.mDateStore = System.currentTimeMillis() / 1000L;
     }
 
+    public void delete() {
+        SQLiteDatabase db = App.getDBHelper().getWritableDatabase();
+        db.delete(Constant.mTableNameCredentials, null, null);
+    }
+
     public void saveToDB() {
-        SQLiteDatabase db = App.getDBUserHelper().getWritableDatabase();
+        SQLiteDatabase db = App.getDBHelper().getWritableDatabase();
         db.delete(Constant.mTableNameCredentials, null, null);
 
         ContentValues cv = new ContentValues();
         cv.put("json", new Gson().toJson(this));
         db.insert(Constant.mTableNameCredentials, null, cv);
-
-        App.getDBCredentials().close();
     }
 
     @NonNull
@@ -78,7 +81,7 @@ public class Credentials {
     }
 
     public static Credentials create() {
-        SQLiteDatabase db = App.getDBCredentials().getReadableDatabase();
+        SQLiteDatabase db = App.getDBHelper().getReadableDatabase();
         Cursor cursor = db.query(Constant.mTableNameCredentials, null, null, null, null, null, null);
 
         Credentials credentials = null;
@@ -86,7 +89,6 @@ public class Credentials {
             credentials = new Gson().fromJson(cursor.getString(0), Credentials.class);
 
         cursor.close();
-        App.getDBCredentials().close();
         return credentials;
     }
 }

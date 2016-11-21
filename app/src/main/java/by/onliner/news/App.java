@@ -4,10 +4,13 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.franmontiel.persistentcookiejar.ClearableCookieJar;
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.loopj.android.http.AsyncHttpClient;
 
-import by.onliner.news.Database.DBCredentialsHelper;
-import by.onliner.news.Database.DBUserHelper;
+import by.onliner.news.Database.DBHelper;
 import by.onliner.news.Structures.Credentials.Credentials;
 import by.onliner.news.Structures.User.User;
 
@@ -19,11 +22,13 @@ public class App extends Application {
     private static Context mContext;
     private static AsyncHttpClient mClient = new AsyncHttpClient(true, 80, 443);
 
+    // Cookie
+    private static ClearableCookieJar mClearableCookieJar;
+
     private static Credentials mCredentials;
     private static User mLoggedUser;
 
-    private static DBCredentialsHelper mDBCredentials;
-    private static DBUserHelper mDBUserHelper;
+    private static DBHelper mDBHelper;
 
     @Override
     public void onCreate() {
@@ -35,8 +40,9 @@ public class App extends Application {
         mClient.addHeader("Accept", "application/json, text/javascript, */*; q=0.01; charset=utf-8");
         mClient.addHeader("Content-Type", "application/json");
 
-        mDBUserHelper = new DBUserHelper(this);
-        mDBCredentials = new DBCredentialsHelper(this);
+        mClearableCookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(this));
+
+        mDBHelper = new DBHelper(this);
 
         mCredentials = Credentials.create();
         mLoggedUser = User.create();
@@ -53,13 +59,13 @@ public class App extends Application {
     }
 
     @NonNull
-    public static DBCredentialsHelper getDBCredentials() {
-        return mDBCredentials;
+    public static ClearableCookieJar getClearableCookieJar() {
+        return mClearableCookieJar;
     }
 
     @NonNull
-    public static DBUserHelper getDBUserHelper() {
-        return mDBUserHelper;
+    public static DBHelper getDBHelper() {
+        return mDBHelper;
     }
 
     public static Credentials getCredentials() {
@@ -68,7 +74,7 @@ public class App extends Application {
 
     public static void setCredentials(Credentials credentials) {
         credentials.saveToDB();
-        App.mCredentials = credentials;
+        mCredentials = credentials;
     }
 
     public static User getLoggedUser() {
@@ -77,6 +83,19 @@ public class App extends Application {
 
     public static void setLoggedUser(User user) {
         user.saveToDB();
-        App.mLoggedUser = user;
+        mLoggedUser = user;
+    }
+
+    public static void logoutUser() {
+        if (mLoggedUser != null)
+            mLoggedUser.delete();
+
+        if (mCredentials != null)
+            mCredentials.delete();
+
+        mLoggedUser = null;
+        mCredentials = null;
+
+        mClearableCookieJar.clear();
     }
 }

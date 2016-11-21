@@ -1,10 +1,5 @@
 package by.onliner.news.Services;
 
-import com.franmontiel.persistentcookiejar.ClearableCookieJar;
-import com.franmontiel.persistentcookiejar.PersistentCookieJar;
-import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
-import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
-
 import by.onliner.news.App;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -21,14 +16,11 @@ public class ServiceFactory {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        // Cookie
-        ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(App.getContext()));
-
         final Retrofit restAdapter = new Retrofit.Builder()
                 .baseUrl(endPoint)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(new OkHttpClient.Builder()
-                        .cookieJar(cookieJar)
+                        .cookieJar(App.getClearableCookieJar())
                         .addInterceptor(interceptor)
                         .build())
                 .build();

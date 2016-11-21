@@ -64,19 +64,22 @@ public class User {
         return this.mEmail;
     }
 
+    public void delete() {
+        SQLiteDatabase db = App.getDBHelper().getWritableDatabase();
+        db.delete(Constant.mTableNameUser, null, null);
+    }
+
     public void saveToDB() {
-        SQLiteDatabase db = App.getDBUserHelper().getWritableDatabase();
+        SQLiteDatabase db = App.getDBHelper().getWritableDatabase();
         db.delete(Constant.mTableNameUser, null, null);
 
         ContentValues cv = new ContentValues();
         cv.put("json", new Gson().toJson(this));
         db.insert(Constant.mTableNameUser, null, cv);
-
-        App.getDBUserHelper().close();
     }
 
     public static User create() {
-        SQLiteDatabase db = App.getDBUserHelper().getWritableDatabase();
+        SQLiteDatabase db = App.getDBHelper().getReadableDatabase();
         Cursor cursor = db.query(Constant.mTableNameUser, null, null, null, null, null, null);
 
         User user = null;
@@ -84,7 +87,6 @@ public class User {
             user = new Gson().fromJson(cursor.getString(0), User.class);
 
         cursor.close();
-        App.getDBUserHelper().close();
         return user;
     }
 

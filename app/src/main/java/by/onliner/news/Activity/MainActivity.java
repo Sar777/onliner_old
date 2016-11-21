@@ -26,15 +26,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import by.onliner.news.Adapters.ViewPagerAdapter;
 import by.onliner.news.App;
 import by.onliner.news.R;
+import by.onliner.news.Structures.User.User;
 
 /**
  * Главное окно
@@ -42,8 +47,12 @@ import by.onliner.news.R;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DrawerLayout.DrawerListener {
 
     // Views
-    NavigationView mNavigationView;
+    private NavigationView mNavigationView;
+    private DrawerLayout mDrawerLayout;
     private Button mButtonAuth;
+    private Button mButtonLogout;
+    private ImageView mImageViewNavBarAvatar;
+    private TextView mTextViewNavBarUsername;
 
     private ViewPager mPager;
     private ViewPagerAdapter mAdapter;
@@ -63,10 +72,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        drawer.addDrawerListener(this);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        mDrawerLayout.addDrawerListener(this);
         toggle.syncState();
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -74,14 +83,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         View headerNavigationView = mNavigationView.getHeaderView(0);
 
-        mButtonAuth = (Button)headerNavigationView.findViewById(R.id.bt_auth_account);
+        mButtonAuth = (Button) headerNavigationView.findViewById(R.id.bt_auth_account);
         mButtonAuth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
                 Intent intent = new Intent(App.getContext(), AuthActivity.class);
                 startActivity(intent);
             }
         });
+
+        mButtonLogout = (Button) headerNavigationView.findViewById(R.id.bt_logout_account);
+        mButtonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                App.logoutUser();
+                updateNavBarLoginInfo();
+            }
+        });
+
+        mImageViewNavBarAvatar = (ImageView) headerNavigationView.findViewById(R.id.img_nav_header_avatar);
+        mTextViewNavBarUsername = (TextView) headerNavigationView.findViewById(R.id.tv_nav_bar_username);
+
+        updateNavBarLoginInfo();
 
         mTitles = new CharSequence[] { getString(R.string.tabAuto),  getString(R.string.tabPeoples),  getString(R.string.tabRealt),  getString(R.string.tabTechnologies) };
 
@@ -93,13 +118,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mTabs = (TabLayout) findViewById(R.id.tabs_news_list);
         mTabs.setupWithViewPager(mPager);
-    }
-
-    private void navBarLoggin() {
-        if (App.getLoggedUser() == null)
-            return;
-
-        Log.e("ORION", App.getLoggedUser().getAvatarUrl());
     }
 
     @Override
@@ -162,8 +180,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onDrawerOpened(View drawerView) {
-        // Проверка авторизации
-        navBarLoggin();
+        updateNavBarLoginInfo();
     }
 
     @Override
@@ -173,5 +190,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onDrawerStateChanged(int newState) {
 
+    }
+
+    public void updateNavBarLoginInfo() {
+        User user = App.getLoggedUser();
+        if (user == null) {
+            mImageViewNavBarAvatar.setImageResource(R.drawable.ic_profile_user);
+
+            mTextViewNavBarUsername.setVisibility(View.GONE);
+            mTextViewNavBarUsername.setText("");
+
+            mButtonAuth.setVisibility(View.VISIBLE);
+            mButtonLogout.setVisibility(View.GONE);
+        }
+        else {
+            Picasso.with(this).
+                    load(App.getLoggedUser().getAvatarUrl()).
+                    error(R.drawable.ic_broken_image).
+                    into(mImageViewNavBarAvatar);
+
+            mTextViewNavBarUsername.setVisibility(View.VISIBLE);
+            mTextViewNavBarUsername.setText(App.getLoggedUser().getUsername());
+
+            mButtonAuth.setVisibility(View.GONE);
+            mButtonLogout.setVisibility(View.VISIBLE);
+        }
     }
 }

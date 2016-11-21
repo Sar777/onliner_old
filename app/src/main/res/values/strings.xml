@@ -44,4 +44,5 @@
     <string name="auth_fail_password_username">Неверные данные, проверьте и попробуйте еще раз</string>
     <string name="auth_fail_unknown">Во время авторизации произошла неизвестная ошибка, попробуйте еще раз</string>
     <string name="like_comment_error">Неизвестная ошибка, попробуйте еще раз</string>
+    <string name="logout">Выйти</string>
 </resources>

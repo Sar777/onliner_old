@@ -182,8 +182,12 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     holder.mImageViewLikeBest.setVisibility(View.GONE);
                 }
             }
-            else
+            else {
                 holder.mViewGroupLikeGroup.setVisibility(View.GONE);
+
+                holder.mImageViewLikeDefault.setVisibility(View.VISIBLE);
+                holder.mImageViewLikeBest.setVisibility(View.GONE);
+            }
 
             holder.mViewGroupCommentText.removeAllViews();
 
@@ -229,30 +233,36 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         private void likeComment(String comment_id) {
-            limeButtonView(true, false);
+            likeButtonViews(true, false);
 
             LikeMgr.getInstance().likeComment(comment_id, mProject, new OnLikeCommentListener() {
                 @Override
                 public void OnResponse(int errCode, LikeCommentResponse response) {
                     if (errCode == HttpStatus.SC_UNAUTHORIZED) {
                         authStartActivity();
-                        limeButtonView(true, true);
+                        likeButtonViews(true, true);
                         return;
                     }
 
                     if (response == null) {
                         Snackbar.make(mButtonLike, R.string.like_comment_error, Snackbar.LENGTH_LONG).show();
-                        limeButtonView(true, true);
+                        likeButtonViews(true, true);
                         return;
                     }
 
-                    if (response.getErrors() != null && !response.getErrors().isEmpty()) {
-                        Snackbar.make(mButtonLike, response.getErrors(), Snackbar.LENGTH_LONG).show();
-                        limeButtonView(true, true);
+                    if (response.getError() != null && !response.getError().isEmpty()) {
+                        Snackbar.make(mButtonLike, response.getError(), Snackbar.LENGTH_LONG).show();
+                        likeButtonViews(true, true);
                         return;
                     }
 
-                    limeButtonView(false, true);
+                    if (response.getUser() != null && response.getUser().length > 0) {
+                        Snackbar.make(mButtonLike, response.getUser()[0], Snackbar.LENGTH_LONG).show();
+                        likeButtonViews(true, true);
+                        return;
+                    }
+
+                    likeButtonViews(false, true);
                     mTextViewLikeCount.setText(response.getLikes());
 
                     Comment comment = mResource.get((Integer) mViewGroupLikeGroup.getTag());
@@ -265,30 +275,30 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         private void deslikeComment(String comment_id) {
-            limeButtonView(false, false);
+            likeButtonViews(false, false);
 
             LikeMgr.getInstance().deslikeComment(comment_id, mProject, new OnLikeCommentListener() {
                 @Override
                 public void OnResponse(int errCode, LikeCommentResponse response) {
                     if (errCode == HttpStatus.SC_UNAUTHORIZED) {
                         authStartActivity();
-                        limeButtonView(false, true);
+                        likeButtonViews(false, true);
                         return;
                     }
 
                     if (response == null) {
                         Snackbar.make(mButtonLike, R.string.like_comment_error, Snackbar.LENGTH_LONG).show();
-                        limeButtonView(false, true);
+                        likeButtonViews(false, true);
                         return;
                     }
 
-                    if (response.getErrors() != null && !response.getErrors().isEmpty()) {
-                        Snackbar.make(mButtonLike, response.getErrors(), Snackbar.LENGTH_LONG).show();
-                        limeButtonView(false, true);
+                    if (response.getError() != null && !response.getError().isEmpty()) {
+                        Snackbar.make(mButtonLike, response.getError(), Snackbar.LENGTH_LONG).show();
+                        likeButtonViews(false, true);
                         return;
                     }
 
-                    limeButtonView(true, true);
+                    likeButtonViews(true, true);
                     mTextViewLikeCount.setText(response.getLikes());
 
                     Comment comment = mResource.get((Integer) mViewGroupLikeGroup.getTag());
@@ -300,7 +310,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
         }
 
-        private void limeButtonView(boolean like, boolean enable) {
+        private void likeButtonViews(boolean like, boolean enable) {
             if (enable) {
                 if (like)
                     mButtonLike.setVisibility(View.VISIBLE);

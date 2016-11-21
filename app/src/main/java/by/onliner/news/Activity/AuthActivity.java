@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -80,7 +79,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         mAuthGroup.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
 
-        AuthMgr.getInstance().validateAccount("", "", new OnLoginValidateAccount() {
+        AuthMgr.getInstance().validateAccount(username, password, new OnLoginValidateAccount() {
             @Override
             public void onValidate(boolean success) {
                 if (!success) {
@@ -90,7 +89,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 }
 
-                AuthMgr.getInstance().loginAccount("", "", new OnLoginCompleteListener() {
+                AuthMgr.getInstance().loginAccount(username, password, new OnLoginCompleteListener() {
                     @Override
                     public void onLoginStatus(boolean success) {
                         if (!success) {
@@ -100,18 +99,14 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                             return;
                         }
 
-                        Log.e("ORION", "loginAccount");
-
-                        Credentials.getCredintials("", "", new OnCredentialsRefreshListener() {
+                        Credentials.getCredintials(username, password, new OnCredentialsRefreshListener() {
                             @Override
                             public void onRefresh(Credentials credentials) {
                                 App.setCredentials(credentials);
-                                Log.e("ORION", "setCredentials");
                                 User.getUser(credentials.getAccessToken(), new OnUserUpdateListener() {
                                     @Override
                                     public void onUpdate(User user) {
                                         App.setLoggedUser(user);
-                                        Log.e("ORION", "GetUser");
                                     }
                                 });
                             }

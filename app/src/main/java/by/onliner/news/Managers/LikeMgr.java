@@ -4,6 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -56,14 +59,25 @@ public class LikeMgr {
             @Override
             public void onResponse(Call<LikeCommentResponse> call, Response<LikeCommentResponse> response) {
                 LikeCommentResponse likeCommentResponse = null;
-                try {
-                    if (!response.isSuccessful() && response.raw().code() == HttpStatus.SC_BAD_REQUEST)
-                        likeCommentResponse = new Gson().fromJson(response.errorBody().string(), LikeCommentResponse.class);
-                    else
-                        likeCommentResponse = response.body();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (!response.isSuccessful() && response.raw().code() == HttpStatus.SC_BAD_REQUEST) {
+                    // Хак
+                    String responsJson = null;
+                    try {
+                        responsJson = response.errorBody().string();
+                        if (responsJson.contains("user"))
+                            responsJson = new JSONObject(responsJson).get("errors").toString();
+
+                        likeCommentResponse = new Gson().fromJson(responsJson, LikeCommentResponse.class);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+                else
+                    likeCommentResponse = response.body();
+
                 listener.OnResponse(response.raw().code(), likeCommentResponse);
             }
 
