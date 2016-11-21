@@ -40,6 +40,7 @@ import by.onliner.news.Adapters.ViewPagerAdapter;
 import by.onliner.news.App;
 import by.onliner.news.R;
 import by.onliner.news.Structures.User.User;
+import by.onliner.news.Transforms.CircleTransform;
 
 /**
  * Главное окно
@@ -163,10 +164,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -205,7 +202,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else {
             Picasso.with(this).
-                    load(App.getLoggedUser().getAvatarUrl()).
+                    load(App.getLoggedUser().getAvatar().getUrlLarge()).
+                    transform(new CircleTransform()).
                     error(R.drawable.ic_broken_image).
                     into(mImageViewNavBarAvatar);
 

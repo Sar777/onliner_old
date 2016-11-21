@@ -52,8 +52,8 @@ public class User {
     }
 
     @NonNull
-    public String getAvatarUrl() {
-        return this.mAvatar.getUrlLarge();
+    public UserAvatar getAvatar() {
+        return this.mAvatar;
     }
 
     public String getPhone() {
