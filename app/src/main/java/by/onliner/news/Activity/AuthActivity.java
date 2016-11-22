@@ -103,7 +103,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void onRefresh(Credentials credentials) {
                                 App.setCredentials(credentials);
-                                User.getUser(credentials.getAccessToken(), new OnUserUpdateListener() {
+                                User.getUser(credentials.getAccessTokenFormat(), new OnUserUpdateListener() {
                                     @Override
                                     public void onUpdate(User user) {
                                         App.setLoggedUser(user);

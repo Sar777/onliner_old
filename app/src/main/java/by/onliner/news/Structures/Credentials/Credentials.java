@@ -26,12 +26,15 @@ public class Credentials {
     private final String mAccessToken;
     @SerializedName("refresh_token")
     private final String mRefreshToken;
+    @SerializedName("token_type")
+    private final String mTokenType;
 
     private long mDateStore;
 
-    public Credentials(@NonNull String accessToken, @NonNull String refreshToken) {
+    public Credentials(@NonNull String accessToken, @NonNull String refreshToken, @NonNull String tokenType) {
         this.mAccessToken = accessToken;
         this.mRefreshToken = refreshToken;
+        this.mTokenType = tokenType;
 
         this.mDateStore = System.currentTimeMillis() / 1000L;
     }
@@ -51,8 +54,13 @@ public class Credentials {
     }
 
     @NonNull
+    public String getAccessTokenFormat() {
+        return mTokenType + " "+ mAccessToken;
+    }
+
+    @NonNull
     public String getAccessToken() {
-        return String.format("%s %s", Constant.mOnlinerMagic, this.mAccessToken);
+        return mAccessToken;
     }
 
     @NonNull

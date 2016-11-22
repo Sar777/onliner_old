@@ -7,7 +7,6 @@ package by.onliner.news.Constants;
 public class Constant {
     public static final String mProfileURL = "https://profile.onliner.by";
     public static final String mBaseURL = "https://onliner.by";
-    public static final String mOnlinerMagic = "Bearer";
 
     // Database
     public static final String mDBName = "onliner.news.db";
