@@ -25,7 +25,9 @@ public class CommentsParser implements IContentParser<String, LinkedHashMap<Stri
             if (element.id().equals("bestComment"))
                 continue;
 
-            comment.setId(Integer.parseInt(element.attr("data-comment-id")));
+            element.attr("data-comment-id");
+
+            comment.setId(Integer.valueOf(element.attr("data-comment-id")));
             Element commentTime = element.getElementsByClass("news-comment__time").first();
             if (commentTime == null)
                 continue;;

@@ -12,7 +12,6 @@ import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 public class ImageFactory implements IFactoryViewObjects<Element, ViewObject> {
     @Override
     public ViewObject create(Element element) {
-
         String urlImage = "", imageDescription = "";
         for (final Element child : element.getAllElements()) {
             if (child.className().contains("news-media__image")) {
@@ -24,6 +23,9 @@ public class ImageFactory implements IFactoryViewObjects<Element, ViewObject> {
             else if (child.className().contains("news-media__subtitle")) {
                 imageDescription = child.text();
             }
+
+            if (!urlImage.isEmpty() && !imageDescription.isEmpty())
+                break;
         }
 
         if (urlImage.isEmpty())

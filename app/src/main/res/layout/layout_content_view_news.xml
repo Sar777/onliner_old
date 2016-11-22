@@ -16,8 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="invisible"
-        style="@android:style/Widget.Holo.Light.ProgressBar.Large" />
+        android:visibility="invisible" />
 
     <LinearLayout
         android:id="@+id/l_view_news_repeat"
