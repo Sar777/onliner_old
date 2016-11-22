@@ -8,7 +8,6 @@ import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
-import com.loopj.android.http.AsyncHttpClient;
 
 import by.onliner.news.Database.DBHelper;
 import by.onliner.news.Structures.Credentials.Credentials;
@@ -20,7 +19,6 @@ import by.onliner.news.Structures.User.User;
 
 public class App extends Application {
     private static Context mContext;
-    private static AsyncHttpClient mClient = new AsyncHttpClient(true, 80, 443);
 
     // Cookie
     private static ClearableCookieJar mClearableCookieJar;
@@ -34,11 +32,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        mClient.setResponseTimeout(5 * 1000);
-        mClient.setConnectTimeout(5 * 1000);
-
-        mClient.addHeader("Accept", "application/json, text/javascript, */*; q=0.01; charset=utf-8");
-        mClient.addHeader("Content-Type", "application/json");
 
         mClearableCookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(this));
 
@@ -51,11 +44,6 @@ public class App extends Application {
     @NonNull
     public static Context getContext(){
         return mContext;
-    }
-
-    @NonNull
-    public static AsyncHttpClient getAsyncHttpClient() {
-        return mClient;
     }
 
     @NonNull

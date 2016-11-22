@@ -1,8 +1,5 @@
 package by.onliner.news.Managers;
 
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -11,12 +8,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import by.onliner.news.App;
 import by.onliner.news.Common.Common;
+import by.onliner.news.Constants.Constant;
 import by.onliner.news.Listeners.OnNewsListResponse;
 import by.onliner.news.Parser.Parsers.NewsListParser;
+import by.onliner.news.Services.News.NewsService;
+import by.onliner.news.Services.ServiceFactory;
 import by.onliner.news.Structures.News.News;
-import cz.msebera.android.httpclient.Header;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Менеджер обработки и загрузки новостей
@@ -43,25 +45,34 @@ public class NewsMgr {
      *
      * @param projectId    название проекта
      * @param pull         подгрузка
-     * @param listResponse обработка
+     * @param listener     обработка
      */
-    public void getLoadingNewsList(final String projectId, boolean pull, final OnNewsListResponse listResponse) {
-        RequestParams params = new RequestParams();
+    public void getLoadingNewsList(final String projectId, boolean pull, final OnNewsListResponse listener) {
+        Map<String, String> params = new HashMap<>();
         if (pull)
-            params.put("fromDate", getLastNews(projectId).getHeader().getPostDateUnix());
-        else  // Если загрузка новойстей или обновление
+            params.put("fromDate", getLastNews(projectId).getHeader().getPostDateUnix().toString());
+        else  // Если загрузка новостей или обновление
             clearAllProjectNews(projectId);
 
         // сеть
-        App.getAsyncHttpClient().get(Common.getUrlByProject(projectId), params, new AsyncHttpResponseHandler() {
+        final NewsService service = ServiceFactory.createRetrofitService(NewsService.class, Constant.mBaseURL);
+        service.getNews(Common.getUrlByProject(projectId), params).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                listResponse.onResult(true, new NewsListParser(projectId).parse(new String(responseBody)));
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!response.isSuccessful())
+                    listener.onResult(false, null);
+                else
+                    try {
+                        listener.onResult(true, new NewsListParser(projectId).parse(response.body().string()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                listResponse.onResult(false, null);
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                listener.onResult(false, null);
             }
         });
     }

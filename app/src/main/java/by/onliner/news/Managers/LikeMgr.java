@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.HashMap;
 
 import by.onliner.news.Listeners.OnLikeCommentListener;
@@ -16,7 +17,6 @@ import by.onliner.news.Services.Likes.LikeService;
 import by.onliner.news.Services.Likes.LikesObjectListResponse;
 import by.onliner.news.Services.ServiceFactory;
 import by.onliner.news.Structures.Comments.Like;
-import cz.msebera.android.httpclient.HttpStatus;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,7 +59,7 @@ public class LikeMgr {
             @Override
             public void onResponse(Call<LikeCommentResponse> call, Response<LikeCommentResponse> response) {
                 LikeCommentResponse likeCommentResponse = null;
-                if (!response.isSuccessful() && response.raw().code() == HttpStatus.SC_BAD_REQUEST) {
+                if (!response.isSuccessful() && response.raw().code() == HttpURLConnection.HTTP_BAD_REQUEST) {
                     // Хак
                     String responsJson = null;
                     try {
@@ -84,7 +84,7 @@ public class LikeMgr {
             @Override
             public void onFailure(Call<LikeCommentResponse> call, Throwable t) {
                 t.printStackTrace();
-                listener.OnResponse(HttpStatus.SC_BAD_REQUEST, null);
+                listener.OnResponse(HttpURLConnection.HTTP_BAD_REQUEST, null);
             }
         });
     }
@@ -110,7 +110,7 @@ public class LikeMgr {
             @Override
             public void onFailure(Call<LikeCommentResponse> call, Throwable t) {
                 t.printStackTrace();
-                listener.OnResponse(HttpStatus.SC_BAD_REQUEST, null);
+                listener.OnResponse(HttpURLConnection.HTTP_BAD_REQUEST, null);
             }
         });
     }

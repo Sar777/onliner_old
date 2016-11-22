@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 import by.onliner.news.Activity.AuthActivity;
@@ -27,7 +28,6 @@ import by.onliner.news.R;
 import by.onliner.news.Services.Likes.LikeCommentResponse;
 import by.onliner.news.Structures.Comments.Comment;
 import by.onliner.news.Transforms.CircleTransform;
-import cz.msebera.android.httpclient.HttpStatus;
 
 /**
  * Created by orion on 12.11.16.
@@ -238,7 +238,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             LikeMgr.getInstance().likeComment(comment_id, mProject, new OnLikeCommentListener() {
                 @Override
                 public void OnResponse(int errCode, LikeCommentResponse response) {
-                    if (errCode == HttpStatus.SC_UNAUTHORIZED) {
+                    if (errCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
                         authStartActivity();
                         likeButtonViews(true, true);
                         return;
@@ -280,7 +280,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             LikeMgr.getInstance().deslikeComment(comment_id, mProject, new OnLikeCommentListener() {
                 @Override
                 public void OnResponse(int errCode, LikeCommentResponse response) {
-                    if (errCode == HttpStatus.SC_UNAUTHORIZED) {
+                    if (errCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
                         authStartActivity();
                         likeButtonViews(false, true);
                         return;

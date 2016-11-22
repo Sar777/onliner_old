@@ -79,7 +79,7 @@ public class AuthMgr {
     public void isLogged(final OnLoginCheckerListener listener ) {
 
         final AuthService service = ServiceFactory.createRetrofitService(AuthService.class, AuthService.AUTH_API);
-        service.isLogged(Constant.mDomain).enqueue(new Callback<ResponseBody>() {
+        service.isLogged(Constant.mBaseURL).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 listener.onLogin(response.isSuccessful());
