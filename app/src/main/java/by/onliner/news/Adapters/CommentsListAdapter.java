@@ -119,6 +119,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         // Views
         private Button mButtonLike;
         private Button mButtonDeslike;
+        private Button mButtonCommentResponse;
         private ProgressBar mProgressBar;
         private TextView mTextViewAuthor;
         private TextView mTextViewDate;
@@ -137,6 +138,9 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             mButtonDeslike = (Button) itemView.findViewById(R.id.bt_deslike_comment);
             mButtonDeslike.setOnClickListener(this);
+
+            mButtonCommentResponse = (Button) itemView.findViewById(R.id.bt_comment_response);
+            mButtonCommentResponse.setOnClickListener(this);
 
             mProgressBar = (ProgressBar) itemView.findViewById(R.id.pb_like_progress);
             mTextViewAuthor = (TextView) itemView.findViewById(R.id.tv_comment_author);
@@ -158,6 +162,8 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 case R.id.bt_deslike_comment:
                     deslikeComment(view.getTag().toString());
                     break;
+                case R.id.bt_comment_response:
+                    throw new UnsupportedOperationException("Not support comment response");
                 default:
                     break;
             }

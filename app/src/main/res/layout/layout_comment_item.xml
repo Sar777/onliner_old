@@ -155,4 +155,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
     </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_comment_response"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_gravity="right"
+        android:layout_marginBottom="14dp"
+        android:textAllCaps="false"
+        android:background="@android:color/transparent"
+        android:text="Ответить"/>
 </LinearLayout>

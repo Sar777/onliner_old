@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="by.onliner.news.Activity.CommentsActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -25,7 +25,6 @@
         android:id="@+id/l_view_comments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ProgressBar
@@ -35,7 +34,7 @@
             android:layout_centerInParent="true"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/lv_comments_list"
+            android:id="@+id/recycler_comments_list"
             android:transcriptMode="normal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -43,5 +42,15 @@
             android:dividerHeight="0dp">
         </android.support.v7.widget.RecyclerView>
     </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_anchor="@id/recycler_comments_list"
+        app:layout_anchorGravity="bottom|right|end"
+        app:layout_behavior="by.onliner.news.ViewActions.FloatingActionButtonCommentsAction"/>
 
 </android.support.design.widget.CoordinatorLayout>

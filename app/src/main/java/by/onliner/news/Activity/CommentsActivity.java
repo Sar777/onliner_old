@@ -1,6 +1,8 @@
 package by.onliner.news.Activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +19,7 @@ import by.onliner.news.Structures.Comments.Comment;
 /**
  * Просмотр комментариев
  */
-public class CommentsActivity extends AppCompatActivity {
+public class CommentsActivity extends AppCompatActivity implements View.OnClickListener {
     private ArrayList<Comment> mComments = new ArrayList<>();
 
     private CommentsListAdapter mCommentListAdapter;
@@ -25,7 +27,11 @@ public class CommentsActivity extends AppCompatActivity {
     // Views
     private RecyclerView mRecyclerView;
     private ProgressBar mProgressBarLoading;
+    private FloatingActionButton mFloatingActionButton;
 
+    @NonNull
+    private Integer mId;
+    @NonNull
     private String mProject;
 
     @Override
@@ -45,6 +51,7 @@ public class CommentsActivity extends AppCompatActivity {
 
         mComments = (ArrayList<Comment>)( getIntent().getSerializableExtra(ViewNewsActivity.INTENT_COMMENTS_TAG));
         mProject = getIntent().getStringExtra(ViewNewsActivity.INTENT_PROJECT_TAG);
+        mId = getIntent().getIntExtra(ViewNewsActivity.INTENT_NEWS_ID_TAG, -1);
 
         // Топ коммпентарий
         for (Comment comment : mComments) {
@@ -54,7 +61,7 @@ public class CommentsActivity extends AppCompatActivity {
             }
         }
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.lv_comments_list);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_comments_list);
         LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(horizontalLayoutManagaer);
 
@@ -63,5 +70,18 @@ public class CommentsActivity extends AppCompatActivity {
 
         mProgressBarLoading = (ProgressBar)findViewById(R.id.pb_comment_list);
         mProgressBarLoading.setVisibility(View.GONE);
+
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab_comments);
+        mFloatingActionButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.fab_comments:
+                break;
+            default:
+                break;
+        }
     }
 }

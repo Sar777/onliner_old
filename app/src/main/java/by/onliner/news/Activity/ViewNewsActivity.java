@@ -6,6 +6,7 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,11 +37,16 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     public static String INTENT_URL_TAG = "URL";
     public static String INTENT_COMMENTS_TAG = "COMMENTS";
     public static String INTENT_PROJECT_TAG = "PROJECT";
+    public static String INTENT_NEWS_ID_TAG = "NEWS_ID";
 
     private static final int LOADER_CONTENT_ID = 1;
     private static final int LOADER_COMMENTS_ID = 2;
 
+    @NonNull
+    private Integer mId;
+    @NonNull
     private String mURL;
+    @NonNull
     private String mProjectId;
 
     // Adapters
@@ -131,7 +137,9 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             mRecyclerContent.setAdapter(mNewsContentAdapter);
 
             // Запуск обработки комментариев
-            loadingComments(((AsyncNewsContentLoader)loader).getNews());
+            News news = ((AsyncNewsContentLoader)loader).getNews();
+            mId = news.getAttributes().getId();
+            loadingComments(news);
 
             // Показ главного окна
             mBaseLayout.setAlpha(0f);
@@ -159,6 +167,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 Intent intent = new Intent(App.getContext(), CommentsActivity.class);
                 intent.putExtra(INTENT_URL_TAG, mURL);
                 intent.putExtra(INTENT_PROJECT_TAG, mProjectId);
+                intent.putExtra(INTENT_NEWS_ID_TAG, mId);
                 intent.putExtra(INTENT_COMMENTS_TAG, new ArrayList<>(mComments.values()));
                 startActivity(intent);
                 break;

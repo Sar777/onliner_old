@@ -16,5 +16,4 @@
         android:textColor="@color/colorOnlinerGray"
         android:textSize="14sp"
         app:fontAsset="OpenSans-Bold.ttf"/>
-
 </RelativeLayout>
