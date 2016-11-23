@@ -43,30 +43,37 @@ public class NewsMgr {
     /**
      * Получение списка новостей
      *
-     * @param projectId    название проекта
+     * @param project      название проекта
      * @param pull         подгрузка
      * @param listener     обработка
      */
-    public void getLoadingNewsList(final String projectId, boolean pull, final OnNewsListResponse listener) {
+    public void getLoadingNewsList(final String project, boolean pull, boolean refresh, final OnNewsListResponse listener) {
+        ArrayList<News> news = getNewsList(project);
+        if (!pull && !refresh && !news.isEmpty()) {
+            listener.onResult(true, news);
+            return;
+        }
+
         Map<String, String> params = new HashMap<>();
         if (pull)
-            params.put("fromDate", getLastNews(projectId).getHeader().getPostDateUnix().toString());
+            params.put("fromDate", getLastNews(project).getHeader().getPostDateUnix().toString());
         else  // Если загрузка новостей или обновление
-            clearAllProjectNews(projectId);
+            clearAllProjectNews(project);
 
         // сеть
         final NewsService service = ServiceFactory.createRetrofitService(NewsService.class, Constant.mBaseURL);
-        service.getNews(Common.getUrlByProject(projectId), params).enqueue(new Callback<ResponseBody>() {
+        service.getNews(Common.getUrlByProject(project), params).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (!response.isSuccessful())
                     listener.onResult(false, null);
-                else
+                else {
                     try {
-                        listener.onResult(true, new NewsListParser(projectId).parse(response.body().string()));
+                        listener.onResult(false, new NewsListParser(project).parse(response.body().string()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }
             }
 
             @Override
@@ -84,12 +91,12 @@ public class NewsMgr {
      * @return Содержимое новости в html
      */
     public String getNewsByUrl(String url) {
-        Document doc = null;
+        Document doc;
         try {
             doc = Jsoup.connect(url).get();
         } catch (IOException e) {
             e.printStackTrace();
-            return "";
+            return null;
         }
 
         if (doc == null)
@@ -101,11 +108,14 @@ public class NewsMgr {
     /**
      * Получение списка новости по категории
      *
-     * @param projectId the project id
+     * @param project the project id
      * @return the news list
      */
-    public ArrayList<News> getNewsList(String projectId) {
-        return mNews.get(projectId);
+    public ArrayList<News> getNewsList(String project) {
+        if (!mNews.containsKey(project))
+            throw new IllegalArgumentException("Unknown project: " + project);
+
+        return mNews.get(project);
     }
 
     /**
@@ -133,11 +143,10 @@ public class NewsMgr {
      * @param project Проект
      */
     private void clearAllProjectNews(String project) {
-        ArrayList<News> projectNews = mNews.get(project);
-        if (projectNews == null || projectNews.size() == 0)
-            return;
+        if (!mNews.containsKey(project))
+            throw new IllegalArgumentException("Unknown project: " + project);
 
-        projectNews.clear();
+        mNews.get(project).clear();
     }
 
     /**

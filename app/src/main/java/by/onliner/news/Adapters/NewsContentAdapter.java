@@ -317,16 +317,17 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 mLinearLayoutIndicator.addView(imageView);
             }
 
+            LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
+            mRecyclerViewImages.setLayoutManager(horizontalLayoutManager);
+
             mRecyclerViewImages.setOnClickListener(new OnFullScreenImageListener(mActivity, new ArrayList<>(imageSliderViewObject.getImageURLs())));
 
-            LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
-            mRecyclerViewImages.setLayoutManager(horizontalLayoutManagaer);
             mRecyclerViewImages.setAdapter(new HorizontalRecyclerImageSliderAdapter(mActivity, imageSliderViewObject.getImageURLs()));
             mRecyclerViewImages.addOnScrollListener(new OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-                    LinearLayoutManager linearLayoutManager = ((LinearLayoutManager)mRecyclerViewImages.getLayoutManager());
+                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager)mRecyclerViewImages.getLayoutManager();
 
                     for (int i = 0; i < mLinearLayoutIndicator.getChildCount(); ++i)
                     {

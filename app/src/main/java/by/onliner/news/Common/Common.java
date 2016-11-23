@@ -33,4 +33,8 @@ public class Common {
     public static String getUrlByProject(String project) {
         return "https://" + project + ".onliner.by";
     }
+
+    public static long getUnixTimeNow() {
+        return System.currentTimeMillis() / 1000L;
+    }
 }

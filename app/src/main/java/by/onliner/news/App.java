@@ -2,6 +2,7 @@ package by.onliner.news;
 
 import android.app.Application;
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
@@ -9,13 +10,11 @@ import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
+import java.net.InetAddress;
+
 import by.onliner.news.Database.DBHelper;
 import by.onliner.news.Structures.Credentials.Credentials;
 import by.onliner.news.Structures.User.User;
-
-/**
- * Created by Mi Air on 13.10.2016.
- */
 
 public class App extends Application {
     private static Context mContext;
@@ -85,5 +84,20 @@ public class App extends Application {
         mCredentials = null;
 
         mClearableCookieJar.clear();
+    }
+
+    public static boolean isNetworkAvailable() {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) App.getContext().getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
+    public static boolean isInternetAvailable() {
+        try {
+            InetAddress inetAddress = InetAddress.getByName("google.com");
+            return !inetAddress.equals("");
+
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

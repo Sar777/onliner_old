@@ -84,30 +84,30 @@ public class TabBase extends Fragment implements View.OnClickListener {
             public void onLoadMore() {
                 mNewsListAdapter.getResource().add(null);
                 mNewsListAdapter.notifyItemInserted(mNewsListAdapter.getResource().size() - 1);
-                loadingNews(true);
+                loadingNews(true, false);
             }
         });
 
         mRecyclerView.setAdapter(mNewsListAdapter);
 
-        loadingNews(false);
+        loadingNews(false, false);
         return myFragmentView;
     }
 
     /**
      * Получнеие полного списка новостей
      */
-    public void loadingNews(final boolean pull) {
+    public void loadingNews(final boolean pull, final boolean refresh) {
         if (!pull) {
             mRecyclerView.setVisibility(View.INVISIBLE);
             progressBarStatus.setVisibility(View.VISIBLE);
             mLinerRepeatGroup.setVisibility(View.GONE);
         }
 
-        NewsMgr.getInstance().getLoadingNewsList(mProjectId, pull, new OnNewsListResponse() {
+        NewsMgr.getInstance().getLoadingNewsList(mProjectId, pull, refresh, new OnNewsListResponse() {
             @Override
-            public void onResult(boolean success, ArrayList<News> news) {
-                if (success) {
+            public void onResult(boolean cache, ArrayList<News> news) {
+                if (news != null) {
                     mRecyclerView.setVisibility(View.VISIBLE);
 
                     // Скрываем прогрессбар
@@ -116,7 +116,8 @@ public class TabBase extends Fragment implements View.OnClickListener {
                         mNewsListAdapter.notifyItemRemoved(mNewsListAdapter.getResource().size());
                     }
 
-                    mNewsListAdapter.getResource().addAll(news);
+                    if (!cache)
+                        mNewsListAdapter.getResource().addAll(news);
 
                     // Обновление списка
                     mNewsListAdapter.notifyItemRangeInserted(mNewsListAdapter.getResource().size(), news.size());
@@ -137,10 +138,15 @@ public class TabBase extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_loadContent:
-                loadingNews(false);
+                loadingNews(false, true);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown view id (" + v.getId() + ")");
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

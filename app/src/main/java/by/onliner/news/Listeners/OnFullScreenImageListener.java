@@ -8,13 +8,13 @@ import java.util.ArrayList;
 
 import by.onliner.news.Activity.FullScreenImageActivity;
 import by.onliner.news.App;
-import by.onliner.news.R;
 
 /**
  * Обработка откытия полного размера изображения в новом окне
  */
 public class OnFullScreenImageListener implements View.OnClickListener {
     public static String INTENT_FULL_SCREEN_URL = "URL";
+    public static String INTENT_FULL_SCREEN_POS = "POSITION";
 
     private Activity mActivity;
     private ArrayList<String> mImageUrls;
@@ -28,7 +28,7 @@ public class OnFullScreenImageListener implements View.OnClickListener {
     public void onClick(View view) {
         Intent intent = new Intent(App.getContext(), FullScreenImageActivity.class);
         intent.putStringArrayListExtra(INTENT_FULL_SCREEN_URL, mImageUrls);
+        intent.putExtra(INTENT_FULL_SCREEN_POS, mImageUrls);
         mActivity.startActivity(intent);
-        mActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }

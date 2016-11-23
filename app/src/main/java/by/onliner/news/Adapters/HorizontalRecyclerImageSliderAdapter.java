@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,17 +22,19 @@ import by.onliner.news.R;
  */
 
 public class HorizontalRecyclerImageSliderAdapter extends RecyclerView.Adapter<HorizontalRecyclerImageSliderAdapter.MyViewHolder> {
-
     private ArrayList<String> mResource;
     private Activity mActivity;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mImageView;
+        private ProgressBar mProgressBarLoading;
+        private ImageView mImageView;
 
         public MyViewHolder(View view) {
             super(view);
             mImageView = (ImageView) view.findViewById(R.id.img_recycler_slider);
             mImageView.setOnClickListener(new OnFullScreenImageListener(mActivity, mResource));
+
+            mProgressBarLoading = (ProgressBar) view.findViewById(R.id.pb_loading_image);
         }
     }
 
@@ -48,11 +52,23 @@ public class HorizontalRecyclerImageSliderAdapter extends RecyclerView.Adapter<H
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        holder.mProgressBarLoading.setVisibility(View.VISIBLE);
+
         Picasso.with(App.getContext()).
                 load(mResource.get(position)).
                 error(R.drawable.ic_broken_image).
                 resize(0, 300).
-                into(holder.mImageView);
+                into(holder.mImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        holder.mProgressBarLoading.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        holder.mProgressBarLoading.setVisibility(View.GONE);
+                    }
+                });
     }
 
     @Override

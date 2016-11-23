@@ -38,6 +38,7 @@ import com.squareup.picasso.Picasso;
 
 import by.onliner.news.Adapters.ViewPagerAdapter;
 import by.onliner.news.App;
+import by.onliner.news.Fragments.Tabs.TabBase;
 import by.onliner.news.R;
 import by.onliner.news.Structures.User.User;
 import by.onliner.news.Transforms.CircleTransform;
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager(), mTitles, Numboftabs);
 
         mPager = (ViewPager) findViewById(R.id.pager_news_list);
-        mPager.setOffscreenPageLimit(Numboftabs);
+        mPager.setOffscreenPageLimit(1);
         mPager.setAdapter(mAdapter);
 
         mTabs = (TabLayout) findViewById(R.id.tabs_news_list);
@@ -141,7 +142,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                mPager.getAdapter().notifyDataSetChanged();
+                int index = mPager.getCurrentItem();
+                ViewPagerAdapter adapter = ((ViewPagerAdapter)mPager.getAdapter());
+                TabBase fragment = adapter.getFragment(index);
+                fragment.loadingNews(false, true);
                 break;
             default:
                 break;

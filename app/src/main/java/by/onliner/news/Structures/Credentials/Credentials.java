@@ -12,6 +12,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.IOException;
 
 import by.onliner.news.App;
+import by.onliner.news.Common.Common;
 import by.onliner.news.Constants.Constant;
 import by.onliner.news.Listeners.Credentials.OnCredentialsRefreshListener;
 import by.onliner.news.Services.Credential.CredentialService;
@@ -36,7 +37,7 @@ public class Credentials {
         this.mRefreshToken = refreshToken;
         this.mTokenType = tokenType;
 
-        this.mDateStore = System.currentTimeMillis() / 1000L;
+        this.mDateStore = Common.getUnixTimeNow();
     }
 
     public void delete() {

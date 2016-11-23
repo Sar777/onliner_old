@@ -18,6 +18,10 @@ package by.onliner.news.Adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.ViewGroup;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import by.onliner.news.Enums.NewsType;
 import by.onliner.news.Fragments.Tabs.TabAuto;
@@ -28,28 +32,22 @@ import by.onliner.news.Fragments.Tabs.TabTechnologies;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-    CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
-    int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
+    private CharSequence Titles[];
+    private int NumbOfTabs;
 
+    private Map<Integer, TabBase> mPageReferenceMap;
 
-    // Build a Constructor and assign the passed Values to appropriate values in the class
     public ViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb) {
         super(fm);
 
         this.Titles = mTitles;
         this.NumbOfTabs = mNumbOfTabsumb;
+        this.mPageReferenceMap = new HashMap<>();
     }
 
-    @Override
-    public int getItemPosition(Object object) {
-        // POSITION_NONE makes it possible to reload the PagerAdapter
-        return POSITION_NONE;
-    }
-
-    //This method return the fragment for the every position in the View Pager
     @Override
     public Fragment getItem(int position) {
-        TabBase tab = null;
+        TabBase tab;
         switch (NewsType.fromInteger(position)) {
             case Autos:
                 tab = new TabAuto();
@@ -64,23 +62,35 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 tab = new TabRealt();
                 break;
             default:
-                break;
+                throw new UnsupportedOperationException("Unknown tab type, position: " + position);
         }
 
+        mPageReferenceMap.put(position, tab);
         return tab;
     }
 
-    // This method return the titles for the Tabs in the Tab Strip
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        super.destroyItem(container, position, object);
+        mPageReferenceMap.remove(position);
+    }
+
+    public TabBase getFragment(int index) {
+        return mPageReferenceMap.get(index);
+    }
 
     @Override
     public CharSequence getPageTitle(int position) {
         return Titles[position];
     }
 
-    // This method return the Number of tabs for the tabs Strip
-
     @Override
     public int getCount() {
         return NumbOfTabs;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }
