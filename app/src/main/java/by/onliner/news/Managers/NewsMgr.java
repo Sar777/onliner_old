@@ -90,7 +90,7 @@ public class NewsMgr {
      * @param url Адрес новости
      * @return Содержимое новости в html
      */
-    public String getNewsByUrl(String url) {
+    public Document getNewsByUrl(String url) {
         Document doc;
         try {
             doc = Jsoup.connect(url).get();
@@ -100,9 +100,9 @@ public class NewsMgr {
         }
 
         if (doc == null)
-            return null;
+            throw new IllegalArgumentException("Bad document loaded for parsing");
 
-        return doc.html();
+        return doc;
     }
 
     /**

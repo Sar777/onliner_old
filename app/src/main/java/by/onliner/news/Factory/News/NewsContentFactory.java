@@ -1,6 +1,5 @@
 package by.onliner.news.Factory.News;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -15,7 +14,7 @@ import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
  */
 public class NewsContentFactory {
     public static ArrayList<ViewObject> create(News news) {
-        Document document = Jsoup.parse(news.getContent());
+        Document document = news.getContent();
 
         Element rootElement = document.getElementsByClass("news-text").first();
         if (rootElement == null)
@@ -41,10 +40,9 @@ public class NewsContentFactory {
                 case "ul":
                     viewObjects.add(new ULFactory().create(element));
                     break;
-                case "blockquote": {
+                case "blockquote":
                     viewObjects.add(new QuoteFactory().create(element));
                     break;
-                }
                 case "div": {
                     // Изображения по одному и видео
                     if (element.className().indexOf("news-media_extended") != -1 || element.className().indexOf("news-media_condensed") != -1) {

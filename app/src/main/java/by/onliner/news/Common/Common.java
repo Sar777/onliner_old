@@ -30,6 +30,15 @@ public class Common {
         return "";
     }
 
+    public static String getProjectByUrl(String url) {
+        Pattern pattern = Pattern.compile("https://(\\p{Ll}+).(.*)", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(url);
+        if (matcher.matches())
+            return matcher.group(1);
+
+        return "";
+    }
+
     public static String getUrlByProject(String project) {
         return "https://" + project + ".onliner.by";
     }

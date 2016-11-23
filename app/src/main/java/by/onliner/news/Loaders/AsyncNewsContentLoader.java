@@ -4,6 +4,8 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
 
+import org.jsoup.nodes.Document;
+
 import java.util.ArrayList;
 
 import by.onliner.news.Factory.News.NewsContentFactory;
@@ -27,13 +29,11 @@ public class AsyncNewsContentLoader extends AsyncTaskLoader<ArrayList<ViewObject
 
     @Override
     public ArrayList<ViewObject> loadInBackground() {
-        String content = NewsMgr.getInstance().getNewsByUrl(mUrl);
-        if (content.isEmpty())
-            return null;
+        Document doc = NewsMgr.getInstance().getNewsByUrl(mUrl);
 
-        mNews = new BodyNewsParser().parse(content);
+        mNews = new BodyNewsParser().parse(doc);
         if (mNews == null)
-            return null;
+            throw new IllegalArgumentException("News not parsed");
 
         return NewsContentFactory.create(mNews);
     }

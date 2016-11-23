@@ -1,30 +1,28 @@
 package by.onliner.news.Parser.Parsers;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import by.onliner.news.Common.Common;
 import by.onliner.news.Parser.IContentParser;
 import by.onliner.news.Structures.News.News;
 
 /**
  * Парсинг содержимого новости и атрибутов
  */
-public class BodyNewsParser implements IContentParser<String, News> {
+public class BodyNewsParser implements IContentParser<Document, News> {
     @Override
-    public News parse(String data) {
-        Document doc = Jsoup.parse(data);
-
+    public News parse(Document doc) {
         Element wrapperElement = doc.getElementsByClass("news-container").first();
         if (wrapperElement == null)
-            return null;
+            throw new IllegalArgumentException("Not found base news container in HTML");
 
-        News news = new News(data);
+        News news = new News(doc);
         news.getAttributes().setId(Integer.parseInt(doc.getElementsByClass("news_view_count").first().attr("news_id")));
-        news.getAttributes().setProject(doc.getElementById("commentsList").attr("data-project"));
+        news.getAttributes().setProject(Common.getProjectByUrl(doc.baseUri()));
 
         for (Element element : wrapperElement.getAllElements()) {
             if (element.className().isEmpty())

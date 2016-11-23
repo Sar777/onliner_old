@@ -185,7 +185,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
     private void loadingComments(News news) {
         Bundle bundle = new Bundle();
-        bundle.putString("Html", news.getContent());
+        bundle.putString("Html", news.getContent().html());
         bundle.putString("Project", news.getAttributes().getProject());
         bundle.putString("PostId", news.getAttributes().getId().toString());
         getLoaderManager().restartLoader(LOADER_COMMENTS_ID, bundle, new LoaderCallbacks<LinkedHashMap<String, Comment>>() {

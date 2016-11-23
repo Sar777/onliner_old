@@ -1,6 +1,8 @@
 package by.onliner.news.Structures.News;
 
 
+import org.jsoup.nodes.Document;
+
 import java.io.Serializable;
 
 /**
@@ -18,9 +20,9 @@ public class News implements Serializable {
     /**
      * Содержимое новости в html
      */
-    private String mContent;
+    private Document mContent;
 
-    public News(String content) {
+    public News(Document content) {
         this.mAttributes = new NewsAttributes();
         this.mHeader = new NewsHeader();
         this.mContent = content;
@@ -29,10 +31,10 @@ public class News implements Serializable {
     public News(NewsHeader header) {
         this.mAttributes = new NewsAttributes();
         this.mHeader = header;
-        this.mContent = "";
+        this.mContent = null;
     }
 
-    public News(NewsAttributes attributes, NewsHeader header, String content) {
+    public News(NewsAttributes attributes, NewsHeader header, Document content) {
         this.mAttributes = attributes;
         this.mHeader = header;
         this.mContent = content;
@@ -72,17 +74,17 @@ public class News implements Serializable {
 
     /**
      * Установка содержимого новости в html
-     * @param content Содержимое новости в html
+     * @param doc Содержимое новости
      */
-    public void setContent(String content) {
-        this.mContent = content;
+    public void setContent(Document doc) {
+        this.mContent = doc;
     }
 
     /**
      * Получение содержимого новости в html
-     * @return Содержимое новости в html
+     * @return Содержимое новости
      */
-    public String getContent() {
+    public Document getContent() {
         return mContent;
     }
 
@@ -91,7 +93,7 @@ public class News implements Serializable {
         return "News{" +
                 "mHeader=" + mHeader +
                 ", mAttributes=" + mAttributes +
-                ", mContent='" + mContent + '\'' +
+                ", mContent='" + mContent.toString() + '\'' +
                 '}';
     }
 }
