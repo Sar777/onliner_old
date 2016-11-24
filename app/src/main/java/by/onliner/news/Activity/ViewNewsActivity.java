@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
@@ -192,7 +193,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
     private void loadingComments(News news) {
         Bundle bundle = new Bundle();
-        bundle.putString("Html", news.getContent().html());
+        bundle.putString("Html", news.getCommentBlock());
         bundle.putString("Project", news.getAttributes().getProject());
         bundle.putString("PostId", news.getAttributes().getId().toString());
         getLoaderManager().restartLoader(LOADER_COMMENTS_ID, bundle, new LoaderCallbacks<LinkedHashMap<String, Comment>>() {
@@ -204,7 +205,12 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onLoadFinished(Loader<LinkedHashMap<String, Comment>> loader, LinkedHashMap<String, Comment> result) {
                 mComments = result;
-                mButtonComment.setEnabled(true);
+                mButtonComment.animate().translationY(-mButtonComment.getHeight()).setDuration(500).setInterpolator(new LinearInterpolator()).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mButtonComment.setEnabled(true);
+                    }
+                }).start();
             }
 
             @Override

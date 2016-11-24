@@ -21,9 +21,13 @@ public class BodyNewsParser implements IContentParser<Document, News> {
             throw new IllegalArgumentException("Not found base news container in HTML");
 
         News news = new News(doc);
+        news.setCommentBlock(doc.getElementById("commentsList").html());
+
         news.getAttributes().setId(Integer.parseInt(doc.getElementsByClass("news_view_count").first().attr("news_id")));
-        news.getAttributes().setProject(Common.getProjectByUrl(doc.baseUri()));
-        news.getAttributes().setUrl(doc.baseUri());
+
+        Element elementMeta = doc.select("meta[property=og:url]").first();
+        news.getAttributes().setProject(Common.getProjectByUrl(elementMeta.attr("content")));
+        news.getAttributes().setUrl(elementMeta.attr("content"));
 
         for (Element element : wrapperElement.getAllElements()) {
             if (element.className().isEmpty())

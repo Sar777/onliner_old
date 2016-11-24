@@ -61,11 +61,11 @@
         <Button
             android:id="@+id/bt_view_news_comments"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="49dp"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="-50dp"
             android:textColor="@android:color/white"
             android:background="#1a6dbb"
-            android:visibility="visible"
             android:padding="10dp"
             android:text="@string/comments" />
     </RelativeLayout>

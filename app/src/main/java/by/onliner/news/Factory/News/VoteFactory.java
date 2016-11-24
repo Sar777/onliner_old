@@ -19,6 +19,10 @@ public class VoteFactory implements IFactoryViewObjects<Element, ViewObject> {
         for (Element checkboxElement : element.getElementsByClass("news-form__checkbox-item"))
             options.add(checkboxElement.getElementsByClass("news-form__checkbox-sign").first().text());
 
-        return new VoteViewObject(element.getElementsByClass("news-vote__title").first().text(), element.getElementsByClass("news-vote__speech").first().text(), options);
+        Element title = element.getElementsByClass("news-vote__title").first();
+        Element speech = element.getElementsByClass("news-vote__speech").first();
+        Element note = element.getElementsByClass("news-vote__stripe-note").first();
+
+        return new VoteViewObject(title.text(), speech.text(), note != null ? note.text() : "", options);
     }
 }

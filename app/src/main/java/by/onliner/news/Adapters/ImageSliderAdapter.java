@@ -43,7 +43,7 @@ public class ImageSliderAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        final View itemView = mLayoutInflater.inflate(R.layout.layout_image_pager_item, container, false);
+        final View itemView = mLayoutInflater.inflate(R.layout.layout_image_slider_item, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.img_pager_slider);
 

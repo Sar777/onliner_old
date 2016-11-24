@@ -14,6 +14,7 @@
             android:id="@+id/img_recycler_slider"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:minHeight="200dp"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"/>
 

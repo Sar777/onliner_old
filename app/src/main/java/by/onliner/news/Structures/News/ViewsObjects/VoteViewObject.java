@@ -11,12 +11,14 @@ import by.onliner.news.Enums.ViewNewsType;
 public class VoteViewObject extends ViewObject {
     private String mTitle;
     private String mState;
+    private String mNote;
     private ArrayList<String> mOptions;
 
-    public VoteViewObject(String title, String state, ArrayList<String> options) {
+    public VoteViewObject(String title, String state, String note, ArrayList<String> options) {
         super(ViewNewsType.TYPE_VIEW_VOTE);
         this.mTitle = title;
         this.mState = state;
+        this.mNote = note;
         this.mOptions = options;
     }
 
@@ -26,6 +28,10 @@ public class VoteViewObject extends ViewObject {
 
     public String getState() {
         return mState;
+    }
+
+    public String getNote() {
+        return mNote;
     }
 
     public ArrayList<String> getOptions() {

@@ -14,5 +14,8 @@ import retrofit2.http.Url;
 
 public interface NewsService {
     @GET
-    Call<ResponseBody> getNews(@Url String url, @QueryMap Map<String, String> options);
+    Call<ResponseBody> getNewsList(@Url String url, @QueryMap Map<String, String> options);
+
+    @GET
+    Call<ResponseBody> getNews(@Url String url);
 }

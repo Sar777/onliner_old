@@ -60,7 +60,7 @@ public class NewsMgr {
 
         // сеть
         final NewsService service = ServiceFactory.createRetrofitService(NewsService.class, Constant.mBaseURL);
-        service.getNews(Common.getUrlByProject(project), params).enqueue(new Callback<ResponseBody>() {
+        service.getNewsList(Common.getUrlByProject(project), params).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (!response.isSuccessful())
@@ -95,19 +95,18 @@ public class NewsMgr {
      * @param url Адрес новости
      * @return Содержимое новости в html
      */
-    public Document getNewsByUrl(String url) {
-        Document doc;
+    public Document getSyncNewsByUrl(String url) {
+        NewsService service = ServiceFactory.createRetrofitService(NewsService.class, Constant.mBaseURL);
+        String result = null;
         try {
-            doc = Jsoup.connect(url).get();
+            Response<ResponseBody> response = service.getNews(url).execute();
+            if (response.isSuccessful())
+                result = response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
 
-        if (doc == null)
-            throw new IllegalArgumentException("Bad document loaded for parsing");
-
-        return doc;
+        return Jsoup.parse(result);
     }
 
     // TODO TEMP

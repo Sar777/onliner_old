@@ -27,6 +27,9 @@ public class News implements Serializable {
     @NonNull
     private Document mContent;
 
+    @NonNull
+    private String mCommentBlock;
+
     public News(Document content) {
         this.mAttributes = new NewsAttributes();
         this.mHeader = new NewsHeader();
@@ -91,6 +94,23 @@ public class News implements Serializable {
      */
     public Document getContent() {
         return mContent;
+    }
+
+    /**
+     * Получение Html блока комметариев
+     * @return HTML с комментариями
+     */
+    @NonNull
+    public String getCommentBlock() {
+        return mCommentBlock;
+    }
+
+    /**
+     * Установка html блока с комментариями
+     * @param commentBlock Html блок с комментариями
+     */
+    public void setCommentBlock(@NonNull String commentBlock) {
+        this.mCommentBlock = commentBlock;
     }
 
     @Override

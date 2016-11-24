@@ -29,7 +29,7 @@ public class AsyncNewsContentLoader extends AsyncTaskLoader<ArrayList<ViewObject
 
     @Override
     public ArrayList<ViewObject> loadInBackground() {
-        Document doc = NewsMgr.getInstance().getNewsByUrl(mUrl);
+        Document doc = NewsMgr.getInstance().getSyncNewsByUrl(mUrl);
 
         mNews = new BodyNewsParser().parse(doc);
         if (mNews == null)

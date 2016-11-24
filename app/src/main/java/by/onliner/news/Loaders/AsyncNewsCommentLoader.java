@@ -14,9 +14,8 @@ import by.onliner.news.Structures.Comments.Comment;
 import by.onliner.news.Structures.Comments.Like;
 
 /**
- * Created by orion on 15.11.16.
+ * Лоаудер обработки комментариев. Выполняется в бэграунде после загрузки содержимого новости
  */
-
 public class AsyncNewsCommentLoader extends AsyncTaskLoader<LinkedHashMap<String, Comment>> {
     private String mContent;
     private String mProject;

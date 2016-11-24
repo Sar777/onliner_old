@@ -18,14 +18,16 @@ public class CommentsParser implements IContentParser<String, LinkedHashMap<Stri
         Document doc = Jsoup.parse(data);
         LinkedHashMap<String, Comment> commentList = new LinkedHashMap<>();
 
-        for (Element element : doc.getElementById("commentsList").getElementsByClass("news-comment__item")) {
+        for (Element element : doc.getElementsByClass("news-comment__item")) {
             Comment comment = new Comment();
 
-            // Пропуск парсинга лучего комментария по кол-ву лайков
+            // Пропуск парсинга лучшего комментария по кол-ву лайков
             if (element.id().equals("bestComment"))
                 continue;
 
-            element.attr("data-comment-id");
+            // WTF
+            if (element.attr("data-comment-id").isEmpty())
+                continue;
 
             comment.setId(Integer.valueOf(element.attr("data-comment-id")));
             Element commentTime = element.getElementsByClass("news-comment__time").first();
@@ -39,11 +41,13 @@ public class CommentsParser implements IContentParser<String, LinkedHashMap<Stri
             comment.getAuthor().setName(element.attr("data-author"));
 
             // Цитаты в комментариях
+            // TODO Нужен фикс. Нету вложенности
             comment.setQuote(new CommentQuoteParser().parse(element.getElementsByClass("news-comment__cite").first()));
 
             element.getElementsByClass("news-comment__cite").remove();
-            Element elementText = element.getElementsByClass("news-comment__speech").first();
-            comment.setText(elementText.getElementsByTag("p").first().html());
+            Element elementText = element.getElementsByClass("news-comment__speech").first().getElementsByTag("p").first();
+            if (elementText != null)
+                comment.setText(elementText.html());
 
             commentList.put(comment.getId().toString(), comment);
         }
