@@ -44,6 +44,7 @@ public class TabBase extends Fragment implements View.OnClickListener, SwipeRefr
 
     // Intents
     public static String INTENT_URL_TAG = "URL";
+    public static String INTENT_URL_PROJECT = "PROJECT";
 
     private NewsListAdapter mNewsListAdapter;
 

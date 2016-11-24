@@ -20,11 +20,13 @@ import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
 
 public class AsyncNewsContentLoader extends AsyncTaskLoader<ArrayList<ViewObject>> {
     private String mUrl;
+    private String mProject;
     private News mNews;
 
     public AsyncNewsContentLoader(Context context, Bundle args) {
         super(context);
         mUrl = args.getString("URL");
+        mProject = args.getString("PROJECT");
     }
 
     @Override
@@ -34,6 +36,9 @@ public class AsyncNewsContentLoader extends AsyncTaskLoader<ArrayList<ViewObject
         mNews = new BodyNewsParser().parse(doc);
         if (mNews == null)
             throw new IllegalArgumentException("News not parsed");
+
+        mNews.getAttributes().setUrl(mUrl);
+        mNews.getAttributes().setProject(mProject);
 
         return NewsContentFactory.create(mNews);
     }

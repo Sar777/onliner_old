@@ -1,5 +1,7 @@
 package by.onliner.news.Managers;
 
+import android.util.Log;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -98,6 +100,7 @@ public class NewsMgr {
     public Document getSyncNewsByUrl(String url) {
         NewsService service = ServiceFactory.createRetrofitService(NewsService.class, Constant.mBaseURL);
         String result = null;
+        long now = System.currentTimeMillis();
         try {
             Response<ResponseBody> response = service.getNews(url).execute();
             if (response.isSuccessful())
@@ -105,6 +108,11 @@ public class NewsMgr {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Log.e("ORION", "Network " + (System.currentTimeMillis() - now));
+        now = System.currentTimeMillis();
+        Document doc = Jsoup.parse(result);
+        Log.e("ORION", "Parse " + (System.currentTimeMillis() - now));
 
         return Jsoup.parse(result);
     }

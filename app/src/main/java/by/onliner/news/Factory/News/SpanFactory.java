@@ -16,7 +16,7 @@ public class SpanFactory implements IFactoryViewObjects<Element, ViewObject> {
         if (element.ownText().isEmpty()) {
             // Youtube
             if (element.getElementsByTag("iframe").size() > 0)
-                return new VideoFactory().create(element);
+                return new YoutubeVideoFactory().create(element);
         }
 
         if (element.html().isEmpty())

@@ -10,11 +10,14 @@ import by.onliner.news.Structures.News.ViewsObjects.YoutubeViewObject;
 /**
  * Добавление плеера Youtube на экран
  */
-public class VideoFactory implements IFactoryViewObjects<Element, ViewObject> {
+public class YoutubeVideoFactory implements IFactoryViewObjects<Element, ViewObject> {
     @Override
     public ViewObject create(Element element) {
         Element frameElement = element.getElementsByTag("iframe").first();
         if (frameElement == null)
+            return null;
+
+        if (!frameElement.attr("strc").contains("youtube"))
             return null;
 
         final String youtubeVideoId = Common.getYoutubeVideoId(frameElement.attr("src"));

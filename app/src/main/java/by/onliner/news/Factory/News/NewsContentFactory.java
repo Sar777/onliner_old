@@ -48,7 +48,7 @@ public class NewsContentFactory {
                     if (element.className().indexOf("news-media_extended") != -1 || element.className().indexOf("news-media_condensed") != -1) {
                         // Видео
                         if (element.getElementsByTag("iframe").size() > 0)
-                            viewObjects.add(new VideoFactory().create(element));
+                            viewObjects.add(new YoutubeVideoFactory().create(element));
                         else
                             viewObjects.add(new ImageFactory().create(element));
                     }
