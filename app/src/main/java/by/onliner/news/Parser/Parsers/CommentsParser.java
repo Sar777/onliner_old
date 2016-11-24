@@ -42,7 +42,8 @@ public class CommentsParser implements IContentParser<String, LinkedHashMap<Stri
             comment.setQuote(new CommentQuoteParser().parse(element.getElementsByClass("news-comment__cite").first()));
 
             element.getElementsByClass("news-comment__cite").remove();
-            comment.setText(element.getElementsByClass("news-comment__speech").first().html());
+            Element elementText = element.getElementsByClass("news-comment__speech").first();
+            comment.setText(elementText.getElementsByTag("p").first().html());
 
             commentList.put(comment.getId().toString(), comment);
         }

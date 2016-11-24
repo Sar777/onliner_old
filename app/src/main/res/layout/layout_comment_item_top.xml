@@ -101,7 +101,6 @@
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
                         android:paddingRight="4dp"
-                        android:text="10"
                         tools:ignore="SpUsage" />
 
                 </LinearLayout>
@@ -113,6 +112,10 @@
         android:id="@+id/l_comment_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:orientation="vertical">
     </LinearLayout>
 </LinearLayout>
