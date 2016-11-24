@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,6 +26,7 @@ import by.onliner.news.App;
 import by.onliner.news.Fragments.Tabs.TabBase;
 import by.onliner.news.Loaders.AsyncNewsCommentLoader;
 import by.onliner.news.Loaders.AsyncNewsContentLoader;
+import by.onliner.news.Managers.FavoritesNewsMgr;
 import by.onliner.news.R;
 import by.onliner.news.Structures.Comments.Comment;
 import by.onliner.news.Structures.News.News;
@@ -43,11 +46,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private static final int LOADER_COMMENTS_ID = 2;
 
     @NonNull
-    private Integer mId;
-    @NonNull
-    private String mURL;
-    @NonNull
-    private String mProjectId;
+    private News mNews;
 
     // Adapters
     private NewsContentAdapter mNewsContentAdapter;
@@ -59,6 +58,10 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private Button mButtonRepeat;
     private ViewGroup mRepeatGroup;
     private RecyclerView mRecyclerContent;
+
+    // Menu
+    private MenuItem mItemFavorite;
+    private MenuItem mItemRemoveFavorite;
 
     private LinkedHashMap<String, Comment> mComments;
 
@@ -103,11 +106,10 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         Intent intent = getIntent();
-        mURL = intent.getStringExtra(TabBase.INTENT_URL_TAG);
-        mProjectId = intent.getStringExtra(TabBase.INTENT_URL_PROJECT);
+        String url = intent.getStringExtra(TabBase.INTENT_URL_TAG);
 
         Bundle bundle = new Bundle();
-        bundle.putString("URL", mURL);
+        bundle.putString("URL", url);
         getLoaderManager().initLoader(LOADER_CONTENT_ID, bundle, this).forceLoad();
     }
 
@@ -137,9 +139,14 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             mRecyclerContent.setAdapter(mNewsContentAdapter);
 
             // Запуск обработки комментариев
-            News news = ((AsyncNewsContentLoader)loader).getNews();
-            mId = news.getAttributes().getId();
-            loadingComments(news);
+            mNews = ((AsyncNewsContentLoader)loader).getNews();
+            loadingComments(mNews);
+
+            // Избранная новость
+            if (FavoritesNewsMgr.getInstance().isFavorite(mNews.getAttributes().getId())) {
+                mItemFavorite.setVisible(false);
+                mItemRemoveFavorite.setVisible(true);
+            }
 
             // Показ главного окна
             mBaseLayout.setAlpha(0f);
@@ -165,16 +172,16 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.bt_view_news_comments: {
                 Intent intent = new Intent(App.getContext(), CommentsActivity.class);
-                intent.putExtra(INTENT_URL_TAG, mURL);
-                intent.putExtra(INTENT_PROJECT_TAG, mProjectId);
-                intent.putExtra(INTENT_NEWS_ID_TAG, mId);
+                intent.putExtra(INTENT_URL_TAG, mNews.getAttributes().getUrl());
+                intent.putExtra(INTENT_PROJECT_TAG,  mNews.getAttributes().getProject());
+                intent.putExtra(INTENT_NEWS_ID_TAG,  mNews.getAttributes().getId());
                 intent.putExtra(INTENT_COMMENTS_TAG, new ArrayList<>(mComments.values()));
                 startActivity(intent);
                 break;
             }
             case R.id.btn_load_repeat: {
                 Bundle bundle = new Bundle();
-                bundle.putString("URL", mURL);
+                bundle.putString("URL", mNews.getAttributes().getUrl());
                 getLoaderManager().restartLoader(LOADER_CONTENT_ID, bundle, this).forceLoad();
                 break;
             }
@@ -203,5 +210,34 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onLoaderReset(Loader<LinkedHashMap<String, Comment>> loader) { }
         }).forceLoad();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.view_news_menu, menu);
+
+        mItemFavorite = menu.findItem(R.id.action_favorites);
+        mItemRemoveFavorite = menu.findItem(R.id.action_remove_favorites);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_favorites:
+                FavoritesNewsMgr.getInstance().saveFavorite(mNews);
+                mItemFavorite.setVisible(false);
+                mItemRemoveFavorite.setVisible(true);
+                break;
+            case R.id.action_remove_favorites:
+                FavoritesNewsMgr.getInstance().deleteFavorite(mNews);
+                mItemFavorite.setVisible(true);
+                mItemRemoveFavorite.setVisible(false);
+                break;
+            default:
+                break;
+        }
+
+        return true;
     }
 }

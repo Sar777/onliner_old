@@ -78,7 +78,7 @@ public class NewsHeader implements Serializable {
      * @return Истина и ложь
      */
     public Boolean isValid() {
-        return !title.isEmpty() && !image.isEmpty();
+        return !title.isEmpty() && !image.isEmpty() && !url.isEmpty();
     }
 
     /**

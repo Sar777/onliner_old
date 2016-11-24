@@ -23,6 +23,7 @@ public class BodyNewsParser implements IContentParser<Document, News> {
         News news = new News(doc);
         news.getAttributes().setId(Integer.parseInt(doc.getElementsByClass("news_view_count").first().attr("news_id")));
         news.getAttributes().setProject(Common.getProjectByUrl(doc.baseUri()));
+        news.getAttributes().setUrl(doc.baseUri());
 
         for (Element element : wrapperElement.getAllElements()) {
             if (element.className().isEmpty())

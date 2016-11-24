@@ -36,6 +36,7 @@
     <string name="default_date"><![CDATA[<Date>]]></string>
     <string name="repeat_load_info">При загрузке данных произошла ошибка.\nПроверьте Ваше подключение к сети.</string>
     <string name="refresh">Обновить</string>
+    <string name="favorites">Избранное</string>
     <string name="vote">Голосовать</string>
     <string name="top_comment">Лучший комментарий</string>
     <string name="auth">Войти</string>
@@ -45,4 +46,5 @@
     <string name="auth_fail_unknown">Во время авторизации произошла неизвестная ошибка, попробуйте еще раз</string>
     <string name="like_comment_error">Неизвестная ошибка, попробуйте еще раз</string>
     <string name="logout">Выйти</string>
+    <string name="favorite">Избранные</string>
 </resources>

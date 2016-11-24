@@ -2,13 +2,11 @@ package by.onliner.news.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -17,7 +15,6 @@ import java.util.ArrayList;
 
 import by.onliner.news.Activity.ViewNewsActivity;
 import by.onliner.news.Fragments.Tabs.TabBase;
-import by.onliner.news.Listeners.OnLoadMoreListener;
 import by.onliner.news.Managers.NewsMgr;
 import by.onliner.news.R;
 import by.onliner.news.Structures.News.News;
@@ -27,68 +24,22 @@ import by.onliner.news.Structures.News.NewsHeader;
  * Created by orion on 12.11.16.
  */
 
-public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class NewsFavoritesListAdapter extends RecyclerView.Adapter<NewsFavoritesListAdapter.ViewItemHolder> {
     private ArrayList<News> mResource;
     private Context mContext;
-    private RecyclerView mRecyclerView;
 
-    private final int VIEW_TYPE_ITEM = 0;
-    private final int VIEW_TYPE_LOADING = 1;
-
-    private OnLoadMoreListener mOnLoadMoreListener;
-
-    private boolean mIsLoading;
-    private int mVisibleThreshold = 5;
-    private int mLastVisibleItem, mTotalItemCount;
-
-    public NewsListAdapter(Context context, String project, RecyclerView recyclerView) {
+    public NewsFavoritesListAdapter(Context context, ArrayList<String> urls) {
         this.mContext = context;
-        this.mResource = NewsMgr.getInstance().getNewsList(project);
-        this.mRecyclerView = recyclerView;
-
-        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                mTotalItemCount = linearLayoutManager.getItemCount();
-                mLastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-
-                if (!mIsLoading && mTotalItemCount <= (mLastVisibleItem + mVisibleThreshold)) {
-                    if (mOnLoadMoreListener != null) {
-                        mOnLoadMoreListener.onLoadMore();
-                    }
-
-                    mIsLoading = true;
-                }
-            }
-        });
-    }
-
-    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
-        this.mOnLoadMoreListener = mOnLoadMoreListener;
+        this.mResource = NewsMgr.getInstance().getNewsListByUrls(urls);
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return mResource.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+    public ViewItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_news_item, parent, false);
+        return new ViewItemHolder(view);
     }
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_ITEM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_news_item, parent, false);
-            return new ViewDataHolder(view);
-        } else if (viewType == VIEW_TYPE_LOADING) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_loading_item, parent, false);
-            return new LoadingViewHolder(view);
-        }
-
-        return null;
-    }
-
-    public class ViewDataHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // Views
         private TextView mTextViewTitle;
         private TextView mTextViewComments;
@@ -99,7 +50,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private ImageView mImageviewVideo;
         private ViewGroup mViewGroupPhotos;
 
-        public ViewDataHolder(View itemView)  {
+        public ViewItemHolder(View itemView)  {
             super(itemView);
 
             mImageviewPreview = (ImageView)itemView.findViewById(R.id.i_preview_image);
@@ -124,35 +75,13 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public class LoadingViewHolder extends RecyclerView.ViewHolder {
-        private ProgressBar mProgressBar;
-
-        public LoadingViewHolder(View itemView) {
-            super(itemView);
-
-            mProgressBar = (ProgressBar)itemView.findViewById(R.id.pb_loading_more);
-        }
-    }
-
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        // Данные
-        if (holder instanceof ViewDataHolder) {
-            bindViewDataItem(((ViewDataHolder)holder), position);
-        }
-        // Прогресс
-        else if (holder instanceof LoadingViewHolder) {
-            bindViewLoading((LoadingViewHolder)holder, position);
-        }
-    }
-
-    private void bindViewDataItem(final ViewDataHolder holder, final int position) {
+    public void onBindViewHolder(final ViewItemHolder holder, final int position) {
         News news = mResource.get(position);
         if (news == null)
             return;
 
         NewsHeader header = news.getHeader();
-
         Picasso.with(mContext).
                 load(header.getImage()).
                 error(R.drawable.ic_broken_image).
@@ -181,10 +110,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.mImageviewVideo.setVisibility(View.GONE);
     }
 
-    private void bindViewLoading(final LoadingViewHolder holder, final int position) {
-        holder.mProgressBar.setIndeterminate(true);
-    }
-
     public ArrayList<News> getResource() {
         return mResource;
     }
@@ -192,9 +117,5 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         return mResource == null ? 0 : mResource.size();
-    }
-
-    public void setLoaded() {
-        mIsLoading = false;
     }
 }

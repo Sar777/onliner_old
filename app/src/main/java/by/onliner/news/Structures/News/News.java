@@ -1,6 +1,8 @@
 package by.onliner.news.Structures.News;
 
 
+import android.support.annotation.NonNull;
+
 import org.jsoup.nodes.Document;
 
 import java.io.Serializable;
@@ -12,14 +14,17 @@ public class News implements Serializable {
     /**
      * Содержанеие заголовка новости где хранится информация о видео, изображении и так далее
      */
+    @NonNull
     private NewsHeader mHeader;
     /**
      * Атрибуты новости
      */
+    @NonNull
     private NewsAttributes mAttributes;
     /**
      * Содержимое новости в html
      */
+    @NonNull
     private Document mContent;
 
     public News(Document content) {

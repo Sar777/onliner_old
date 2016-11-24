@@ -110,6 +110,21 @@ public class NewsMgr {
         return doc;
     }
 
+    // TODO TEMP
+    //
+    //
+    public ArrayList<News> getNewsListByUrls(ArrayList<String> urls) {
+        ArrayList<News> cacheNews = new ArrayList<>();
+        for (Map.Entry<String, ArrayList<News>> list : mNews.entrySet()) {
+            for (News news : list.getValue()) {
+                if (urls.contains(news.getAttributes().getUrl()))
+                    cacheNews.add(news);
+            }
+        }
+
+        return cacheNews;
+    }
+
     /**
      * Получение списка новости по категории
      *
