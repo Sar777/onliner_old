@@ -47,18 +47,16 @@ public class NewsMgr {
      * @param pull         подгрузка
      * @param listener     обработка
      */
-    public void getLoadingNewsList(final String project, boolean pull, boolean refresh, final OnNewsListResponse listener) {
+    public void getLoadingNewsList(final String project, final boolean pull, boolean refresh, final OnNewsListResponse listener) {
         ArrayList<News> news = getNewsList(project);
         if (!pull && !refresh && !news.isEmpty()) {
-            listener.onResult(true, news);
+            listener.onResult(news);
             return;
         }
 
         Map<String, String> params = new HashMap<>();
         if (pull)
             params.put("fromDate", getLastNews(project).getHeader().getPostDateUnix().toString());
-        else  // Если загрузка новостей или обновление
-            clearAllProjectNews(project);
 
         // сеть
         final NewsService service = ServiceFactory.createRetrofitService(NewsService.class, Constant.mBaseURL);
@@ -66,10 +64,17 @@ public class NewsMgr {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (!response.isSuccessful())
-                    listener.onResult(false, null);
+                    listener.onResult(null);
                 else {
                     try {
-                        listener.onResult(false, new NewsListParser(project).parse(response.body().string()));
+                        ArrayList<News> objects = new NewsListParser(project).parse(response.body().string());
+                        if (pull)
+                            getNewsList(project).remove(getNewsList(project).size() - 1);
+                        else
+                            clearProjectNews(project);
+
+                        addNews(project, objects);
+                        listener.onResult(objects);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -79,7 +84,7 @@ public class NewsMgr {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
-                listener.onResult(false, null);
+                listener.onResult(null);
             }
         });
     }
@@ -142,11 +147,23 @@ public class NewsMgr {
      *
      * @param project Проект
      */
-    private void clearAllProjectNews(String project) {
+    private void clearProjectNews(String project) {
         if (!mNews.containsKey(project))
             throw new IllegalArgumentException("Unknown project: " + project);
 
         mNews.get(project).clear();
+    }
+
+    /**
+     * Добавление группы новостей
+     * @param project Проект
+     * @param newsList Список новостей
+     */
+    private void addNews(String project, ArrayList<News> newsList) {
+        if (!mNews.containsKey(project))
+            throw new IllegalArgumentException("Unknown project: " + project);
+
+        mNews.get(project).addAll(newsList);
     }
 
     /**

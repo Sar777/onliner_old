@@ -9,5 +9,5 @@ import by.onliner.news.Structures.News.News;
  */
 
 public interface OnNewsListResponse {
-    void onResult(boolean cache, ArrayList<News> news);
+    void onResult(ArrayList<News> news);
 }

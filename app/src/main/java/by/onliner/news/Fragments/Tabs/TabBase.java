@@ -18,6 +18,7 @@ package by.onliner.news.Fragments.Tabs;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,7 +39,7 @@ import by.onliner.news.Structures.News.News;
 /**
  * The type Tab base.
  */
-public class TabBase extends Fragment implements View.OnClickListener {
+public class TabBase extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     protected String mProjectId = "default";
 
     // Intents
@@ -53,23 +54,26 @@ public class TabBase extends Fragment implements View.OnClickListener {
     private Button btnLoadContent;
     private ViewGroup mLinerRepeatGroup;
     private RecyclerView mRecyclerView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private ProgressBar progressBarStatus;
+    private ProgressBar mProgressBarStatus;
 
     public TabBase() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myFragmentView = inflater.inflate(R.layout.t_news_preview, container, false);
+        myFragmentView = inflater.inflate(R.layout.fragment_news_preview, container, false);
 
         // Views
         btnLoadContent = (Button)myFragmentView.findViewById(R.id.bt_loadContent);
         btnLoadContent.setOnClickListener(this);
 
         mLinerRepeatGroup = (ViewGroup)myFragmentView.findViewById(R.id.l_group_repeat);
+        mProgressBarStatus = (ProgressBar)myFragmentView.findViewById(R.id.pb_news_list_loading);
 
-        progressBarStatus = (ProgressBar)myFragmentView.findViewById(R.id.pb_news_list_loading);
+        mSwipeRefreshLayout = (SwipeRefreshLayout)myFragmentView.findViewById(R.id.swipe_news_preview);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mRecyclerView = (RecyclerView) myFragmentView.findViewById(R.id.lv_news_list);
         mRecyclerView.setHasFixedSize(true);
@@ -98,38 +102,40 @@ public class TabBase extends Fragment implements View.OnClickListener {
      * Получнеие полного списка новостей
      */
     public void loadingNews(final boolean pull, final boolean refresh) {
-        if (!pull) {
+        if (!pull && !refresh) {
             mRecyclerView.setVisibility(View.INVISIBLE);
-            progressBarStatus.setVisibility(View.VISIBLE);
+            mProgressBarStatus.setVisibility(View.VISIBLE);
             mLinerRepeatGroup.setVisibility(View.GONE);
         }
 
         NewsMgr.getInstance().getLoadingNewsList(mProjectId, pull, refresh, new OnNewsListResponse() {
             @Override
-            public void onResult(boolean cache, ArrayList<News> news) {
+            public void onResult(ArrayList<News> news) {
                 if (news != null) {
                     mRecyclerView.setVisibility(View.VISIBLE);
 
-                    // Скрываем прогрессбар
+                    if (mSwipeRefreshLayout.isRefreshing())
+                        mSwipeRefreshLayout.setRefreshing(false);
+
+                    // Запрос новостей
                     if (pull) {
-                        mNewsListAdapter.getResource().remove(mNewsListAdapter.getResource().size() - 1);
-                        mNewsListAdapter.notifyItemRemoved(mNewsListAdapter.getResource().size());
-                    }
+                        mNewsListAdapter.notifyItemRemoved(mNewsListAdapter.getResource().size() - news.size()); // Очистка триггерного null
+                        mNewsListAdapter.notifyItemRangeInserted(mNewsListAdapter.getResource().size() - news.size(), news.size()); // Сообщение о воставки элементов
+                        mNewsListAdapter.setLoaded();
+                    } else
+                        mNewsListAdapter.notifyDataSetChanged();
 
-                    if (!cache)
-                        mNewsListAdapter.getResource().addAll(news);
-
-                    // Обновление списка
-                    mNewsListAdapter.notifyItemRangeInserted(mNewsListAdapter.getResource().size(), news.size());
-                    mNewsListAdapter.setLoaded();
                 } else {
                     if (!pull) {
                         mLinerRepeatGroup.setVisibility(View.VISIBLE);
-                        progressBarStatus.setVisibility(View.GONE);
+                        mProgressBarStatus.setVisibility(View.GONE);
                     }
+
+                    if (mSwipeRefreshLayout.isRefreshing())
+                        mSwipeRefreshLayout.setRefreshing(false);
                 }
 
-                progressBarStatus.setVisibility(View.GONE);
+                mProgressBarStatus.setVisibility(View.GONE);
             }
         });
     }
@@ -146,7 +152,7 @@ public class TabBase extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onRefresh() {
+        loadingNews(false, true);
     }
 }

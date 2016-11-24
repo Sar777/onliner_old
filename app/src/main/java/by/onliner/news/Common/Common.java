@@ -24,19 +24,19 @@ public class Common {
     public static String getYoutubeVideoId(String url) {
         Pattern pattern = Pattern.compile("^https?://.*(?:youtu.be/|v/|u/\\w/|embed/|watch?v=)([^#&?]*).*$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(url);
-        if (matcher.matches())
-            return matcher.group(1);
+        if (!matcher.matches())
+            throw new IllegalArgumentException("Regex fail. not matched. Url: " + url);
 
-        return "";
+        return matcher.group(1);
     }
 
     public static String getProjectByUrl(String url) {
         Pattern pattern = Pattern.compile("https://(\\p{Ll}+).(.*)", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(url);
-        if (matcher.matches())
-            return matcher.group(1);
+        if (!matcher.matches())
+            throw new IllegalArgumentException("Regex fail. not matched. Url: " + url);
 
-        return "";
+        return matcher.group(1);
     }
 
     public static String getUrlByProject(String project) {
