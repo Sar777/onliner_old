@@ -176,6 +176,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             Picasso.with(App.getContext()).
                     load(headerViewObject.getImageUrl()).
+                    resize(0, 200).
                     into(mImageView);
         }
     }
