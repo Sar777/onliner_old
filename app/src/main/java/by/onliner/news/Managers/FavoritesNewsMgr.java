@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 import by.onliner.news.App;
@@ -26,7 +28,7 @@ public class FavoritesNewsMgr {
 
         ContentValues cv = new ContentValues();
         cv.put("id", news.getAttributes().getId());
-        cv.put("url", news.getAttributes().getUrl());
+        cv.put("json", new Gson().toJson(news));
         long res = db.insert(Constant.mTableNameFavorites, null, cv);
 
         if (res == -1)
@@ -42,15 +44,15 @@ public class FavoritesNewsMgr {
             throw new IllegalArgumentException("Favorite news not deleted from database: id " + id);
     }
 
-    public ArrayList<String> getAllFavorites() {
-        ArrayList<String> favorites = new ArrayList<>();
+    public ArrayList<News> getAllFavorites() {
+        ArrayList<News> favorites = new ArrayList<>();
 
         SQLiteDatabase db = App.getDBHelper().getReadableDatabase();
         Cursor cursor = null;
         try {
-            cursor = db.query(Constant.mTableNameFavorites, new String[] { "url" }, null, null, null, null, null);
+            cursor = db.query(Constant.mTableNameFavorites, new String[] { "json" }, null, null, null, null, null);
             while (cursor.moveToNext()) {
-                favorites.add(cursor.getString(0));
+                favorites.add(new Gson().fromJson(cursor.getString(0), News.class));
             }
         } catch (Exception e) {
             e.printStackTrace();

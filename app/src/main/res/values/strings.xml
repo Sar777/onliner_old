@@ -47,4 +47,8 @@
     <string name="like_comment_error">Неизвестная ошибка, попробуйте еще раз</string>
     <string name="logout">Выйти</string>
     <string name="favorite">Избранные</string>
+    <string name="string_auth">Авторизация</string>
+    <string name="string_comments">Комментарии</string>
+    <string name="string_favorite">Избранные новости</string>
+    <string name="string_empty_favorite_list">Вы еще не добавили ни одной новости в избранные</string>
 </resources>

@@ -3,6 +3,7 @@ package by.onliner.news.Loaders;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

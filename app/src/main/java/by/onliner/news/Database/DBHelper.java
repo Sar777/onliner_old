@@ -7,11 +7,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import by.onliner.news.Constants.Constant;
 
 public class DBHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String CREATE_TABLE_USER = String.format("CREATE TABLE %s (`json` TEXT);", Constant.mTableNameUser);
     private static final String CREATE_TABLE_CREDENTIALS = String.format("CREATE TABLE %s (`json` TEXT);", Constant.mTableNameCredentials);
-    private static final String CREATE_TABLE_FAVORITES = String.format("CREATE TABLE %s (`id` INT PRIMARY KEY, `url` VARCHAR(255));", Constant.mTableNameFavorites);
+    private static final String CREATE_TABLE_FAVORITES = String.format("CREATE TABLE %s (`id` INT PRIMARY KEY, `json` TEXT);", Constant.mTableNameFavorites);
 
     public DBHelper(Context context) {
         super(context, Constant.mDBName, null, DATABASE_VERSION);

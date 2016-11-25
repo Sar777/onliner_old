@@ -25,6 +25,7 @@ public class FavoriteNewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorite_news);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_favorite_news);
+        setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,12 +36,13 @@ public class FavoriteNewsActivity extends AppCompatActivity {
         mProgressBar = (ProgressBar) findViewById(R.id.pb_favorites_list);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_favorites_news);
+
         mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(horizontalLayoutManager);
 
-        mNewsFavoritesListAdapter = new NewsFavoritesListAdapter(this, FavoritesNewsMgr.getInstance().getAllFavorites());
+        mNewsFavoritesListAdapter = new NewsFavoritesListAdapter(this);
         mRecyclerView.setAdapter(mNewsFavoritesListAdapter);
 
         mProgressBar.setVisibility(View.GONE);

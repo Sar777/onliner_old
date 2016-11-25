@@ -3,6 +3,7 @@ package by.onliner.news.Loaders;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.jsoup.nodes.Document;
 
@@ -39,7 +40,6 @@ public class AsyncNewsContentLoader extends AsyncTaskLoader<ArrayList<ViewObject
 
         mNews.getAttributes().setUrl(mUrl);
         mNews.getAttributes().setProject(mProject);
-
         return NewsContentFactory.create(mNews);
     }
 

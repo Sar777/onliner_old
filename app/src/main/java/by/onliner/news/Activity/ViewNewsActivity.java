@@ -108,7 +108,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
         Intent intent = getIntent();
         String url = intent.getStringExtra(TabBase.INTENT_URL_TAG);
-        String project = intent.getStringExtra(TabBase.INTENT_URL_PROJECT);
+        String project = intent.getStringExtra(TabBase.INTENT_PROJECT_TAG);
 
         Bundle bundle = new Bundle();
         bundle.putString("URL", url);
@@ -150,6 +150,8 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 mItemFavorite.setVisible(false);
                 mItemRemoveFavorite.setVisible(true);
             }
+            else
+                mItemFavorite.setVisible(true);
 
             // Показ главного окна
             mBaseLayout.setAlpha(0f);

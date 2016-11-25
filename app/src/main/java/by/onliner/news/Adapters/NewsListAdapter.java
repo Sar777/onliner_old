@@ -120,7 +120,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             News item = mResource.get(getAdapterPosition());
             Intent intent = new Intent(mContext, ViewNewsActivity.class);
             intent.putExtra(TabBase.INTENT_URL_TAG, item.getAttributes().getUrl());
-            intent.putExtra(TabBase.INTENT_URL_PROJECT, item.getAttributes().getProject());
+            intent.putExtra(TabBase.INTENT_PROJECT_TAG, item.getAttributes().getProject());
             mContext.startActivity(intent);
         }
     }

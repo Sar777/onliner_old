@@ -3,6 +3,7 @@ package by.onliner.news.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 
 import by.onliner.news.Activity.ViewNewsActivity;
 import by.onliner.news.Fragments.Tabs.TabBase;
-import by.onliner.news.Managers.NewsMgr;
+import by.onliner.news.Managers.FavoritesNewsMgr;
 import by.onliner.news.R;
 import by.onliner.news.Structures.News.News;
 import by.onliner.news.Structures.News.NewsHeader;
@@ -24,22 +25,39 @@ import by.onliner.news.Structures.News.NewsHeader;
  * Created by orion on 12.11.16.
  */
 
-public class NewsFavoritesListAdapter extends RecyclerView.Adapter<NewsFavoritesListAdapter.ViewItemHolder> {
+public class NewsFavoritesListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<News> mResource;
     private Context mContext;
 
-    public NewsFavoritesListAdapter(Context context, ArrayList<String> urls) {
+    private static final int VIEW_TYPE_DATA = 0;
+    private static final int VIEW_TYPE_EMPTY = 1;
+
+    public NewsFavoritesListAdapter(Context context) {
         this.mContext = context;
-        this.mResource = NewsMgr.getInstance().getNewsListByUrls(urls);
+        this.mResource = FavoritesNewsMgr.getInstance().getAllFavorites();
     }
 
     @Override
-    public ViewItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public int getItemViewType(int position) {
+        return mResource.isEmpty() ? VIEW_TYPE_EMPTY : VIEW_TYPE_DATA;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_EMPTY)
+            return new ViewEmptyHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_empty_recycler_favorite_news, parent, false));
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_news_item, parent, false);
         return new ViewItemHolder(view);
     }
 
-    public class ViewItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ViewEmptyHolder extends RecyclerView.ViewHolder {
+        ViewEmptyHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    private class ViewItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // Views
         private TextView mTextViewTitle;
         private TextView mTextViewComments;
@@ -50,7 +68,7 @@ public class NewsFavoritesListAdapter extends RecyclerView.Adapter<NewsFavorites
         private ImageView mImageviewVideo;
         private ViewGroup mViewGroupPhotos;
 
-        public ViewItemHolder(View itemView)  {
+        ViewItemHolder(View itemView)  {
             super(itemView);
 
             mImageviewPreview = (ImageView)itemView.findViewById(R.id.i_preview_image);
@@ -71,12 +89,18 @@ public class NewsFavoritesListAdapter extends RecyclerView.Adapter<NewsFavorites
             News item = mResource.get(getAdapterPosition());
             Intent intent = new Intent(mContext, ViewNewsActivity.class);
             intent.putExtra(TabBase.INTENT_URL_TAG, item.getAttributes().getUrl());
+            intent.putExtra(TabBase.INTENT_PROJECT_TAG, item.getAttributes().getProject());
             mContext.startActivity(intent);
         }
     }
 
     @Override
-    public void onBindViewHolder(final ViewItemHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        if (holder instanceof ViewEmptyHolder)
+            return;
+
+        ViewItemHolder viewItemHolder = (ViewItemHolder)holder;
+
         News news = mResource.get(position);
         if (news == null)
             return;
@@ -85,29 +109,29 @@ public class NewsFavoritesListAdapter extends RecyclerView.Adapter<NewsFavorites
         Picasso.with(mContext).
                 load(header.getImage()).
                 error(R.drawable.ic_broken_image).
-                into(holder.mImageviewPreview);
+                into(viewItemHolder.mImageviewPreview);
 
-        holder.mTextViewTitle.setText(header.getTitle());
-        holder.mTextViewComments.setText(header.getComments().toString());
-        holder.mTextViewViews.setText(header.getViews().toString());
+        viewItemHolder.mTextViewTitle.setText(header.getTitle());
+        viewItemHolder.mTextViewComments.setText(header.getComments().toString());
+        viewItemHolder.mTextViewViews.setText(header.getViews().toString());
 
         // Attributes
         if (header.getAttributes().getUpd())
-            holder.mTextViewUpd.setVisibility(View.VISIBLE);
+            viewItemHolder.mTextViewUpd.setVisibility(View.VISIBLE);
         else
-            holder.mTextViewUpd.setVisibility(View.GONE);
+            viewItemHolder.mTextViewUpd.setVisibility(View.GONE);
 
         if (header.getAttributes().getPhotos() > 0) {
-            holder.mViewGroupPhotos.setVisibility(View.VISIBLE);
-            holder.mTextViewPhotos.setText(header.getAttributes().getPhotos().toString());
+            viewItemHolder.mViewGroupPhotos.setVisibility(View.VISIBLE);
+            viewItemHolder.mTextViewPhotos.setText(header.getAttributes().getPhotos().toString());
         }
         else
-            holder.mViewGroupPhotos.setVisibility(View.GONE);
+            viewItemHolder.mViewGroupPhotos.setVisibility(View.GONE);
 
         if (header.getAttributes().getCamera())
-            holder.mImageviewVideo.setVisibility(View.VISIBLE);
+            viewItemHolder.mImageviewVideo.setVisibility(View.VISIBLE);
         else
-            holder.mImageviewVideo.setVisibility(View.GONE);
+            viewItemHolder.mImageviewVideo.setVisibility(View.GONE);
     }
 
     public ArrayList<News> getResource() {
@@ -116,6 +140,6 @@ public class NewsFavoritesListAdapter extends RecyclerView.Adapter<NewsFavorites
 
     @Override
     public int getItemCount() {
-        return mResource == null ? 0 : mResource.size();
+        return mResource == null ? 0 : (mResource.isEmpty() ? 1 : mResource.size());
     }
 }

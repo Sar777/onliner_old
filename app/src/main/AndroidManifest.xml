@@ -28,18 +28,16 @@
             android:name=".Activity.ViewNewsActivity"
             android:label="@string/app_name"
             android:theme="@style/Onliner.BY" />
-        <activity android:name=".Activity.CommentsActivity" />
-        <activity android:name=".Activity.AuthActivity" />
+        <activity
+            android:name=".Activity.CommentsActivity"
+            android:label="@string/string_comments"/>
+        <activity
+            android:name=".Activity.AuthActivity"
+            android:label="@string/string_auth"/>
+        <activity
+            android:name=".Activity.FavoriteNewsActivity"
+            android:label="@string/string_favorite"/>
         <activity android:name=".Activity.FullScreenImageActivity" />
-        <!--
- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <activity android:name=".Activity.FavoriteNewsActivity"></activity>
     </application>
 
 </manifest>

@@ -34,7 +34,6 @@ public class LikeMgr {
         return ourInstance;
     }
 
-
     public HashMap<String, Like> getLikes(@NonNull final String project, @NonNull final String postId) {
         LikeService service = ServiceFactory.createRetrofitService(LikeService.class, String.format("https://%s.onliner.by", project));
 

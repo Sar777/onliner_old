@@ -100,7 +100,6 @@ public class NewsMgr {
     public Document getSyncNewsByUrl(String url) {
         NewsService service = ServiceFactory.createRetrofitService(NewsService.class, Constant.mBaseURL);
         String result = null;
-        long now = System.currentTimeMillis();
         try {
             Response<ResponseBody> response = service.getNews(url).execute();
             if (response.isSuccessful())
@@ -109,27 +108,7 @@ public class NewsMgr {
             e.printStackTrace();
         }
 
-        Log.e("ORION", "Network " + (System.currentTimeMillis() - now));
-        now = System.currentTimeMillis();
-        Document doc = Jsoup.parse(result);
-        Log.e("ORION", "Parse " + (System.currentTimeMillis() - now));
-
         return Jsoup.parse(result);
-    }
-
-    // TODO TEMP
-    //
-    //
-    public ArrayList<News> getNewsListByUrls(ArrayList<String> urls) {
-        ArrayList<News> cacheNews = new ArrayList<>();
-        for (Map.Entry<String, ArrayList<News>> list : mNews.entrySet()) {
-            for (News news : list.getValue()) {
-                if (urls.contains(news.getAttributes().getUrl()))
-                    cacheNews.add(news);
-            }
-        }
-
-        return cacheNews;
     }
 
     /**

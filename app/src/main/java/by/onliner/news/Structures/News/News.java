@@ -25,7 +25,7 @@ public class News implements Serializable {
      * Содержимое новости в html
      */
     @NonNull
-    private Document mContent;
+    private transient Document mContent;
 
     public News(Document content) {
         this.mAttributes = new NewsAttributes();
