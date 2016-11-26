@@ -3,7 +3,6 @@ package by.onliner.news.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +89,7 @@ public class NewsFavoritesListAdapter extends RecyclerView.Adapter<RecyclerView.
             Intent intent = new Intent(mContext, ViewNewsActivity.class);
             intent.putExtra(TabBase.INTENT_URL_TAG, item.getAttributes().getUrl());
             intent.putExtra(TabBase.INTENT_PROJECT_TAG, item.getAttributes().getProject());
+            intent.putExtra(TabBase.INTENT_TITLE_TAG, item.getHeader().getTitle());
             mContext.startActivity(intent);
         }
     }

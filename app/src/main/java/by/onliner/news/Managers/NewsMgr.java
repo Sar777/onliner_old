@@ -1,7 +1,5 @@
 package by.onliner.news.Managers;
 
-import android.util.Log;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 

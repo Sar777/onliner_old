@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -53,10 +54,11 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private NewsContentAdapter mNewsContentAdapter;
 
     // Views
-    private ViewGroup mBaseLayout;
-    private ProgressBar mProgressBar;
+    private TextView mTitle;
     private Button mButtonComment;
     private Button mButtonRepeat;
+    private ProgressBar mProgressBar;
+    private ViewGroup mBaseLayout;
     private ViewGroup mRepeatGroup;
     private RecyclerView mRecyclerContent;
 
@@ -101,14 +103,18 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         mButtonRepeat.setOnClickListener(this);
 
         mRecyclerContent = (RecyclerView)findViewById(R.id.recycler_news_content);
-        LinearLayoutManager verticcalLinearLayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerContent.setLayoutManager(verticcalLinearLayout);
+        LinearLayoutManager verticalLinearLayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerContent.setLayoutManager(verticalLinearLayout);
 
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         Intent intent = getIntent();
         String url = intent.getStringExtra(TabBase.INTENT_URL_TAG);
         String project = intent.getStringExtra(TabBase.INTENT_PROJECT_TAG);
+        String title = intent.getStringExtra(TabBase.INTENT_TITLE_TAG);
+
+        mTitle = (TextView) findViewById(R.id.tv_view_news_title);
+        mTitle.setText(title);
 
         Bundle bundle = new Bundle();
         bundle.putString("URL", url);

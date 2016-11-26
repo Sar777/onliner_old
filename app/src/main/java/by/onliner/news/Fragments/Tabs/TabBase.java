@@ -45,6 +45,7 @@ public class TabBase extends Fragment implements View.OnClickListener, SwipeRefr
     // Intents
     public static String INTENT_URL_TAG = "URL";
     public static String INTENT_PROJECT_TAG = "PROJECT";
+    public static String INTENT_TITLE_TAG = "TITLE";
 
     private NewsListAdapter mNewsListAdapter;
 
@@ -70,7 +71,9 @@ public class TabBase extends Fragment implements View.OnClickListener, SwipeRefr
         btnLoadContent.setOnClickListener(this);
 
         mLinerRepeatGroup = (ViewGroup)myFragmentView.findViewById(R.id.l_group_repeat);
+
         mProgressBarStatus = (ProgressBar)myFragmentView.findViewById(R.id.pb_news_list_loading);
+        mProgressBarStatus.setVisibility(View.VISIBLE);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)myFragmentView.findViewById(R.id.swipe_news_preview);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -93,6 +96,7 @@ public class TabBase extends Fragment implements View.OnClickListener, SwipeRefr
         });
 
         mRecyclerView.setAdapter(mNewsListAdapter);
+        mRecyclerView.setVisibility(View.INVISIBLE);
 
         loadingNews(false, false);
         return myFragmentView;
@@ -102,15 +106,11 @@ public class TabBase extends Fragment implements View.OnClickListener, SwipeRefr
      * Получнеие полного списка новостей
      */
     public void loadingNews(final boolean pull, final boolean refresh) {
-        if (!pull && !refresh) {
-            mRecyclerView.setVisibility(View.INVISIBLE);
-            mProgressBarStatus.setVisibility(View.VISIBLE);
-            mLinerRepeatGroup.setVisibility(View.GONE);
-        }
-
         NewsMgr.getInstance().getLoadingNewsList(mProjectId, pull, refresh, new OnNewsListResponse() {
             @Override
             public void onResult(ArrayList<News> news) {
+                mProgressBarStatus.setVisibility(View.GONE);
+
                 if (news != null) {
                     mRecyclerView.setVisibility(View.VISIBLE);
 
@@ -126,16 +126,11 @@ public class TabBase extends Fragment implements View.OnClickListener, SwipeRefr
                         mNewsListAdapter.notifyDataSetChanged();
 
                 } else {
-                    if (!pull) {
-                        mLinerRepeatGroup.setVisibility(View.VISIBLE);
-                        mProgressBarStatus.setVisibility(View.GONE);
-                    }
+                    mLinerRepeatGroup.setVisibility(View.VISIBLE);
 
                     if (mSwipeRefreshLayout.isRefreshing())
                         mSwipeRefreshLayout.setRefreshing(false);
                 }
-
-                mProgressBarStatus.setVisibility(View.GONE);
             }
         });
     }
@@ -144,6 +139,8 @@ public class TabBase extends Fragment implements View.OnClickListener, SwipeRefr
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_loadContent:
+                mLinerRepeatGroup.setVisibility(View.GONE);
+                mProgressBarStatus.setVisibility(View.VISIBLE);
                 loadingNews(false, true);
                 break;
             default:
