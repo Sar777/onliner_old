@@ -1,9 +1,9 @@
 package by.onliner.news.Structures.News.ViewsObjects;
 
 import by.onliner.news.Enums.ViewNewsType;
-import by.onliner.news.Structures.News.NewsHeader;
+import by.onliner.news.Structures.News.NewsPreview;
 
-public class HeaderViewObject extends ViewObject {
+public class PreviewViewObject extends ViewObject {
 
     private String mTitle;
     private Integer mViews;
@@ -11,7 +11,7 @@ public class HeaderViewObject extends ViewObject {
     private String mDate;
     private String mImageUrl;
 
-    public HeaderViewObject(String title, Integer views, Integer comments, String date, String imageUrl) {
+    public PreviewViewObject(String title, Integer views, Integer comments, String date, String imageUrl) {
         super(ViewNewsType.TYPE_VIEW_HEADER);
 
         this.mTitle = title;
@@ -21,14 +21,14 @@ public class HeaderViewObject extends ViewObject {
         this.mImageUrl = imageUrl;
     }
 
-    public HeaderViewObject(NewsHeader header) {
+    public PreviewViewObject(NewsPreview preview) {
         super(ViewNewsType.TYPE_VIEW_HEADER);
 
-        this.mTitle = header.getTitle();
-        this.mViews = header.getViews();
-        this.mComments = header.getComments();
-        this.mDate = header.getPostDate();
-        this.mImageUrl = header.getImage();
+        this.mTitle = preview.getTitle();
+        this.mViews = preview.getView();
+        this.mComments = preview.getComments();
+        this.mDate = preview.getPostDate();
+        this.mImageUrl = preview.getImage();
     }
 
     public String getTitle() {

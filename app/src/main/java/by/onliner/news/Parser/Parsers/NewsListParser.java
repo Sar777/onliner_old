@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import by.onliner.news.Common.Common;
 import by.onliner.news.Parser.IContentParser;
 import by.onliner.news.Structures.News.News;
-import by.onliner.news.Structures.News.NewsHeader;
+import by.onliner.news.Structures.News.NewsPreview;
 
 /**
  * Парсинг списка новостей
@@ -29,12 +29,12 @@ public class NewsListParser implements IContentParser<String, ArrayList<News>> {
         Document doc = Jsoup.parse(response);
         Elements elements = doc.getElementsByClass("news-tidings__item");
         for (Element element : elements) {
-            NewsHeader header = new HeaderParser().parse(element);
+            NewsPreview header = new HeaderParser().parse(element);
             if (!header.isValid())
                 continue;
 
             News news = new News(header);
-            news.getAttributes().setUrl(Common.getUrlByProject(mProject) + news.getHeader().getUrl());
+            news.getAttributes().setUrl(Common.getUrlByProject(mProject) + news.getPreview().getUrl());
             news.getAttributes().setProject(mProject);
             list.add(news);
         }

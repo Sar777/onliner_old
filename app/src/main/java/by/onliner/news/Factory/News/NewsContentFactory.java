@@ -1,5 +1,6 @@
 package by.onliner.news.Factory.News;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -14,16 +15,15 @@ import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
  */
 public class NewsContentFactory {
     public static ArrayList<ViewObject> create(News news) {
-        Document document = news.getContent();
-
-        Element rootElement = document.getElementsByClass("news-text").first();
-        if (rootElement == null)
-            throw new IllegalArgumentException("News content factory not found news-text container from html");
-
-        ArrayList<ViewObject> viewObjects = new ArrayList<>(rootElement.getAllElements().size());
+        Document document = Jsoup.parse(news.getContent());
+        ArrayList<ViewObject> viewObjects = new ArrayList<>();
 
         // Блок заголовка новости
-        viewObjects.add(new HeaderFactory().create(news.getHeader()));
+        viewObjects.add(new PreviewFactory(news).create(document.getElementsByClass("news-header__preview").first()));
+
+        Element rootElement = document.getElementsByClass("news-wrapper").first();
+        if (rootElement == null)
+            throw new IllegalArgumentException("News content factory not found news-text container from html");
 
         // Выбор фабрики
         for (Element element : rootElement.getAllElements()) {
@@ -45,7 +45,7 @@ public class NewsContentFactory {
                     break;
                 case "div": {
                     // Изображения по одному и видео
-                    if (element.className().indexOf("news-media_extended") != -1 || element.className().indexOf("news-media_condensed") != -1) {
+                    if (element.className().contains("news-media_extended") || element.className().contains("news-media_condensed")) {
                         // Видео
                         if (element.getElementsByTag("iframe").size() > 0)
                             viewObjects.add(new YoutubeVideoFactory().create(element));
@@ -53,16 +53,16 @@ public class NewsContentFactory {
                             viewObjects.add(new ImageFactory().create(element));
                     }
                     // Заголовок
-                    else if (element.className().indexOf("news-header__title") != -1)
+                    else if (element.className().contains("news-header__title"))
                         viewObjects.add(new TitleFactory().create(element));
                     //
-                    else if (element.className().indexOf("news-entry__speech") != -1)
+                    else if (element.className().contains("news-entry__speech"))
                         viewObjects.add(new SpeechFactory().create(element));
                     // Голосование
-                    else if (element.className().indexOf("news-vote") != -1 && !element.attr("data-post-id").isEmpty())
+                    else if (element.className().contains("news-vote") && !element.attr("data-post-id").isEmpty())
                         viewObjects.add(new VoteFactory().create(element));
                     // Слайдер изображений
-                    else if (element.className().indexOf("news-media__gallery") != -1)
+                    else if (element.className().contains("news-media__gallery"))
                         viewObjects.add(new ImageSliderFactory().create(element));
                     break;
                 }

@@ -33,7 +33,7 @@ import by.onliner.news.Enums.ViewNewsType;
 import by.onliner.news.Listeners.OnFullScreenImageListener;
 import by.onliner.news.R;
 import by.onliner.news.Structures.News.ViewsObjects.H2ViewObject;
-import by.onliner.news.Structures.News.ViewsObjects.HeaderViewObject;
+import by.onliner.news.Structures.News.ViewsObjects.PreviewViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ImageSliderViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ImageViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.QuoteViewObject;
@@ -168,14 +168,14 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void bind(final RecyclerView.ViewHolder holder, final int position) {
-            final HeaderViewObject headerViewObject = (HeaderViewObject) mResource.get(position);
-            mTextViewTitle.setText(headerViewObject.getTitle());
-            mTextViewViews.setText(headerViewObject.getViews().toString());
-            mTextViewComments.setText(headerViewObject.getComments().toString());
-            mTextViewDate.setText(headerViewObject.getDate());
+            final PreviewViewObject previewViewObject = (PreviewViewObject) mResource.get(position);
+            mTextViewTitle.setText(previewViewObject.getTitle());
+            mTextViewViews.setText(previewViewObject.getViews().toString());
+            mTextViewComments.setText(previewViewObject.getComments().toString());
+            mTextViewDate.setText(previewViewObject.getDate());
 
             Picasso.with(App.getContext()).
-                    load(headerViewObject.getImageUrl()).
+                    load(previewViewObject.getImageUrl()).
                     resize(0, 200).
                     into(mImageView);
         }

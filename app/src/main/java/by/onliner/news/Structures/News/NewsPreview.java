@@ -5,72 +5,83 @@ import java.io.Serializable;
 /**
  * Заголовок новости
  */
-public class NewsHeader implements Serializable {
+public class NewsPreview implements Serializable {
     /**
      * Название
      */
-    private String title;
+    private String mTitle;
     /**
      * Количество просмотров
      */
-    private Integer views;
+    private Integer mView;
     /**
      * Количество комментариев
      */
-    private Integer comments;
+    private Integer mComments;
     /**
      * Дата публикации(Строковый вариант)
      */
-    private String postDate;
+    private String mPostDate;
     /**
      * Дата публикации(Unix формат)
      */
-    private Integer postDateUnix;
+    private Integer mPostDateUnix;
     /**
      * URL адрес изображения для новости
      */
-    private String image;
+    private String mImage;
     /**
      * URL адрес новости
      */
-    private String url;
+    private String mUrl;
 
     /**
      * Дополнительный атрибуты к заголовку
      */
-    private HeaderAttributes attributes;
+    private HeaderAttributes mAttributes;
 
-    public NewsHeader() {
-        this.title = "";
-        this.views = 0;
-        this.comments = 0;
-        this.postDate = "<unknown>";
-        this.postDateUnix = 0;
-        this.image = "";
-        this.url = "";
-        this.attributes = new HeaderAttributes();
+    public NewsPreview() {
+        this.mTitle = "";
+        this.mView = 0;
+        this.mComments = 0;
+        this.mPostDate = "<unknown>";
+        this.mPostDateUnix = 0;
+        this.mImage = "";
+        this.mUrl = "";
+        this.mAttributes = new HeaderAttributes();
     }
 
-    public NewsHeader(String title, Integer views, Integer comments, String postDate, Integer postDateUnix, String image, String url, HeaderAttributes attributes) {
-        this.title = title;
-        this.views = views;
-        this.comments = comments;
-        this.postDate = postDate;
-        this.postDateUnix = postDateUnix;
-        this.image = image;
-        this.url = url;
-        this.attributes = attributes;
+    public NewsPreview(String title) {
+        this.mTitle = title;
+        this.mView = 0;
+        this.mComments = 0;
+        this.mPostDate = "<unknown>";
+        this.mPostDateUnix = 0;
+        this.mImage = "";
+        this.mUrl = "";
+        this.mAttributes = new HeaderAttributes();
     }
 
-    public NewsHeader(NewsHeader headerNews) {
-        this.title = headerNews.title;
-        this.views = headerNews.getViews();
-        this.comments = headerNews.getComments();
-        this.postDate = headerNews.getPostDate();
-        this.postDateUnix = headerNews.getPostDateUnix();
-        this.image = headerNews.getImage();
-        this.url = headerNews.getUrl();
-        this.attributes = headerNews.getAttributes();
+    public NewsPreview(String title, Integer views, Integer comments, String postDate, Integer postDateUnix, String image, String url, HeaderAttributes attributes) {
+        this.mTitle = title;
+        this.mView = views;
+        this.mComments = comments;
+        this.mPostDate = postDate;
+        this.mPostDateUnix = postDateUnix;
+        this.mImage = image;
+        this.mUrl = url;
+        this.mAttributes = attributes;
+    }
+
+    public NewsPreview(NewsPreview headerNews) {
+        this.mTitle = headerNews.mTitle;
+        this.mView = headerNews.getView();
+        this.mComments = headerNews.getComments();
+        this.mPostDate = headerNews.getPostDate();
+        this.mPostDateUnix = headerNews.getPostDateUnix();
+        this.mImage = headerNews.getImage();
+        this.mUrl = headerNews.getUrl();
+        this.mAttributes = headerNews.getAttributes();
     }
 
     /**
@@ -78,7 +89,7 @@ public class NewsHeader implements Serializable {
      * @return Истина и ложь
      */
     public Boolean isValid() {
-        return !title.isEmpty() && !image.isEmpty() && !url.isEmpty();
+        return !mTitle.isEmpty() && !mImage.isEmpty() && !mUrl.isEmpty();
     }
 
     /**
@@ -86,7 +97,7 @@ public class NewsHeader implements Serializable {
      * @return Заголовок новости
      */
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     /**
@@ -94,23 +105,23 @@ public class NewsHeader implements Serializable {
      * @param title Заголовок новости
      */
     public void setTitle(String title) {
-        this.title = title;
+        this.mTitle = title;
     }
 
     /**
      * Получения количества просмотров новости
      * @return Просмотры новости
      */
-    public Integer getViews() {
-        return views;
+    public Integer getView() {
+        return mView;
     }
 
     /**
      * Установка количества просмотров новости
-     * @param views Просмотры новости
+     * @param view Просмотры новости
      */
-    public void setViews(Integer views) {
-        this.views = views;
+    public void setView(Integer view) {
+        this.mView = view;
     }
 
     /**
@@ -118,7 +129,7 @@ public class NewsHeader implements Serializable {
      * @return Количество комментариев
      */
     public Integer getComments() {
-        return comments;
+        return mComments;
     }
 
     /**
@@ -126,7 +137,7 @@ public class NewsHeader implements Serializable {
      * @param comments Количество комментариев
      */
     public void setComments(Integer comments) {
-        this.comments = comments;
+        this.mComments = comments;
     }
 
     /**
@@ -134,7 +145,7 @@ public class NewsHeader implements Serializable {
      * @return Дата публикации в строков формате
      */
     public String getPostDate() {
-        return postDate;
+        return mPostDate;
     }
 
     /**
@@ -142,7 +153,7 @@ public class NewsHeader implements Serializable {
      * @param postDate Дата публикации в строков формате
      */
     public void setPostDate(String postDate) {
-        this.postDate = postDate;
+        this.mPostDate = postDate;
     }
 
     /**
@@ -150,7 +161,7 @@ public class NewsHeader implements Serializable {
      * @return Дата публикации в unix формате
      */
     public Integer getPostDateUnix() {
-        return postDateUnix;
+        return mPostDateUnix;
     }
 
     /**
@@ -158,7 +169,7 @@ public class NewsHeader implements Serializable {
      * @param postDateUnix Дата публикации в unix формате
      */
     public void setPostDateUnix(Integer postDateUnix) {
-        this.postDateUnix = postDateUnix;
+        this.mPostDateUnix = postDateUnix;
     }
 
     /**
@@ -166,7 +177,7 @@ public class NewsHeader implements Serializable {
      * @return URL изображения новости
      */
     public String getImage() {
-        return image;
+        return mImage;
     }
 
     /**
@@ -174,7 +185,7 @@ public class NewsHeader implements Serializable {
      * @param image URL изображение новости
      */
     public void setImage(String image) {
-        this.image = image;
+        this.mImage = image;
     }
 
     /**
@@ -182,7 +193,7 @@ public class NewsHeader implements Serializable {
      * @return URL адрес новости
      */
     public String getUrl() {
-        return url;
+        return mUrl;
     }
 
     /**
@@ -190,7 +201,7 @@ public class NewsHeader implements Serializable {
      * @param url URL адрес новости
      */
     public void setUrl(String url) {
-        this.url = url;
+        this.mUrl = url;
     }
 
     /**
@@ -198,7 +209,7 @@ public class NewsHeader implements Serializable {
      * @return Дополнительне атрибуты для заголовка новости(Количество фото, видео и т.д)
      */
     public HeaderAttributes getAttributes() {
-        return attributes;
+        return mAttributes;
     }
 
     /**
@@ -206,20 +217,20 @@ public class NewsHeader implements Serializable {
      * @param attributes Дополнительне атрибуты для заголовка новости(Количество фото, видео и т.д)
      */
     public void setAttributes(HeaderAttributes attributes) {
-        this.attributes = attributes;
+        this.mAttributes = attributes;
     }
 
     @Override
     public String toString() {
-        return "NewsHeader{" +
-                "title='" + title + '\'' +
-                ", views=" + views +
-                ", comments=" + comments +
-                ", postDate='" + postDate + '\'' +
-                ", postDateUnix=" + postDateUnix +
-                ", image='" + image + '\'' +
-                ", url='" + url + '\'' +
-                ", attributes=" + attributes +
+        return "NewsPreview{" +
+                "mTitle='" + mTitle + '\'' +
+                ", mView=" + mView +
+                ", mComments=" + mComments +
+                ", mPostDate='" + mPostDate + '\'' +
+                ", mPostDateUnix=" + mPostDateUnix +
+                ", mImage='" + mImage + '\'' +
+                ", mUrl='" + mUrl + '\'' +
+                ", mAttributes=" + mAttributes +
                 '}';
     }
 }

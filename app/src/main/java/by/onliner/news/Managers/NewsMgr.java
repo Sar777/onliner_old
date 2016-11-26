@@ -1,8 +1,5 @@
 package by.onliner.news.Managers;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +53,7 @@ public class NewsMgr {
 
         Map<String, String> params = new HashMap<>();
         if (pull)
-            params.put("fromDate", getLastNews(project).getHeader().getPostDateUnix().toString());
+            params.put("fromDate", getLastNews(project).getPreview().getPostDateUnix().toString());
 
         // сеть
         final NewsService service = ServiceFactory.createRetrofitService(NewsService.class, Constant.mBaseURL);
@@ -95,18 +92,19 @@ public class NewsMgr {
      * @param url Адрес новости
      * @return Содержимое новости в html
      */
-    public Document getSyncNewsByUrl(String url) {
+    public String getSyncNewsByUrl(String url) {
         NewsService service = ServiceFactory.createRetrofitService(NewsService.class, Constant.mBaseURL);
         String result = null;
         try {
             Response<ResponseBody> response = service.getNews(url).execute();
             if (response.isSuccessful())
                 result = response.body().string();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return Jsoup.parse(result);
+        return result;
     }
 
     /**

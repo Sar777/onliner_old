@@ -25,6 +25,12 @@ public class NewsAttributes implements Serializable {
         this.mUrl = "";
     }
 
+    public NewsAttributes(String url, String project) {
+        this.mId = 0;
+        this.mUrl = url;
+        this.mProject = project;
+    }
+
     public NewsAttributes(Integer id, String project, String url) {
         this.mId = id;
         this.mProject = project;

@@ -18,7 +18,7 @@ import by.onliner.news.Fragments.Tabs.TabBase;
 import by.onliner.news.Managers.FavoritesNewsMgr;
 import by.onliner.news.R;
 import by.onliner.news.Structures.News.News;
-import by.onliner.news.Structures.News.NewsHeader;
+import by.onliner.news.Structures.News.NewsPreview;
 
 /**
  * Created by orion on 12.11.16.
@@ -89,7 +89,7 @@ public class NewsFavoritesListAdapter extends RecyclerView.Adapter<RecyclerView.
             Intent intent = new Intent(mContext, ViewNewsActivity.class);
             intent.putExtra(TabBase.INTENT_URL_TAG, item.getAttributes().getUrl());
             intent.putExtra(TabBase.INTENT_PROJECT_TAG, item.getAttributes().getProject());
-            intent.putExtra(TabBase.INTENT_TITLE_TAG, item.getHeader().getTitle());
+            intent.putExtra(TabBase.INTENT_TITLE_TAG, item.getPreview().getTitle());
             mContext.startActivity(intent);
         }
     }
@@ -105,7 +105,7 @@ public class NewsFavoritesListAdapter extends RecyclerView.Adapter<RecyclerView.
         if (news == null)
             return;
 
-        NewsHeader header = news.getHeader();
+        NewsPreview header = news.getPreview();
         Picasso.with(mContext).
                 load(header.getImage()).
                 error(R.drawable.ic_broken_image).
@@ -113,7 +113,7 @@ public class NewsFavoritesListAdapter extends RecyclerView.Adapter<RecyclerView.
 
         viewItemHolder.mTextViewTitle.setText(header.getTitle());
         viewItemHolder.mTextViewComments.setText(header.getComments().toString());
-        viewItemHolder.mTextViewViews.setText(header.getViews().toString());
+        viewItemHolder.mTextViewViews.setText(header.getView().toString());
 
         // Attributes
         if (header.getAttributes().getUpd())

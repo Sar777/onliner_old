@@ -6,15 +6,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import by.onliner.news.Parser.IContentParser;
-import by.onliner.news.Structures.News.NewsHeader;
+import by.onliner.news.Structures.News.NewsPreview;
 
 /**
  * Парсинг заголовка новости
  */
-public class HeaderParser implements IContentParser<Element, NewsHeader> {
+public class HeaderParser implements IContentParser<Element, NewsPreview> {
     @Override
-    public NewsHeader parse(Element element) {
-        NewsHeader data = new NewsHeader();
+    public NewsPreview parse(Element element) {
+        NewsPreview data = new NewsPreview();
 
         if (!element.attr("data-post-date").isEmpty())
             data.setPostDateUnix(Integer.parseInt(element.attr("data-post-date")));
@@ -28,7 +28,7 @@ public class HeaderParser implements IContentParser<Element, NewsHeader> {
             else if ((child.className().indexOf("news-tidings__comment") != -1 || child.className().indexOf("news-tiles__button_comments") != -1) && !child.text().isEmpty())
                 data.setComments(Integer.parseInt(child.text().replaceAll(" ", "").trim()));
             else if ((child.className().indexOf("news-tidings__button_views") != -1 || child.className().indexOf("news-tiles__button_views") != -1) && !child.text().isEmpty())
-                data.setViews(Integer.parseInt(child.text().replaceAll(" ", "").trim()));
+                data.setView(Integer.parseInt(child.text().replaceAll(" ", "").trim()));
             else if ((child.className().indexOf("news-tidings__time") != -1 || child.className().indexOf("news-tiles__time") != -1) && !child.text().isEmpty())
                 data.setPostDate(child.text());
             else if (child.className().indexOf("news-tidings__stub") != -1 || child.className().indexOf("news-tiles__stub") != -1)

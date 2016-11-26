@@ -3,8 +3,6 @@ package by.onliner.news.Structures.News;
 
 import android.support.annotation.NonNull;
 
-import org.jsoup.nodes.Document;
-
 import java.io.Serializable;
 
 /**
@@ -15,7 +13,7 @@ public class News implements Serializable {
      * Содержанеие заголовка новости где хранится информация о видео, изображении и так далее
      */
     @NonNull
-    private NewsHeader mHeader;
+    private NewsPreview mPreview;
     /**
      * Атрибуты новости
      */
@@ -25,23 +23,23 @@ public class News implements Serializable {
      * Содержимое новости в html
      */
     @NonNull
-    private transient Document mContent;
+    private String mContent;
 
-    public News(Document content) {
-        this.mAttributes = new NewsAttributes();
-        this.mHeader = new NewsHeader();
+    public News(@NonNull String url, @NonNull String project, String title, @NonNull String content) {
+        this.mAttributes = new NewsAttributes(url, project);
+        this.mPreview = new NewsPreview(title);
         this.mContent = content;
     }
 
-    public News(NewsHeader header) {
+    public News(NewsPreview preview) {
         this.mAttributes = new NewsAttributes();
-        this.mHeader = header;
-        this.mContent = null;
+        this.mPreview = preview;
+        this.mContent = "";
     }
 
-    public News(NewsAttributes attributes, NewsHeader header, Document content) {
+    public News(@NonNull NewsAttributes attributes, @NonNull NewsPreview preview, @NonNull String content) {
         this.mAttributes = attributes;
-        this.mHeader = header;
+        this.mPreview = preview;
         this.mContent = content;
     }
 
@@ -65,38 +63,38 @@ public class News implements Serializable {
      * Получение заголовка новости
      * @return Заголовок новости
      */
-    public NewsHeader getHeader() {
-        return mHeader;
+    public NewsPreview getPreview() {
+        return mPreview;
     }
 
     /**
      * Установка заголовка новости
-     * @param header Заголовк новости
+     * @param preview Заголовк новости
      */
-    public void setHeader(NewsHeader header) {
-        this.mHeader = header;
+    public void setPreview(NewsPreview preview) {
+        this.mPreview = preview;
     }
 
     /**
      * Установка содержимого новости в html
-     * @param doc Содержимое новости
+     * @param content Содержимое новости в html
      */
-    public void setContent(Document doc) {
-        this.mContent = doc;
+    public void setNewsContent(String content) {
+        this.mContent = content;
     }
 
     /**
      * Получение содержимого новости в html
-     * @return Содержимое новости
+     * @return Содержимое новости в html
      */
-    public Document getContent() {
+    public String getContent() {
         return mContent;
     }
 
     @Override
     public String toString() {
         return "News{" +
-                "mHeader=" + mHeader +
+                "mPreview=" + mPreview +
                 ", mAttributes=" + mAttributes +
                 ", mContent='" + mContent.toString() + '\'' +
                 '}';

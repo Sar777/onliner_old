@@ -119,6 +119,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         Bundle bundle = new Bundle();
         bundle.putString("URL", url);
         bundle.putString("PROJECT", project);
+        bundle.putString("TITLE", title);
         getLoaderManager().initLoader(LOADER_CONTENT_ID, bundle, this).forceLoad();
     }
 
@@ -203,7 +204,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
     private void loadingComments(News news) {
         Bundle bundle = new Bundle();
-        bundle.putString("Html", news.getContent().html());
+        bundle.putString("Html", news.getContent());
         bundle.putString("Project", news.getAttributes().getProject());
         bundle.putString("PostId", news.getAttributes().getId().toString());
         getLoaderManager().restartLoader(LOADER_COMMENTS_ID, bundle, new LoaderCallbacks<LinkedHashMap<String, Comment>>() {
