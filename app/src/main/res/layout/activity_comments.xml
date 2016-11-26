@@ -38,19 +38,47 @@
             android:transcriptMode="normal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="40dp"
+            android:scrollbars="vertical"
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp">
         </android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:background="@drawable/te_comment_border">
+
+            <EditText
+                android:id="@+id/et_comment_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="55dp"
+                android:layout_marginLeft="10dp"
+                android:hint="Ваш комментарий..." />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp">
+
+                <ProgressBar
+                    android:id="@+id/pb_comment_sending"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/bt_send_message"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ic_send_message" />
+            </RelativeLayout>
+
+        </RelativeLayout>
     </RelativeLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_comments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_input_add"
-        app:layout_anchor="@id/recycler_comments_list"
-        app:layout_anchorGravity="bottom|right|end"
-        app:layout_behavior="by.onliner.news.ViewActions.FloatingActionButtonCommentsAction"/>
-
 </android.support.design.widget.CoordinatorLayout>
