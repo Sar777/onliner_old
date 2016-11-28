@@ -52,7 +52,7 @@
     <string name="string_favorite">Избранные</string>
     <string name="string_empty_favorite_list">Вы еще не добавили ни одной новости в избранные</string>
     <string name="string_you_comment">Ваш комментарий...</string>
-    <string name="string_comment_blocked">Вам запрещено оставлять комментарии</string>
+    <string name="string_comment_unknown_error">При отправка комментария произошла неизвестная ошибки</string>
     <string name="label_auth_username">Логин или email...</string>
     <string name="label_auth_password">Пароль...</string>
 </resources>

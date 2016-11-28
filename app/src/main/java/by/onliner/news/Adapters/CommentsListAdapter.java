@@ -64,7 +64,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return new ViewCommentHolder(view);
     }
 
-    public class ViewCommentTopHolder extends RecyclerView.ViewHolder {
+    private class ViewCommentTopHolder extends RecyclerView.ViewHolder {
         // Views
         private TextView mTextViewAuthor;
         private TextView mTextViewDate;
@@ -72,7 +72,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private ViewGroup mViewGroupCommentText;
         private ImageView mImageViewAvatar;
 
-        public ViewCommentTopHolder(View itemView) {
+        ViewCommentTopHolder(View itemView) {
             super(itemView);
 
             mTextViewAuthor = (TextView) itemView.findViewById(R.id.tv_comment_author);
@@ -116,7 +116,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    public class ViewCommentHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ViewCommentHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // Views
         private Button mButtonLike;
         private Button mButtonDeslike;
@@ -131,7 +131,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private ImageView mImageViewLikeBest;
         private ImageView mImageViewLikeDefault;
 
-        public ViewCommentHolder(View itemView)  {
+        ViewCommentHolder(View itemView)  {
             super(itemView);
 
             mButtonLike = (Button) itemView.findViewById(R.id.bt_like_comment);
@@ -166,6 +166,7 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 case R.id.bt_comment_response:
                     EditText editText = (EditText) view.getRootView().findViewById(R.id.et_comment_message);
                     editText.append(String.format("[b]%s[/b], ", mTextViewAuthor.getText()));
+                    editText.setSelected(true);
                 default:
                     break;
             }

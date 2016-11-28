@@ -13,9 +13,13 @@ public class CommentResponse {
     @SerializedName("comment")
     private String mComment;
 
-    public CommentResponse(String id, String comment) {
+    @SerializedName("error")
+    private String mError;
+
+    public CommentResponse(String id, String comment, String error) {
         this.mId = id;
         this.mComment = comment;
+        this.mError = error;
     }
 
     public String getId() {
@@ -24,5 +28,9 @@ public class CommentResponse {
 
     public String getComment() {
         return mComment;
+    }
+
+    public String getError() {
+        return mError;
     }
 }

@@ -13,7 +13,8 @@ import retrofit2.http.POST;
 public interface CommentService {
     @Headers({
             "Accept: application/json, text/javascript, */*; q=0.01",
-            "Content-Type: application/x-www-form-urlencoded; charset=UTF-8"
+            "Content-Type: application/x-www-form-urlencoded; charset=UTF-8",
+            "X-Requested-With: XMLHttpRequest"
     })
     @FormUrlEncoded
     @POST("comments/add")

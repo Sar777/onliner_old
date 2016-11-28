@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import by.onliner.news.Adapters.CommentsListAdapter;
 import by.onliner.news.Common.Common;
+import by.onliner.news.Parser.Parsers.CommentsParser;
 import by.onliner.news.R;
 import by.onliner.news.Services.Comment.CommentResponse;
 import by.onliner.news.Services.Comment.CommentService;
@@ -115,12 +116,30 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onResponse(Call<CommentResponse> call, Response<CommentResponse> response) {
                 showSendMessageButton(false);
+
+                // Запрос не прошел
+                if (!response.isSuccessful()) {
+                    Snackbar.make(mButtonMessage, R.string.string_comment_unknown_error, Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+
+                CommentResponse commentResponse = response.body();
+
+                // Возможно аккаунт заблокирован
+                if (commentResponse.getError() != null) {
+                    Snackbar.make(mButtonMessage, commentResponse.getError(), Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                // Добавление в список
+                mCommentListAdapter.getResource().add(new CommentsParser().parse(commentResponse.getComment()).get(commentResponse.getId()));
+                mCommentListAdapter.notifyItemInserted(mCommentListAdapter.getItemCount());
             }
 
             @Override
             public void onFailure(Call<CommentResponse> call, Throwable t) {
                 t.printStackTrace();
-                Snackbar.make(mButtonMessage, R.string.string_comment_blocked, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mButtonMessage, R.string.string_comment_unknown_error, Snackbar.LENGTH_SHORT).show();
                 showSendMessageButton(false);
             }
         });
