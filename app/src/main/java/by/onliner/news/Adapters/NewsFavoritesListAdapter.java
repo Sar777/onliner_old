@@ -96,7 +96,7 @@ public class NewsFavoritesListAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof ViewEmptyHolder)
+        if (!(holder instanceof ViewItemHolder))
             return;
 
         ViewItemHolder viewItemHolder = (ViewItemHolder)holder;

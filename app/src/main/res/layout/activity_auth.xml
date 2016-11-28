@@ -25,7 +25,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:textColor="@android:color/black"
-                android:text="Авторизация" />
+                android:textStyle="bold"
+                android:text="@string/string_auth" />
 
         </android.support.v7.widget.Toolbar>
 

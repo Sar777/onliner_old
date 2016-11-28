@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -163,7 +164,8 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     deslikeComment(view.getTag().toString());
                     break;
                 case R.id.bt_comment_response:
-                    throw new UnsupportedOperationException("Not support comment response");
+                    EditText editText = (EditText) view.getRootView().findViewById(R.id.et_comment_message);
+                    editText.append(String.format("[b]%s[/b], ", mTextViewAuthor.getText()));
                 default:
                     break;
             }

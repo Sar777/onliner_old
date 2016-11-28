@@ -3,9 +3,9 @@ package by.onliner.news.Activity;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -21,11 +21,10 @@ import by.onliner.news.Structures.Credentials.Credentials;
 import by.onliner.news.Structures.User.User;
 
 public class AuthActivity extends AppCompatActivity implements View.OnClickListener {
-
     // View
     private EditText mEditTextUsername;
     private EditText mEditTextPassword;
-    private ViewGroup mAuthGroup;
+    private CardView mCardViewBlock;
     private Button mButtonAuth;
     private ProgressBar mProgressBar;
 
@@ -50,7 +49,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         mButtonAuth = (Button) findViewById(R.id.bt_auth_account);
         mButtonAuth.setOnClickListener(this);
 
-        mAuthGroup = (ViewGroup) findViewById(R.id.l_auth_group);
+        mCardViewBlock = (CardView) findViewById(R.id.cv_auth_block);
 
         mProgressBar = (ProgressBar) findViewById(R.id.pb_auth_progress);
     }
@@ -76,14 +75,14 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        mAuthGroup.setVisibility(View.INVISIBLE);
+        mCardViewBlock.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
 
         AuthMgr.getInstance().validateAccount(username, password, new OnLoginValidateAccount() {
             @Override
             public void onValidate(boolean success) {
                 if (!success) {
-                    mAuthGroup.setVisibility(View.VISIBLE);
+                    mCardViewBlock.setVisibility(View.VISIBLE);
                     mProgressBar.setVisibility(View.GONE);
                     showSnackbar(R.string.auth_fail_password_username);
                     return;
@@ -93,7 +92,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onLoginStatus(boolean success) {
                         if (!success) {
-                            mAuthGroup.setVisibility(View.VISIBLE);
+                            mCardViewBlock.setVisibility(View.VISIBLE);
                             mProgressBar.setVisibility(View.GONE);
                             showSnackbar(R.string.auth_fail_unknown);
                             return;

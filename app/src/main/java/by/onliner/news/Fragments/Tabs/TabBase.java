@@ -127,6 +127,7 @@ public class TabBase extends Fragment implements View.OnClickListener, SwipeRefr
 
                 } else {
                     mLinerRepeatGroup.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.INVISIBLE);
 
                     if (mSwipeRefreshLayout.isRefreshing())
                         mSwipeRefreshLayout.setRefreshing(false);
