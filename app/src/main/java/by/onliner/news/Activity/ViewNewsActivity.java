@@ -19,6 +19,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -245,11 +246,13 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 FavoritesNewsMgr.getInstance().saveFavorite(mNews);
                 mItemFavorite.setVisible(false);
                 mItemRemoveFavorite.setVisible(true);
+                Toast.makeText(this, R.string.add_favorite_news, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_remove_favorites:
                 FavoritesNewsMgr.getInstance().deleteFavorite(mNews);
                 mItemFavorite.setVisible(true);
                 mItemRemoveFavorite.setVisible(false);
+                Toast.makeText(this, R.string.remove_favorite_news, Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;

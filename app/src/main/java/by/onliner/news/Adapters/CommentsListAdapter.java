@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -166,7 +167,10 @@ public class CommentsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 case R.id.bt_comment_response:
                     EditText editText = (EditText) view.getRootView().findViewById(R.id.et_comment_message);
                     editText.append(String.format("[b]%s[/b], ", mTextViewAuthor.getText()));
-                    editText.setSelected(true);
+
+                    editText.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) App.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
                 default:
                     break;
             }

@@ -52,7 +52,10 @@
     <string name="string_favorite">Избранные</string>
     <string name="string_empty_favorite_list">Вы еще не добавили ни одной новости в избранные</string>
     <string name="string_you_comment">Ваш комментарий...</string>
+    <string name="string_comment_emtry">Заполните поле</string>
     <string name="string_comment_unknown_error">При отправка комментария произошла неизвестная ошибки</string>
     <string name="label_auth_username">Логин или email...</string>
     <string name="label_auth_password">Пароль...</string>
+    <string name="add_favorite_news">Новость добавлена в избранные</string>
+    <string name="remove_favorite_news">Новость удалена из избранных</string>
 </resources>

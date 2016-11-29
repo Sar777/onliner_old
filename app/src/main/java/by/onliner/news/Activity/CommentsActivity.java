@@ -105,8 +105,10 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
 
     private void sendComment() {
         String message = mEditTextMessage.getText().toString();
-        if (message.isEmpty())
+        if (message.isEmpty()) {
+            Snackbar.make(mButtonMessage, R.string.string_comment_emtry, Snackbar.LENGTH_SHORT).show();
             return;
+        }
 
         mEditTextMessage.setText("");
         showSendMessageButton(true);
@@ -134,6 +136,7 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                 // Добавление в список
                 mCommentListAdapter.getResource().add(new CommentsParser().parse(commentResponse.getComment()).get(commentResponse.getId()));
                 mCommentListAdapter.notifyItemInserted(mCommentListAdapter.getItemCount());
+                mRecyclerView.scrollToPosition(mCommentListAdapter.getItemCount() - 1);
             }
 
             @Override
