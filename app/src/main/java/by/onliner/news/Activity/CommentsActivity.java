@@ -11,10 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import by.onliner.news.Adapters.CommentsListAdapter;
+import by.onliner.news.App;
 import by.onliner.news.Common.Common;
 import by.onliner.news.Parser.Parsers.CommentsParser;
 import by.onliner.news.R;
@@ -132,6 +134,8 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                     Snackbar.make(mButtonMessage, commentResponse.getError(), Snackbar.LENGTH_LONG).show();
                     return;
                 }
+
+                Toast.makeText(App.getContext(), R.string.comment_added, Toast.LENGTH_SHORT).show();
 
                 // Добавление в список
                 mCommentListAdapter.getResource().add(new CommentsParser().parse(commentResponse.getComment()).get(commentResponse.getId()));

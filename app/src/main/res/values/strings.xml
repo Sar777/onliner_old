@@ -58,4 +58,5 @@
     <string name="label_auth_password">Пароль...</string>
     <string name="add_favorite_news">Новость добавлена в избранные</string>
     <string name="remove_favorite_news">Новость удалена из избранных</string>
+    <string name="comment_added">Комментарий добавлен</string>
 </resources>
