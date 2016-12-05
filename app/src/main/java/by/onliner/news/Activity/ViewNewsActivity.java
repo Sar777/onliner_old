@@ -140,6 +140,8 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 mProgressBar.setVisibility(View.GONE);
                 mBaseLayout.setVisibility(View.VISIBLE);
                 mButtonComment.setVisibility(View.VISIBLE);
+
+                invalidateOptionsMenu();
             }
             else {
                 Bundle bundle = new Bundle();
@@ -202,13 +204,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             mNews = ((AsyncNewsContentLoader)loader).getNews();
             loadingComments(mNews);
 
-            // Избранная новость
-            /*if (FavoritesNewsMgr.getInstance().isFavorite(mNews.getAttributes().getId())) {
-                mItemFavorite.setVisible(false);
-                mItemRemoveFavorite.setVisible(true);
-            }
-            else
-                mItemFavorite.setVisible(true);*/
+            updateActionBar();
 
             // Показ главного окна
             mBaseLayout.setAlpha(0f);
@@ -280,6 +276,8 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
         mItemFavorite = menu.findItem(R.id.action_favorites);
         mItemRemoveFavorite = menu.findItem(R.id.action_remove_favorites);
+
+        updateActionBar();
         return true;
     }
 
@@ -303,5 +301,15 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         }
 
         return true;
+    }
+
+    private void updateActionBar() {
+        // Избранная новость
+        if (mNews != null && FavoritesNewsMgr.getInstance().isFavorite(mNews.getAttributes().getId())) {
+            mItemFavorite.setVisible(false);
+            mItemRemoveFavorite.setVisible(true);
+        }
+        else
+            mItemFavorite.setVisible(true);
     }
 }

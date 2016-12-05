@@ -1,7 +1,6 @@
 package by.onliner.news.Structures.News.ViewsObjects;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import by.onliner.news.Enums.ViewNewsType;
 import by.onliner.news.Structures.News.NewsPreview;
@@ -79,14 +78,4 @@ public class PreviewViewObject extends ViewObject {
         out.writeString(mDate);
         out.writeString(mImageUrl);
     }
-
-    public static final Parcelable.Creator<PreviewViewObject> CREATOR = new Parcelable.Creator<PreviewViewObject>() {
-        public PreviewViewObject createFromParcel(Parcel in) {
-            return new PreviewViewObject(in);
-        }
-
-        public PreviewViewObject[] newArray(int size) {
-            return new PreviewViewObject[size];
-        }
-    };
 }
