@@ -1,5 +1,7 @@
 package by.onliner.news.Structures.News.ViewsObjects;
 
+import android.os.Parcel;
+
 import java.util.ArrayList;
 
 import by.onliner.news.Enums.ViewNewsType;
@@ -13,6 +15,15 @@ public class VoteViewObject extends ViewObject {
     private String mState;
     private String mNote;
     private ArrayList<String> mOptions;
+
+    public VoteViewObject(Parcel in) {
+        super(ViewNewsType.TYPE_VIEW_VOTE);
+
+        mTitle = in.readString();
+        mState = in.readString();
+        mNote = in.readString();
+        in.readStringList(mOptions);
+    }
 
     public VoteViewObject(String title, String state, String note, ArrayList<String> options) {
         super(ViewNewsType.TYPE_VIEW_VOTE);
@@ -41,5 +52,12 @@ public class VoteViewObject extends ViewObject {
     @Override
     public boolean isValid() {
         return !mTitle.isEmpty() && !mOptions.isEmpty();
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        super.writeToParcel(out, flags);
+
+        out.writeStringList(mOptions);
     }
 }

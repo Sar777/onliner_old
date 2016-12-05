@@ -6,7 +6,6 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -40,19 +38,23 @@ import by.onliner.news.Structures.News.ViewsObjects.ViewObject;
  */
 public class ViewNewsActivity extends AppCompatActivity implements View.OnClickListener, LoaderCallbacks<ArrayList<ViewObject>> {
 
-    public static String INTENT_URL_TAG = "URL";
-    public static String INTENT_COMMENTS_TAG = "COMMENTS";
     public static String INTENT_PROJECT_TAG = "PROJECT";
     public static String INTENT_NEWS_ID_TAG = "NEWS_ID";
+    public static String INTENT_COMMENTS_TAG = "COMMENTS";
 
     private static final int LOADER_CONTENT_ID = 1;
     private static final int LOADER_COMMENTS_ID = 2;
 
-    @NonNull
     private News mNews;
+
+    private String mTitleString;
+    private String mURL;
+    private String mProject;
 
     // Adapters
     private NewsContentAdapter mNewsContentAdapter;
+
+    private ArrayList<ViewObject> mViewObjects;
 
     // Views
     private TextView mTitle;
@@ -67,7 +69,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private MenuItem mItemFavorite;
     private MenuItem mItemRemoveFavorite;
 
-    private LinkedHashMap<String, Comment> mComments;
+    private ArrayList<Comment> mComments;
 
     private int mShortAnimationDuration;
 
@@ -85,8 +87,6 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        mComments = new LinkedHashMap<>();
-
         // Views
         mBaseLayout = (ViewGroup)findViewById(R.id.l_view_news_content);
         mBaseLayout.setVisibility(View.GONE);
@@ -97,7 +97,6 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         mRepeatGroup = (ViewGroup)findViewById(R.id.l_view_news_repeat);
 
         mButtonComment = (Button)findViewById(R.id.bt_view_news_comments);
-        mButtonComment.setEnabled(false);
         mButtonComment.setOnClickListener(this);
 
         mButtonRepeat = (Button)findViewById(R.id.btn_load_repeat);
@@ -109,19 +108,68 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-        Intent intent = getIntent();
-        String url = intent.getStringExtra(TabBase.INTENT_URL_TAG);
-        String project = intent.getStringExtra(TabBase.INTENT_PROJECT_TAG);
-        String title = intent.getStringExtra(TabBase.INTENT_TITLE_TAG);
+        // Восстановление активити
+        if (savedInstanceState == null) {
+            Intent intent = getIntent();
+            mURL = intent.getStringExtra(TabBase.INTENT_URL_TAG);
+            mProject = intent.getStringExtra(TabBase.INTENT_PROJECT_TAG);
+            mTitleString = intent.getStringExtra(TabBase.INTENT_TITLE_TAG);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("URL", mURL);
+            bundle.putString("PROJECT", mProject);
+            bundle.putString("TITLE", mTitleString);
+            getLoaderManager().initLoader(LOADER_CONTENT_ID, bundle, this).forceLoad();
+        } else {
+            mURL = savedInstanceState.getString("URL");
+            mProject = savedInstanceState.getString("PROJECT");
+            mTitleString = savedInstanceState.getString("TITLE");
+
+            if (savedInstanceState.containsKey("NEWS") &&
+                    savedInstanceState.containsKey("VIEWS_OBJECTS") &&
+                    savedInstanceState.containsKey("COMMENTS")) {
+
+                mNews = savedInstanceState.getParcelable("NEWS");
+
+                mComments = savedInstanceState.getParcelableArrayList("COMMENTS");
+                mViewObjects = savedInstanceState.getParcelableArrayList("VIEWS_OBJECTS");
+
+                mNewsContentAdapter = new NewsContentAdapter(this, mViewObjects);
+                mRecyclerContent.setAdapter(mNewsContentAdapter);
+
+                mProgressBar.setVisibility(View.GONE);
+                mBaseLayout.setVisibility(View.VISIBLE);
+                mButtonComment.setVisibility(View.VISIBLE);
+            }
+            else {
+                Bundle bundle = new Bundle();
+                bundle.putString("URL", mURL);
+                bundle.putString("PROJECT", mProject);
+                bundle.putString("TITLE", mTitleString);
+                getLoaderManager().initLoader(LOADER_CONTENT_ID, bundle, this).forceLoad();
+            }
+        }
 
         mTitle = (TextView) findViewById(R.id.tv_view_news_title);
-        mTitle.setText(title);
+        mTitle.setText(mTitleString);
+    }
 
-        Bundle bundle = new Bundle();
-        bundle.putString("URL", url);
-        bundle.putString("PROJECT", project);
-        bundle.putString("TITLE", title);
-        getLoaderManager().initLoader(LOADER_CONTENT_ID, bundle, this).forceLoad();
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("URL", mURL);
+        outState.putString("PROJECT", mProject);
+        outState.putString("TITLE", mTitleString);
+
+        if (mViewObjects != null)
+            outState.putParcelableArrayList("VIEWS_OBJECTS", mViewObjects);
+
+        if (mNews != null)
+            outState.putParcelable("NEWS", mNews);
+
+        if (mComments != null)
+            outState.putParcelableArrayList("COMMENTS", mComments);
     }
 
     @Override
@@ -146,7 +194,8 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 return;
             }
 
-            mNewsContentAdapter = new NewsContentAdapter(this, views);
+            mViewObjects = views;
+            mNewsContentAdapter = new NewsContentAdapter(this, mViewObjects);
             mRecyclerContent.setAdapter(mNewsContentAdapter);
 
             // Запуск обработки комментариев
@@ -154,12 +203,12 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             loadingComments(mNews);
 
             // Избранная новость
-            if (FavoritesNewsMgr.getInstance().isFavorite(mNews.getAttributes().getId())) {
+            /*if (FavoritesNewsMgr.getInstance().isFavorite(mNews.getAttributes().getId())) {
                 mItemFavorite.setVisible(false);
                 mItemRemoveFavorite.setVisible(true);
             }
             else
-                mItemFavorite.setVisible(true);
+                mItemFavorite.setVisible(true);*/
 
             // Показ главного окна
             mBaseLayout.setAlpha(0f);
@@ -184,11 +233,10 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_view_news_comments: {
-                Intent intent = new Intent(App.getContext(), CommentsActivity.class);
-                intent.putExtra(INTENT_URL_TAG, mNews.getAttributes().getUrl());
-                intent.putExtra(INTENT_PROJECT_TAG,  mNews.getAttributes().getProject());
-                intent.putExtra(INTENT_NEWS_ID_TAG,  mNews.getAttributes().getId());
-                intent.putExtra(INTENT_COMMENTS_TAG, new ArrayList<>(mComments.values()));
+                Intent intent = new Intent(this, CommentsActivity.class);
+                intent.putExtra(INTENT_NEWS_ID_TAG, mNews.getAttributes().getId());
+                intent.putExtra(INTENT_PROJECT_TAG, mNews.getAttributes().getProject());
+                intent.putParcelableArrayListExtra(INTENT_COMMENTS_TAG, mComments);
                 startActivity(intent);
                 break;
             }
@@ -216,13 +264,9 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onLoadFinished(Loader<LinkedHashMap<String, Comment>> loader, LinkedHashMap<String, Comment> result) {
-                mComments = result;
-                mButtonComment.animate().translationY(-mButtonComment.getHeight()).setDuration(500).setInterpolator(new LinearInterpolator()).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        mButtonComment.setEnabled(true);
-                    }
-                }).start();
+                mComments = new ArrayList<>(result.values());
+
+                mButtonComment.setVisibility(View.VISIBLE);
             }
 
             @Override

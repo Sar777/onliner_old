@@ -1,14 +1,14 @@
 package by.onliner.news.Structures.News;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
-
-import java.io.Serializable;
 
 /**
  * Содержимое новости
  */
-public class News implements Serializable {
+public class News implements Parcelable {
     /**
      * Содержанеие заголовка новости где хранится информация о видео, изображении и так далее
      */
@@ -41,6 +41,12 @@ public class News implements Serializable {
         this.mAttributes = attributes;
         this.mPreview = preview;
         this.mContent = content;
+    }
+
+    protected News(Parcel in) {
+        mPreview = in.readParcelable(NewsPreview.class.getClassLoader());
+        mAttributes = in.readParcelable(NewsAttributes.class.getClassLoader());
+        mContent = in.readString();
     }
 
     /**
@@ -99,4 +105,28 @@ public class News implements Serializable {
                 ", mContent='" + mContent.toString() + '\'' +
                 '}';
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(mPreview, flags);
+        dest.writeParcelable(mAttributes, flags);
+        dest.writeString(mContent);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<News> CREATOR = new Creator<News>() {
+        @Override
+        public News createFromParcel(Parcel in) {
+            return new News(in);
+        }
+
+        @Override
+        public News[] newArray(int size) {
+            return new News[size];
+        }
+    };
 }

@@ -1,11 +1,12 @@
 package by.onliner.news.Structures.Comments;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Цитаты комментария
  */
-public class CommentQuote implements Serializable {
+public class CommentQuote implements Parcelable {
     /**
      * Текст цитаты
      */
@@ -28,6 +29,12 @@ public class CommentQuote implements Serializable {
         this.mText = text;
         this.mAuthor = author;
         this.mQuote = quote;
+    }
+
+    protected CommentQuote(Parcel in) {
+        mText = in.readString();
+        mAuthor = in.readString();
+        mQuote = in.readParcelable(CommentQuote.class.getClassLoader());
     }
 
     /**
@@ -86,4 +93,28 @@ public class CommentQuote implements Serializable {
                 ", mQuote=" + mQuote +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mText);
+        parcel.writeString(mAuthor);
+        parcel.writeParcelable(mQuote, i);
+    }
+
+    public static final Creator<CommentQuote> CREATOR = new Creator<CommentQuote>() {
+        @Override
+        public CommentQuote createFromParcel(Parcel in) {
+            return new CommentQuote(in);
+        }
+
+        @Override
+        public CommentQuote[] newArray(int size) {
+            return new CommentQuote[size];
+        }
+    };
 }

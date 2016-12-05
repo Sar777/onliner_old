@@ -63,10 +63,10 @@
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="-50dp"
             android:textColor="@android:color/white"
             android:background="#1a6dbb"
             android:padding="10dp"
+            android:visibility="gone"
             android:text="@string/comments" />
     </RelativeLayout>
 </RelativeLayout>

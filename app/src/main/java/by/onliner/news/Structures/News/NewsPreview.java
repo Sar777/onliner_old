@@ -1,11 +1,12 @@
 package by.onliner.news.Structures.News;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Заголовок новости
  */
-public class NewsPreview implements Serializable {
+public class NewsPreview implements Parcelable {
     /**
      * Название
      */
@@ -82,6 +83,13 @@ public class NewsPreview implements Serializable {
         this.mImage = headerNews.getImage();
         this.mUrl = headerNews.getUrl();
         this.mAttributes = headerNews.getAttributes();
+    }
+
+    protected NewsPreview(Parcel in) {
+        mTitle = in.readString();
+        mPostDate = in.readString();
+        mImage = in.readString();
+        mUrl = in.readString();
     }
 
     /**
@@ -233,4 +241,29 @@ public class NewsPreview implements Serializable {
                 ", mAttributes=" + mAttributes +
                 '}';
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mTitle);
+        dest.writeString(mPostDate);
+        dest.writeString(mImage);
+        dest.writeString(mUrl);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<NewsPreview> CREATOR = new Creator<NewsPreview>() {
+        @Override
+        public NewsPreview createFromParcel(Parcel in) {
+            return new NewsPreview(in);
+        }
+
+        @Override
+        public NewsPreview[] newArray(int size) {
+            return new NewsPreview[size];
+        }
+    };
 }

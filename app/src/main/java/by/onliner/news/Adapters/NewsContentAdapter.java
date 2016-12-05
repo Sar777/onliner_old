@@ -33,9 +33,9 @@ import by.onliner.news.Enums.ViewNewsType;
 import by.onliner.news.Listeners.OnFullScreenImageListener;
 import by.onliner.news.R;
 import by.onliner.news.Structures.News.ViewsObjects.H2ViewObject;
-import by.onliner.news.Structures.News.ViewsObjects.PreviewViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ImageSliderViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.ImageViewObject;
+import by.onliner.news.Structures.News.ViewsObjects.PreviewViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.QuoteViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.SpanViewObject;
 import by.onliner.news.Structures.News.ViewsObjects.SpeechViewObject;
@@ -65,7 +65,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         ViewNewsType viewNewsType = values()[viewType];
         switch (viewNewsType) {
-            case TYPE_VIEW_HEADER:
+            case TYPE_VIEW_PREVIEW:
                 return new NewsContentAdapter.HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_header, parent, false));
             case TYPE_VIEW_SPAN:
                 return new NewsContentAdapter.SpanViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_span, parent, false));
@@ -101,7 +101,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         ViewNewsType viewNewsType = values()[holder.getItemViewType()];
         switch (viewNewsType) {
-            case TYPE_VIEW_HEADER:
+            case TYPE_VIEW_PREVIEW:
                 ((HeaderViewHolder)holder).bind(holder, position);
                 break;
             case TYPE_VIEW_SPAN:
@@ -489,5 +489,9 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public HRViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    public ArrayList<ViewObject> getResource() {
+        return mResource;
     }
 }

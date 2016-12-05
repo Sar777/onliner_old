@@ -1,11 +1,12 @@
 package by.onliner.news.Structures.Comments;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Информации о пользователе
  */
-public class Author implements Serializable {
+public class Author implements Parcelable {
     /**
      * Уникальный айд
      */
@@ -16,6 +17,11 @@ public class Author implements Serializable {
     private String mName;
 
     public Author() {
+    }
+
+    public Author(Parcel in) {
+        mId = in.readInt();
+        mName = in.readString();
     }
 
     public Author(String name, Integer id) {
@@ -54,4 +60,27 @@ public class Author implements Serializable {
     public void setName(String name) {
         this.mName = name;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(mId);
+        parcel.writeString(mName);
+    }
+
+    public static final Creator<Author> CREATOR = new Creator<Author>() {
+        @Override
+        public Author createFromParcel(Parcel in) {
+            return new Author(in);
+        }
+
+        @Override
+        public Author[] newArray(int size) {
+            return new Author[size];
+        }
+    };
 }

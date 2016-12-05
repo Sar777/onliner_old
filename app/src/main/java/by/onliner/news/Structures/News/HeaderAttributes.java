@@ -1,9 +1,11 @@
 package by.onliner.news.Structures.News;
 
+import java.io.Serializable;
+
 /**
  * Атрибуты заголовка новости
  */
-public class HeaderAttributes {
+public class HeaderAttributes implements Serializable {
     /**
      * Была ли новость обновлена на сайте(Маркер)
      */

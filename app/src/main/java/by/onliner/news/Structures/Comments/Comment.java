@@ -1,11 +1,12 @@
 package by.onliner.news.Structures.Comments;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Информация о комментарии
  */
-public class Comment implements Serializable {
+public class Comment implements Parcelable {
     /**
      * Уникальный айди комментария
      */
@@ -50,6 +51,16 @@ public class Comment implements Serializable {
         this.mDate = "<Unknown>";
         this.mText = "<Unknown>";
         this.mQuote = new CommentQuote();
+    }
+
+    protected Comment(Parcel in) {
+        Id = in.readInt();
+        mAuthor = in.readParcelable(Author.class.getClassLoader());
+        mDate = in.readString();
+        mLikes = in.readParcelable(Like.class.getClassLoader());
+        mText = in.readString();
+        mAvatarURL = in.readString();
+        mQuote = in.readParcelable(CommentQuote.class.getClassLoader());
     }
 
     /**
@@ -163,4 +174,32 @@ public class Comment implements Serializable {
     public void setQuote(CommentQuote quote) {
         this.mQuote = quote;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(Id);
+        parcel.writeParcelable(mAuthor, i);
+        parcel.writeString(mDate);
+        parcel.writeParcelable(mLikes, i);
+        parcel.writeString(mText);
+        parcel.writeString(mAvatarURL);
+        parcel.writeParcelable(mQuote, i);
+    }
+
+    public static final Creator<Comment> CREATOR = new Creator<Comment>() {
+        @Override
+        public Comment createFromParcel(Parcel in) {
+            return new Comment(in);
+        }
+
+        @Override
+        public Comment[] newArray(int size) {
+            return new Comment[size];
+        }
+    };
 }

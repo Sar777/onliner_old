@@ -32,7 +32,7 @@ import retrofit2.Response;
  * Просмотр комментариев
  */
 public class CommentsActivity extends AppCompatActivity implements View.OnClickListener {
-    private ArrayList<Comment> mComments = new ArrayList<>();
+    private ArrayList<Comment> mComments;
 
     private CommentsListAdapter mCommentListAdapter;
 
@@ -45,9 +45,8 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
     private ProgressBar mProgressBarCommentSending;
 
     @NonNull
-    private Integer mId;
-    @NonNull
     private String mProject;
+    private String mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +63,9 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        mComments = (ArrayList<Comment>)( getIntent().getSerializableExtra(ViewNewsActivity.INTENT_COMMENTS_TAG));
+        mComments = getIntent().getParcelableArrayListExtra(ViewNewsActivity.INTENT_COMMENTS_TAG);
+        mId = getIntent().getStringExtra(ViewNewsActivity.INTENT_PROJECT_TAG);
         mProject = getIntent().getStringExtra(ViewNewsActivity.INTENT_PROJECT_TAG);
-        mId = getIntent().getIntExtra(ViewNewsActivity.INTENT_NEWS_ID_TAG, -1);
 
         // Топ коммпентарий
         for (Comment comment : mComments) {
@@ -116,7 +115,7 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
         showSendMessageButton(true);
 
         CommentService service = ServiceFactory.createRetrofitService(CommentService.class, Common.getUrlByProject(mProject));
-        service.sendCommentMessage(message, mId.toString()).enqueue(new Callback<CommentResponse>() {
+        service.sendCommentMessage(message, String.valueOf(mId)).enqueue(new Callback<CommentResponse>() {
             @Override
             public void onResponse(Call<CommentResponse> call, Response<CommentResponse> response) {
                 showSendMessageButton(false);

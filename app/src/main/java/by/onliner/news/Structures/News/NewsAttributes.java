@@ -1,11 +1,12 @@
 package by.onliner.news.Structures.News;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Дополнительные атрибуты для новости
  */
-public class NewsAttributes implements Serializable {
+public class NewsAttributes implements Parcelable {
     /**
      * Айди новости
      */
@@ -35,6 +36,12 @@ public class NewsAttributes implements Serializable {
         this.mId = id;
         this.mProject = project;
         this.mUrl = url;
+    }
+
+    protected NewsAttributes(Parcel in) {
+        mId = in.readInt();
+        mProject = in.readString();
+        mUrl = in.readString();
     }
 
     /**
@@ -93,4 +100,28 @@ public class NewsAttributes implements Serializable {
                 ", mUrl='" + mUrl + '\'' +
                 '}';
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mId);
+        dest.writeString(mProject);
+        dest.writeString(mUrl);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<NewsAttributes> CREATOR = new Creator<NewsAttributes>() {
+        @Override
+        public NewsAttributes createFromParcel(Parcel in) {
+            return new NewsAttributes(in);
+        }
+
+        @Override
+        public NewsAttributes[] newArray(int size) {
+            return new NewsAttributes[size];
+        }
+    };
 }

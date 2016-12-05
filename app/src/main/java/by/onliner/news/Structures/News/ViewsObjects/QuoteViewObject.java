@@ -1,5 +1,7 @@
 package by.onliner.news.Structures.News.ViewsObjects;
 
+import android.os.Parcel;
+
 import by.onliner.news.Enums.ViewNewsType;
 
 /**
@@ -9,8 +11,15 @@ import by.onliner.news.Enums.ViewNewsType;
 public class QuoteViewObject extends ViewObject {
     private String mText;
 
+    public QuoteViewObject(Parcel in) {
+        super(ViewNewsType.TYPE_VIEW_QUOTE);
+
+        mText = in.readString();
+    }
+
     public QuoteViewObject(String text) {
         super(ViewNewsType.TYPE_VIEW_QUOTE);
+
         mText = text;
     }
 
@@ -21,5 +30,12 @@ public class QuoteViewObject extends ViewObject {
     @Override
     public boolean isValid() {
         return !mText.isEmpty();
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        super.writeToParcel(out, flags);
+
+        out.writeString(mText);
     }
 }

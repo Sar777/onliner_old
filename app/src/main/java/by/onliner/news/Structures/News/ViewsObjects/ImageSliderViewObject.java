@@ -1,5 +1,7 @@
 package by.onliner.news.Structures.News.ViewsObjects;
 
+import android.os.Parcel;
+
 import java.util.ArrayList;
 
 import by.onliner.news.Enums.ViewNewsType;
@@ -12,9 +14,17 @@ public class ImageSliderViewObject extends ViewObject {
     private ArrayList<String> mImageURLs;
     private String mDescription;
 
+    public ImageSliderViewObject(Parcel in) {
+        super(ViewNewsType.TYPE_VIEW_IMAGE_SLIDER);
+
+        in.readStringList(mImageURLs);
+        mDescription = in.readString();
+    }
+
     public ImageSliderViewObject(ArrayList<String> imageUrls, String description) {
         super(ViewNewsType.TYPE_VIEW_IMAGE_SLIDER);
-        this.mImageURLs =  imageUrls;
+
+        this.mImageURLs = imageUrls;
         this.mDescription = description;
     }
 
@@ -29,5 +39,13 @@ public class ImageSliderViewObject extends ViewObject {
     @Override
     public boolean isValid() {
         return !mImageURLs.isEmpty();
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        super.writeToParcel(out, flags);
+
+        out.writeStringList(mImageURLs);
+        out.writeString(mDescription);
     }
 }

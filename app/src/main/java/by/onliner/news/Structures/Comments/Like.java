@@ -1,13 +1,14 @@
 package by.onliner.news.Structures.Comments;
 
-import com.google.gson.annotations.SerializedName;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Информация о лайках комментария
  */
-public class Like implements Serializable {
+public class Like implements Parcelable {
     /**
      * Количество лайков
      */
@@ -25,12 +26,19 @@ public class Like implements Serializable {
     public Like() {
         this.mCount = 0;
         this.mIsBest = false;
+        this.mIsLike = false;
+    }
+
+    public Like(Parcel in) {
+        mCount = in.readInt();
+        mIsBest = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        mIsLike = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
     public Like(Integer count, Boolean best, Boolean like) {
-        this.mCount = count;
-        this.mIsBest = best;
-        this.mIsLike = like;
+        this.mCount = count != null ? count : 0;
+        this.mIsBest = best != null ? best : false;
+        this.mIsLike = like != null ? like : false;;
     }
 
     /**
@@ -80,4 +88,28 @@ public class Like implements Serializable {
     public void setIsLike(Boolean like) {
         this.mIsLike = like;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(mCount);
+        parcel.writeValue(mIsBest);
+        parcel.writeValue(mIsBest);
+    }
+
+    public static final Creator<Like> CREATOR = new Creator<Like>() {
+        @Override
+        public Like createFromParcel(Parcel in) {
+            return new Like(in);
+        }
+
+        @Override
+        public Like[] newArray(int size) {
+            return new Like[size];
+        }
+    };
 }

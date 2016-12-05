@@ -1,5 +1,7 @@
 package by.onliner.news.Structures.News.ViewsObjects;
 
+import android.os.Parcel;
+
 import by.onliner.news.Enums.ViewNewsType;
 
 /**
@@ -10,8 +12,16 @@ public class ImageViewObject extends ViewObject {
     private String mURL;
     private String mDescription;
 
+    public ImageViewObject(Parcel in) {
+        super(ViewNewsType.TYPE_VIEW_IMAGE);
+
+        mURL = in.readString();
+        mDescription = in.readString();
+    }
+
     public ImageViewObject(String url, String description) {
         super(ViewNewsType.TYPE_VIEW_IMAGE);
+
         mURL = url;
         mDescription = description;
     }
@@ -27,5 +37,13 @@ public class ImageViewObject extends ViewObject {
     @Override
     public boolean isValid() {
         return !mURL.isEmpty();
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        super.writeToParcel(out, flags);
+
+        out.writeString(mURL);
+        out.writeString(mDescription);
     }
 }
