@@ -27,7 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
@@ -79,10 +78,6 @@ public class TabBase extends Fragment implements View.OnClickListener, SwipeRefr
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mRecyclerView = (RecyclerView) myFragmentView.findViewById(R.id.lv_news_list);
-
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        mRecyclerView.setLayoutParams(lp);
-
         mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager horizontalLayoutManager;
