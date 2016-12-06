@@ -15,6 +15,7 @@
 
 package by.onliner.news.Fragments.Tabs;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
@@ -49,8 +51,6 @@ public class TabBase extends Fragment implements View.OnClickListener, SwipeRefr
 
     private NewsListAdapter mNewsListAdapter;
 
-    private View myFragmentView;
-
     // Views
     private Button btnLoadContent;
     private ViewGroup mLinerRepeatGroup;
@@ -64,28 +64,36 @@ public class TabBase extends Fragment implements View.OnClickListener, SwipeRefr
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myFragmentView = inflater.inflate(R.layout.fragment_news_preview, container, false);
+        View myFragmentView = inflater.inflate(R.layout.fragment_news_preview, container, false);
 
         // Views
-        btnLoadContent = (Button)myFragmentView.findViewById(R.id.bt_loadContent);
+        btnLoadContent = (Button) myFragmentView.findViewById(R.id.bt_loadContent);
         btnLoadContent.setOnClickListener(this);
 
-        mLinerRepeatGroup = (ViewGroup)myFragmentView.findViewById(R.id.l_group_repeat);
+        mLinerRepeatGroup = (ViewGroup) myFragmentView.findViewById(R.id.l_group_repeat);
 
-        mProgressBarStatus = (ProgressBar)myFragmentView.findViewById(R.id.pb_news_list_loading);
+        mProgressBarStatus = (ProgressBar) myFragmentView.findViewById(R.id.pb_news_list_loading);
         mProgressBarStatus.setVisibility(View.VISIBLE);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout)myFragmentView.findViewById(R.id.swipe_news_preview);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) myFragmentView.findViewById(R.id.swipe_news_preview);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mRecyclerView = (RecyclerView) myFragmentView.findViewById(R.id.lv_news_list);
+
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        mRecyclerView.setLayoutParams(lp);
+
         mRecyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager horizontalLayoutManagaer = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(horizontalLayoutManagaer);
+        LinearLayoutManager horizontalLayoutManager;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        else
+            horizontalLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        mRecyclerView.setLayoutManager(horizontalLayoutManager);
 
         mNewsListAdapter = new NewsListAdapter(getContext(), mProjectId, mRecyclerView);
-
         mNewsListAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {

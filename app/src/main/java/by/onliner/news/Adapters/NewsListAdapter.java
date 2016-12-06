@@ -2,13 +2,16 @@ package by.onliner.news.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -79,6 +82,14 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_ITEM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_news_item, parent, false);
+
+            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+            if (linearLayoutManager.getOrientation() == LinearLayout.HORIZONTAL) {
+                CardView cardView = (CardView) view.findViewById(R.id.cv_preview);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                params.setMargins(0, 10, 0, 10);
+                cardView.setLayoutParams(params);
+            }
             return new ViewDataHolder(view);
         } else if (viewType == VIEW_TYPE_LOADING) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_loading_item, parent, false);
@@ -88,7 +99,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return null;
     }
 
-    public class ViewDataHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ViewDataHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // Views
         private TextView mTextViewTitle;
         private TextView mTextViewComments;
@@ -99,7 +110,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private ImageView mImageviewVideo;
         private ViewGroup mViewGroupPhotos;
 
-        public ViewDataHolder(View itemView)  {
+        ViewDataHolder(View itemView)  {
             super(itemView);
 
             mImageviewPreview = (ImageView)itemView.findViewById(R.id.i_preview_image);
@@ -126,10 +137,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public class LoadingViewHolder extends RecyclerView.ViewHolder {
+    private class LoadingViewHolder extends RecyclerView.ViewHolder {
         private ProgressBar mProgressBar;
 
-        public LoadingViewHolder(View itemView) {
+        LoadingViewHolder(View itemView) {
             super(itemView);
 
             mProgressBar = (ProgressBar)itemView.findViewById(R.id.pb_loading_more);
