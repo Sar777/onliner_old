@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     android:id="@+id/l_auth_base"
-    tools:context="by.onliner.news.Activity.AuthActivity">
+    tools:context="by.onliner.news.activity.AuthActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

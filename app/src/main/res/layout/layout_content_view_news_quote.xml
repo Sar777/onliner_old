@@ -8,7 +8,7 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp">
 
-    <by.onliner.news.CustomViews.QuoteTextView
+    <by.onliner.news.customViews.QuoteTextView
         android:id="@+id/tv_content_news_quote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

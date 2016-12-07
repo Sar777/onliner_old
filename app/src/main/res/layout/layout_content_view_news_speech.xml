@@ -7,7 +7,7 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp">
 
-    <by.onliner.news.CustomViews.ExtendedTextView
+    <by.onliner.news.customViews.ExtendedTextView
         android:id="@+id/tv_content_news_speech"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

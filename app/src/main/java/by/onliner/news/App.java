@@ -12,9 +12,9 @@ import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersisto
 
 import java.net.InetAddress;
 
-import by.onliner.news.Database.DBHelper;
-import by.onliner.news.Structures.Credentials.Credentials;
-import by.onliner.news.Structures.User.User;
+import by.onliner.news.database.DBHelper;
+import by.onliner.news.structures.credentials.Credentials;
+import by.onliner.news.structures.user.User;
 
 public class App extends Application {
     private static Context mContext;

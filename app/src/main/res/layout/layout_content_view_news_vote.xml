@@ -8,7 +8,7 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp">
 
-    <by.onliner.news.CustomViews.ExtendedTextView
+    <by.onliner.news.customViews.ExtendedTextView
         android:id="@+id/tv_view_news_vote_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:textStyle="bold"
         app:fontAsset="OpenSans-Regular.ttf"/>
 
-    <by.onliner.news.CustomViews.ExtendedTextView
+    <by.onliner.news.customViews.ExtendedTextView
         android:id="@+id/tv_view_news_vote_stat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
