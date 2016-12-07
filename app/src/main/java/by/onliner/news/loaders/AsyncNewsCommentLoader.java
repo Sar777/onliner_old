@@ -35,12 +35,6 @@ public class AsyncNewsCommentLoader extends AsyncTaskLoader<LinkedHashMap<String
         if (likes == null)
             return comments;
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         for (Map.Entry<String, Like> like : likes.entrySet()) {
             Comment comment = comments.get(like.getKey());
             if (comment == null)

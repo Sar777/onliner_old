@@ -30,11 +30,6 @@ public class AsyncNewsContentLoader extends AsyncTaskLoader<ArrayList<ViewObject
 
     @Override
     public ArrayList<ViewObject> loadInBackground() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         String resp = NewsMgr.getInstance().getSyncNewsByUrl(mUrl);
         mNews = new News(mUrl, mProject, mTitle, resp);
         return NewsContentFactory.create(mNews);
