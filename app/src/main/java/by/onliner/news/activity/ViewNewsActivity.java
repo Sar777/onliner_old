@@ -108,28 +108,16 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
+        Intent intent = getIntent();
+        mURL = intent.getStringExtra(TabBase.INTENT_URL_TAG);
+        mProject = intent.getStringExtra(TabBase.INTENT_PROJECT_TAG);
+        mTitleString = intent.getStringExtra(TabBase.INTENT_TITLE_TAG);
+
+        boolean initLoader = true;
+
         // Восстановление активити
-        if (savedInstanceState == null) {
-            Intent intent = getIntent();
-            mURL = intent.getStringExtra(TabBase.INTENT_URL_TAG);
-            mProject = intent.getStringExtra(TabBase.INTENT_PROJECT_TAG);
-            mTitleString = intent.getStringExtra(TabBase.INTENT_TITLE_TAG);
-
-            Bundle bundle = new Bundle();
-            bundle.putString("URL", mURL);
-            bundle.putString("PROJECT", mProject);
-            bundle.putString("TITLE", mTitleString);
-
-            getLoaderManager().initLoader(LOADER_CONTENT_ID, bundle, this).forceLoad();
-        } else {
-            mURL = savedInstanceState.getString("URL");
-            mProject = savedInstanceState.getString("PROJECT");
-            mTitleString = savedInstanceState.getString("TITLE");
-
-            if (savedInstanceState.containsKey("NEWS") &&
-                savedInstanceState.containsKey("VIEWS_OBJECTS") &&
-                savedInstanceState.containsKey("COMMENTS")) {
-
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey("NEWS") && savedInstanceState.containsKey("COMMENTS")) {
                 mNews = savedInstanceState.getParcelable("NEWS");
 
                 mComments = savedInstanceState.getParcelableArrayList("COMMENTS");
@@ -141,14 +129,17 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 mProgressBar.setVisibility(View.GONE);
                 mBaseLayout.setVisibility(View.VISIBLE);
                 mButtonComment.setVisibility(View.VISIBLE);
+
+                initLoader = false;
             }
-            else {
-                Bundle bundle = new Bundle();
-                bundle.putString("URL", mURL);
-                bundle.putString("PROJECT", mProject);
-                bundle.putString("TITLE", mTitleString);
-                getLoaderManager().restartLoader(LOADER_CONTENT_ID, bundle, this).forceLoad();
-            }
+        }
+
+        if (initLoader) {
+            Bundle bundle = new Bundle();
+            bundle.putString("URL", mURL);
+            bundle.putString("PROJECT", mProject);
+            bundle.putString("TITLE", mTitleString);
+            getLoaderManager().initLoader(LOADER_CONTENT_ID, bundle, this);
         }
 
         mTitle = (TextView) findViewById(R.id.tv_view_news_title);
@@ -159,15 +150,12 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putString("URL", mURL);
-        outState.putString("PROJECT", mProject);
-        outState.putString("TITLE", mTitleString);
+        getLoaderManager().destroyLoader(LOADER_CONTENT_ID);
 
-        if (mViewObjects != null)
-            outState.putParcelableArrayList("VIEWS_OBJECTS", mViewObjects);
-
-        if (mNews != null)
+        if (mNews != null) {
             outState.putParcelable("NEWS", mNews);
+            outState.putParcelableArrayList("VIEWS_OBJECTS", mViewObjects);
+        }
 
         if (mComments != null)
             outState.putParcelableArrayList("COMMENTS", mComments);
@@ -196,11 +184,12 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             }
 
             mViewObjects = views;
+            mNews = ((AsyncNewsContentLoader)loader).getNews();
+
             mNewsContentAdapter = new NewsContentAdapter(this, mViewObjects);
             mRecyclerContent.setAdapter(mNewsContentAdapter);
 
             // Запуск обработки комментариев
-            mNews = ((AsyncNewsContentLoader)loader).getNews();
             loadingComments(mNews);
 
             updateActionBar();
@@ -271,12 +260,20 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.view_news_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        Loader<ArrayList<ViewObject>> loader = getLoaderManager().getLoader(LOADER_CONTENT_ID);
+        if (loader != null)
+            loader.forceLoad();
 
         mItemFavorite = menu.findItem(R.id.action_favorites);
         mItemRemoveFavorite = menu.findItem(R.id.action_remove_favorites);
-
         updateActionBar();
-        return true;
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
