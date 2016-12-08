@@ -57,6 +57,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private ArrayList<ViewObject> mViewObjects;
 
     // Views
+    private Toolbar mToolbar;
     private TextView mTitle;
     private Button mButtonComment;
     private Button mButtonRepeat;
@@ -77,10 +78,10 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_news);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.view_news_toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.view_news_toolbar);
+        setSupportActionBar(mToolbar);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
