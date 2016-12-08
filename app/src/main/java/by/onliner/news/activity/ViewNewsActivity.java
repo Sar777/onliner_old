@@ -299,10 +299,13 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void updateActionBar() {
+        if (mNews == null)
+            return;
+
         // Избранная новость
-        if (mNews != null && FavoritesNewsMgr.getInstance().isFavorite(mNews.getAttributes().getId())) {
-            mItemFavorite.setVisible(false);
+        if (FavoritesNewsMgr.getInstance().isFavorite(mNews.getAttributes().getId())) {
             mItemRemoveFavorite.setVisible(true);
+            mItemFavorite.setVisible(false);
         }
         else
             mItemFavorite.setVisible(true);
