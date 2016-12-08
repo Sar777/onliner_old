@@ -51,8 +51,11 @@ public class FavoritesNewsMgr {
         Cursor cursor = null;
         try {
             cursor = db.query(Constant.mTableNameFavorites, new String[] { "json" }, null, null, null, null, null);
-            while (cursor.moveToNext()) {
-                favorites.add(new Gson().fromJson(cursor.getString(0), News.class));
+            cursor.move(0);
+            if (cursor.moveToFirst()) {
+                do {
+                    favorites.add(new Gson().fromJson(cursor.getString(0), News.class));
+                } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             e.printStackTrace();
