@@ -1,5 +1,6 @@
 package by.onliner.news.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -15,11 +17,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import by.onliner.news.adapters.CommentsListAdapter;
 import by.onliner.news.App;
+import by.onliner.news.R;
+import by.onliner.news.adapters.CommentsListAdapter;
 import by.onliner.news.common.Common;
 import by.onliner.news.parser.Parsers.CommentsParser;
-import by.onliner.news.R;
 import by.onliner.news.services.Comment.CommentResponse;
 import by.onliner.news.services.Comment.CommentService;
 import by.onliner.news.services.ServiceFactory;
@@ -46,7 +48,7 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
 
     @NonNull
     private String mProject;
-    private String mId;
+    private Integer mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
         });
 
         mComments = getIntent().getParcelableArrayListExtra(ViewNewsActivity.INTENT_COMMENTS_TAG);
-        mId = getIntent().getStringExtra(ViewNewsActivity.INTENT_PROJECT_TAG);
+        mId = getIntent().getIntExtra(ViewNewsActivity.INTENT_NEWS_ID_TAG, -1);
         mProject = getIntent().getStringExtra(ViewNewsActivity.INTENT_PROJECT_TAG);
 
         // Топ коммпентарий
@@ -115,7 +117,7 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
         showSendMessageButton(true);
 
         CommentService service = ServiceFactory.createRetrofitService(CommentService.class, Common.getUrlByProject(mProject));
-        service.sendCommentMessage(message, String.valueOf(mId)).enqueue(new Callback<CommentResponse>() {
+        service.sendCommentMessage(message, mId).enqueue(new Callback<CommentResponse>() {
             @Override
             public void onResponse(Call<CommentResponse> call, Response<CommentResponse> response) {
                 showSendMessageButton(false);
@@ -134,12 +136,21 @@ public class CommentsActivity extends AppCompatActivity implements View.OnClickL
                     return;
                 }
 
-                Toast.makeText(App.getContext(), R.string.comment_added, Toast.LENGTH_SHORT).show();
+                // Редирект аккаунт заблокирован
+                if (commentResponse.getRedirect() != null) {
+                    Snackbar.make(mButtonMessage, commentResponse.getRedirect(), Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // Добавление в список
                 mCommentListAdapter.getResource().add(new CommentsParser().parse(commentResponse.getComment()).get(commentResponse.getId()));
                 mCommentListAdapter.notifyItemInserted(mCommentListAdapter.getItemCount());
                 mRecyclerView.scrollToPosition(mCommentListAdapter.getItemCount() - 1);
+
+                InputMethodManager imm = (InputMethodManager) App.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mRecyclerView.getWindowToken(), 0);
+
+                Toast.makeText(App.getContext(), R.string.comment_added, Toast.LENGTH_SHORT).show();
             }
 
             @Override

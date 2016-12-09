@@ -16,10 +16,14 @@ public class CommentResponse {
     @SerializedName("error")
     private String mError;
 
-    public CommentResponse(String id, String comment, String error) {
+    @SerializedName("redirect")
+    private String mRedirect;
+
+    public CommentResponse(String id, String comment, String error, String redirect) {
         this.mId = id;
         this.mComment = comment;
         this.mError = error;
+        this.mRedirect = redirect;
     }
 
     public String getId() {
@@ -32,5 +36,9 @@ public class CommentResponse {
 
     public String getError() {
         return mError;
+    }
+
+    public String getRedirect() {
+        return mRedirect;
     }
 }

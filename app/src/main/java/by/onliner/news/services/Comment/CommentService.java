@@ -18,5 +18,5 @@ public interface CommentService {
     })
     @FormUrlEncoded
     @POST("comments/add")
-    Call<CommentResponse> sendCommentMessage(@Field("message") String message, @Field("postId") String postId);
+    Call<CommentResponse> sendCommentMessage(@Field("message") String message, @Field("postId") Integer postId);
 }
