@@ -75,8 +75,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:paddingLeft="5dp"
-                    android:gravity="center"
-                    android:text="20"/>
+                    android:paddingRight="1dp"
+                    android:gravity="center" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -102,8 +102,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_gravity="center"
-                    android:textColor="@android:color/white"
-                    android:text="59000"/>
+                    android:textColor="@android:color/white" />
 
                 <ImageView
                     android:layout_width="20dp"
@@ -127,7 +126,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:paddingLeft="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="1dp"
                     android:textColor="@android:color/black"
                     android:text="3000"/>
 
@@ -158,7 +158,7 @@
                 android:paddingTop="4dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:text="@string/tv_unknown"/>
         </RelativeLayout>
