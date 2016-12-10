@@ -176,6 +176,19 @@ public class Comment implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        return "Comment{" +
+                "Id=" + Id +
+                ", mAuthor=" + mAuthor +
+                ", mDate='" + mDate + '\'' +
+                ", mLikes=" + mLikes +
+                ", mText='" + mText + '\'' +
+                ", mAvatarURL='" + mAvatarURL + '\'' +
+                ", mQuote=" + mQuote +
+                '}';
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }

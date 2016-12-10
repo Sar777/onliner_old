@@ -20,6 +20,9 @@ public class Like implements Parcelable {
     @SerializedName("best")
     private Boolean mIsBest;
 
+    /**
+     * Комментарий был лайкнут
+     */
     @SerializedName("like")
     private Boolean mIsLike;
 
@@ -38,7 +41,7 @@ public class Like implements Parcelable {
     public Like(Integer count, Boolean best, Boolean like) {
         this.mCount = count != null ? count : 0;
         this.mIsBest = best != null ? best : false;
-        this.mIsLike = like != null ? like : false;;
+        this.mIsLike = like != null ? like : false;
     }
 
     /**
@@ -90,6 +93,15 @@ public class Like implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        return "Like{" +
+                "mCount=" + mCount +
+                ", mIsBest=" + mIsBest +
+                ", mIsLike=" + mIsLike +
+                '}';
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -98,7 +110,7 @@ public class Like implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(mCount);
         parcel.writeValue(mIsBest);
-        parcel.writeValue(mIsBest);
+        parcel.writeValue(mIsLike);
     }
 
     public static final Creator<Like> CREATOR = new Creator<Like>() {

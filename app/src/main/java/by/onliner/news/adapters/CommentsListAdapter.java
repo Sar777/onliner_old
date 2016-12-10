@@ -20,13 +20,13 @@ import com.squareup.picasso.Picasso;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
-import by.onliner.news.activity.AuthActivity;
 import by.onliner.news.App;
+import by.onliner.news.R;
+import by.onliner.news.activity.AuthActivity;
 import by.onliner.news.common.Common;
 import by.onliner.news.factory.Comment.CommentQuoteFactory;
 import by.onliner.news.listeners.OnLikeCommentListener;
 import by.onliner.news.managers.LikeMgr;
-import by.onliner.news.R;
 import by.onliner.news.services.Likes.LikeCommentResponse;
 import by.onliner.news.structures.comments.Comment;
 import by.onliner.news.transforms.CircleTransform;
