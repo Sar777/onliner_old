@@ -35,7 +35,6 @@ import by.onliner.news.R;
 import by.onliner.news.structures.news.viewsObjects.H2ViewObject;
 import by.onliner.news.structures.news.viewsObjects.ImageSliderViewObject;
 import by.onliner.news.structures.news.viewsObjects.ImageViewObject;
-import by.onliner.news.structures.news.viewsObjects.PreviewViewObject;
 import by.onliner.news.structures.news.viewsObjects.QuoteViewObject;
 import by.onliner.news.structures.news.viewsObjects.SpanViewObject;
 import by.onliner.news.structures.news.viewsObjects.SpeechViewObject;
@@ -65,8 +64,6 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         ViewNewsType viewNewsType = values()[viewType];
         switch (viewNewsType) {
-            case TYPE_VIEW_PREVIEW:
-                return new NewsContentAdapter.HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_header, parent, false));
             case TYPE_VIEW_SPAN:
                 return new NewsContentAdapter.SpanViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_content_view_news_span, parent, false));
             case TYPE_VIEW_TITLE:
@@ -101,9 +98,6 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         ViewNewsType viewNewsType = values()[holder.getItemViewType()];
         switch (viewNewsType) {
-            case TYPE_VIEW_PREVIEW:
-                ((HeaderViewHolder)holder).bind(holder, position);
-                break;
             case TYPE_VIEW_SPAN:
                 ((SpanViewHolder)holder).bind(holder, position);
                 break;
@@ -150,47 +144,16 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return mResource.get(position).getType().ordinal();
     }
 
-    private class HeaderViewHolder extends RecyclerView.ViewHolder {
-        private TextView mTextViewTitle;
-        private TextView mTextViewViews;
-        private TextView mTextViewComments;
-        private TextView mTextViewDate;
-        private ImageView mImageView;
-
-        public HeaderViewHolder(View itemView) {
-            super(itemView);
-
-            mTextViewTitle = (TextView) itemView.findViewById(R.id.tv_view_news_header_title);
-            mTextViewViews = (TextView) itemView.findViewById(R.id.tv_view_news_header_views);
-            mTextViewComments = (TextView) itemView.findViewById(R.id.tv_view_news_header_comments);
-            mTextViewDate = (TextView) itemView.findViewById(R.id.tv_view_news_header_date);
-            mImageView = (ImageView) itemView.findViewById(R.id.img_view_news_header_image);
-        }
-
-        public void bind(final RecyclerView.ViewHolder holder, final int position) {
-            final PreviewViewObject previewViewObject = (PreviewViewObject) mResource.get(position);
-            mTextViewTitle.setText(previewViewObject.getTitle());
-            mTextViewViews.setText(previewViewObject.getViews().toString());
-            mTextViewComments.setText(previewViewObject.getComments().toString());
-            mTextViewDate.setText(previewViewObject.getDate());
-
-            Picasso.with(App.getContext()).
-                    load(previewViewObject.getImageUrl()).
-                    resize(0, 200).
-                    into(mImageView);
-        }
-    }
-
     private class TitleViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
 
-        public TitleViewHolder(View itemView) {
+        TitleViewHolder(View itemView) {
             super(itemView);
 
             mTextView = (TextView) itemView.findViewById(R.id.tv_content_news_title);
         }
 
-        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+        void bind(final RecyclerView.ViewHolder holder, final int position) {
             final TitleViewObject titleViewObject = (TitleViewObject) mResource.get(position);
             mTextView.setText(titleViewObject.getText());
         }
@@ -199,13 +162,13 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private class SpanViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
 
-        public SpanViewHolder(View itemView) {
+        SpanViewHolder(View itemView) {
             super(itemView);
 
             mTextView = (TextView) itemView.findViewById(R.id.tv_content_news_span);
         }
 
-        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+        void bind(final RecyclerView.ViewHolder holder, final int position) {
             final SpanViewObject spanView = (SpanViewObject)mResource.get(position);
             mTextView.setText(spanView.getText());
         }
@@ -220,7 +183,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         private String mUrl;
 
-        public ImageViewHolder(View itemView) {
+        ImageViewHolder(View itemView) {
             super(itemView);
 
             mImageView = (ImageView) itemView.findViewById(R.id.img_view_news_image);
@@ -230,7 +193,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mButtonLoadingRepeat = (Button) itemView.findViewById(R.id.bt_view_news_repeat_loading);
         }
 
-        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+        void bind(final RecyclerView.ViewHolder holder, final int position) {
             final ImageViewObject imageViewObject = (ImageViewObject) mResource.get(position);
 
             mUrl = imageViewObject.getUrl();
@@ -286,7 +249,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private TextView mTextViewDescription;
         private ViewGroup mLinearLayoutIndicator;
 
-        public ImageSliderViewHolder(View itemView) {
+        ImageSliderViewHolder(View itemView) {
             super(itemView);
 
             mRecyclerViewImages = (RecyclerView) itemView.findViewById(R.id.recycler_view_news_image_slider);
@@ -294,7 +257,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mLinearLayoutIndicator = (ViewGroup) itemView.findViewById(R.id.l_view_news_indicator_images);
         }
 
-        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+        void bind(final RecyclerView.ViewHolder holder, final int position) {
             final ImageSliderViewObject imageSliderViewObject = (ImageSliderViewObject) mResource.get(position);
 
             if (!imageSliderViewObject.getDescription().isEmpty()) {
@@ -350,13 +313,13 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private class SpeechViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
 
-        public SpeechViewHolder(View itemView) {
+        SpeechViewHolder(View itemView) {
             super(itemView);
 
             mTextView = (TextView) itemView.findViewById(R.id.tv_content_news_speech);
         }
 
-        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+        void bind(final RecyclerView.ViewHolder holder, final int position) {
             final SpeechViewObject speechViewObject = (SpeechViewObject)mResource.get(position);
             mTextView.setText(speechViewObject.getText());
         }
@@ -365,13 +328,13 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private class QuoteViewHolder extends RecyclerView.ViewHolder {
         private QuoteTextView mQuoteTextView;
 
-        public QuoteViewHolder(View itemView) {
+        QuoteViewHolder(View itemView) {
             super(itemView);
 
             mQuoteTextView = (QuoteTextView) itemView.findViewById(R.id.tv_content_news_quote);
         }
 
-        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+        void bind(final RecyclerView.ViewHolder holder, final int position) {
             final QuoteViewObject quoteViewObject = (QuoteViewObject) mResource.get(position);
             mQuoteTextView.setText(quoteViewObject.getText());
         }
@@ -380,13 +343,13 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private class H2ViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
 
-        public H2ViewHolder(View itemView) {
+        H2ViewHolder(View itemView) {
             super(itemView);
 
             mTextView = (TextView) itemView.findViewById(R.id.tv_content_news_h2);
         }
 
-        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+        void bind(final RecyclerView.ViewHolder holder, final int position) {
             final H2ViewObject h2ViewObject = (H2ViewObject) mResource.get(position);
             mTextView.setText(h2ViewObject.getText());
         }
@@ -395,13 +358,13 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private class ULViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
 
-        public ULViewHolder(View itemView) {
+        ULViewHolder(View itemView) {
             super(itemView);
 
             mTextView = (TextView) itemView.findViewById(R.id.tv_content_news_ul);
         }
 
-        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+        void bind(final RecyclerView.ViewHolder holder, final int position) {
             final ULViewObject ulViewObject = (ULViewObject) mResource.get(position);
             mTextView.setText(ulViewObject.getText());
         }
@@ -412,7 +375,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private TextView mTextViewState;
         private ViewGroup mLayoutOptions;
 
-        public VoteViewHolder(View itemView) {
+        VoteViewHolder(View itemView) {
             super(itemView);
 
             mTextViewTitle = (TextView) itemView.findViewById(R.id.tv_view_news_vote_title);
@@ -420,7 +383,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             mLayoutOptions = (ViewGroup) itemView.findViewById(R.id.l_view_news_vote_options);
         }
 
-        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+        void bind(final RecyclerView.ViewHolder holder, final int position) {
             final VoteViewObject voteViewObject = (VoteViewObject) mResource.get(position);
 
             mTextViewTitle.setText(voteViewObject.getTitle());
@@ -444,14 +407,14 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         private String mYoutubeVideoId;
 
-        public YoutubeVideoViewHolder(View itemView) {
+        YoutubeVideoViewHolder(View itemView) {
             super(itemView);
 
             mYouTubeThumbnailView = (YouTubeThumbnailView)itemView.findViewById(R.id.youtube_view_news_thumbnail);
             mImageViewPlay = (ImageView)itemView.findViewById(R.id.bt_view_news_youtube_player);
         }
 
-        public void bind(final RecyclerView.ViewHolder holder, final int position) {
+        void bind(final RecyclerView.ViewHolder holder, final int position) {
             final YoutubeViewObject youtubeViewObject = (YoutubeViewObject) mResource.get(position);
 
             mYoutubeVideoId = youtubeViewObject.getVideoId();
@@ -486,7 +449,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private class HRViewHolder extends RecyclerView.ViewHolder {
-        public HRViewHolder(View itemView) {
+        HRViewHolder(View itemView) {
             super(itemView);
         }
     }

@@ -15,6 +15,11 @@
         <item name="android:colorBackground">@android:color/white</item>
     </style>
 
+    <style name="CollapsingToolbarLayoutExpandedTextStyle" parent="AppTheme">
+        <item name="android:textColor">@android:color/transparent</item>
+        <item name="android:textSize">0sp</item>
+    </style>
+
     <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabPaddingStart">8dp</item>

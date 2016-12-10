@@ -19,7 +19,8 @@ public class NewsContentFactory {
         ArrayList<ViewObject> viewObjects = new ArrayList<>();
 
         // Блок заголовка новости
-        viewObjects.add(new PreviewFactory(news).create(document.getElementsByClass("news-header__preview").first()));
+        new HeaderFactory(news).create(document.getElementsByClass("news-header__preview").first());
+
         news.getAttributes().setId(Integer.parseInt(document.getElementsByClass("news_view_count").first().attr("news_id")));
 
         Element rootElement = document.getElementsByClass("news-text").first();

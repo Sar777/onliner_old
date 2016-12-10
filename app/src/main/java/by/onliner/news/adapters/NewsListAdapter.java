@@ -24,7 +24,7 @@ import by.onliner.news.listeners.OnLoadMoreListener;
 import by.onliner.news.managers.NewsMgr;
 import by.onliner.news.R;
 import by.onliner.news.structures.news.News;
-import by.onliner.news.structures.news.NewsPreview;
+import by.onliner.news.structures.news.NewsHeader;
 
 /**
  * Created by orion on 12.11.16.
@@ -132,7 +132,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             Intent intent = new Intent(mContext, ViewNewsActivity.class);
             intent.putExtra(TabBase.INTENT_URL_TAG, item.getAttributes().getUrl());
             intent.putExtra(TabBase.INTENT_PROJECT_TAG, item.getAttributes().getProject());
-            intent.putExtra(TabBase.INTENT_TITLE_TAG, item.getPreview().getTitle());
+            intent.putExtra(TabBase.INTENT_TITLE_TAG, item.getHeader().getTitle());
             mContext.startActivity(intent);
         }
     }
@@ -164,7 +164,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (news == null)
             return;
 
-        NewsPreview header = news.getPreview();
+        NewsHeader header = news.getHeader();
 
         Picasso.with(mContext).
                 load(header.getImage()).

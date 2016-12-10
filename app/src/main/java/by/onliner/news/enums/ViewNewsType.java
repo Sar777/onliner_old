@@ -5,7 +5,6 @@ package by.onliner.news.enums;
  */
 
 public enum ViewNewsType {
-    TYPE_VIEW_PREVIEW,
     TYPE_VIEW_TITLE,
     TYPE_VIEW_SPAN,
     TYPE_VIEW_QUOTE,

@@ -7,16 +7,15 @@ import java.util.regex.Pattern;
 
 import by.onliner.news.factory.IFactoryViewObjects;
 import by.onliner.news.structures.news.News;
-import by.onliner.news.structures.news.viewsObjects.PreviewViewObject;
 import by.onliner.news.structures.news.viewsObjects.ViewObject;
 
 /**
  * Формирование элемента с изображением
  */
-public class PreviewFactory implements IFactoryViewObjects<Element, ViewObject> {
+public class HeaderFactory implements IFactoryViewObjects<Element, ViewObject> {
     private News mNews;
 
-    public PreviewFactory(News news) {
+    public HeaderFactory(News news) {
         this.mNews = news;
     }
 
@@ -28,18 +27,18 @@ public class PreviewFactory implements IFactoryViewObjects<Element, ViewObject> 
 
             // Header
             if (child.className().contains("news-header__button_views"))
-                mNews.getPreview().setView(Integer.parseInt(child.text().replaceAll(" ", "").trim()));
+                mNews.getHeader().setView(Integer.parseInt(child.text().replaceAll(" ", "").trim()));
             else if (child.className().contains("news-header__button_comments"))
-                mNews.getPreview().setComments(Integer.parseInt(child.text().replaceAll(" ", "").trim()));
+                mNews.getHeader().setComments(Integer.parseInt(child.text().replaceAll(" ", "").trim()));
             else if (child.className().contains("news-header__time"))
-                mNews.getPreview().setPostDate(child.text());
+                mNews.getHeader().setPostDate(child.text());
             else if (child.className().contains("news-header__image")) {
                 Matcher m = Pattern.compile("background-image: url\\((.*)\\);").matcher(child.attr("style"));
                 if (m.matches())
-                    mNews.getPreview().setImage(m.group(1).replace("'", ""));
+                    mNews.getHeader().setImage(m.group(1).replace("'", ""));
             }
         }
 
-        return new PreviewViewObject(mNews.getPreview());
+        return null;
     }
 }
