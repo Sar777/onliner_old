@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import by.onliner.news.activity.ViewNewsActivity;
-import by.onliner.news.Fragments.tabs.TabBase;
+import by.onliner.news.fragments.tabs.TabBase;
 import by.onliner.news.listeners.OnLoadMoreListener;
 import by.onliner.news.managers.NewsMgr;
 import by.onliner.news.R;

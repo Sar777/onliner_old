@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import by.onliner.news.activity.ViewNewsActivity;
-import by.onliner.news.Fragments.tabs.TabBase;
+import by.onliner.news.fragments.tabs.TabBase;
 import by.onliner.news.managers.FavoritesNewsMgr;
 import by.onliner.news.R;
 import by.onliner.news.structures.news.News;

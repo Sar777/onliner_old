@@ -16,7 +16,7 @@ import by.onliner.news.App;
 import by.onliner.news.constants.Constant;
 import by.onliner.news.listeners.user.OnUserUpdateListener;
 import by.onliner.news.services.ServiceFactory;
-import by.onliner.news.services.User.UserService;
+import by.onliner.news.services.user.UserService;
 
 /**
  * Описание пользователя авторизованного

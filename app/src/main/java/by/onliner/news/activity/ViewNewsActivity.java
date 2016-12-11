@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import by.onliner.news.App;
-import by.onliner.news.Fragments.tabs.TabBase;
+import by.onliner.news.fragments.tabs.TabBase;
 import by.onliner.news.R;
 import by.onliner.news.adapters.NewsContentAdapter;
 import by.onliner.news.loaders.AsyncNewsCommentLoader;

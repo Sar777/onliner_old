@@ -15,7 +15,7 @@ import by.onliner.news.App;
 import by.onliner.news.common.Common;
 import by.onliner.news.constants.Constant;
 import by.onliner.news.listeners.credentials.OnCredentialsRefreshListener;
-import by.onliner.news.services.Credential.CredentialService;
+import by.onliner.news.services.credential.CredentialService;
 import by.onliner.news.services.ServiceFactory;
 import retrofit2.Response;
 

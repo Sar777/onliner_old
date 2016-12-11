@@ -1,6 +1,6 @@
 package by.onliner.news.listeners;
 
-import by.onliner.news.services.Likes.LikeCommentResponse;
+import by.onliner.news.services.likes.LikeCommentResponse;
 
 /**
  * Created by orion on 24.10.16.

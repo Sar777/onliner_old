@@ -24,11 +24,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import by.onliner.news.enums.NewsType;
-import by.onliner.news.Fragments.tabs.TabAuto;
-import by.onliner.news.Fragments.tabs.TabBase;
-import by.onliner.news.Fragments.tabs.TabPeople;
-import by.onliner.news.Fragments.tabs.TabRealt;
-import by.onliner.news.Fragments.tabs.TabTechnologies;
+import by.onliner.news.fragments.tabs.TabAuto;
+import by.onliner.news.fragments.tabs.TabBase;
+import by.onliner.news.fragments.tabs.TabPeople;
+import by.onliner.news.fragments.tabs.TabRealt;
+import by.onliner.news.fragments.tabs.TabTechnologies;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 

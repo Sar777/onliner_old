@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import by.onliner.news.managers.LikeMgr;
-import by.onliner.news.parser.Parsers.CommentsParser;
+import by.onliner.news.parser.parsers.CommentsParser;
 import by.onliner.news.structures.comments.Comment;
 import by.onliner.news.structures.comments.Like;
 

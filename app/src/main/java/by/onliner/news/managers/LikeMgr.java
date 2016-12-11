@@ -12,9 +12,9 @@ import java.net.HttpURLConnection;
 import java.util.HashMap;
 
 import by.onliner.news.listeners.OnLikeCommentListener;
-import by.onliner.news.services.Likes.LikeCommentResponse;
-import by.onliner.news.services.Likes.LikeService;
-import by.onliner.news.services.Likes.LikesObjectListResponse;
+import by.onliner.news.services.likes.LikeCommentResponse;
+import by.onliner.news.services.likes.LikeService;
+import by.onliner.news.services.likes.LikesObjectListResponse;
 import by.onliner.news.services.ServiceFactory;
 import by.onliner.news.structures.comments.Like;
 import retrofit2.Call;
