@@ -1,7 +1,5 @@
 package by.onliner.news.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.content.Loader;
@@ -74,10 +72,8 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private Button mButtonComment;
     private Button mButtonRepeat;
     private ProgressBar mProgressBar;
-    private ViewGroup mBaseLayout;
     private ViewGroup mRepeatGroup;
     private RecyclerView mRecyclerContent;
-    private ViewGroup mHeaderLayout;
 
     // Header Views
     private TextView mTextViewHeaderTitle;
@@ -110,6 +106,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
 
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_view_news);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout_view_news);
+        mAppBarLayout.setVisibility(View.INVISIBLE);
 
         mTitle = (TextView) findViewById(R.id.tv_view_news_title);
 
@@ -124,14 +121,8 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         });
 
         // Views
-        mBaseLayout = (ViewGroup)findViewById(R.id.l_view_news_content);
-        mBaseLayout.setVisibility(View.GONE);
-
         mProgressBar = (ProgressBar)findViewById(R.id.pb_news_list_loading);
         mProgressBar.setVisibility(View.VISIBLE);
-
-        mHeaderLayout = (ViewGroup) findViewById(R.id.l_news_view_header);
-        mHeaderLayout.setVisibility(View.INVISIBLE);
 
         mRepeatGroup = (ViewGroup)findViewById(R.id.l_view_news_repeat);
 
@@ -149,6 +140,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         mImageViewHeader = (ImageView) findViewById(R.id.img_view_news_header_image);
 
         mRecyclerContent = (RecyclerView)findViewById(R.id.recycler_news_content);
+        mRecyclerContent.setVisibility(View.GONE);
         LinearLayoutManager verticalLinearLayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerContent.setLayoutManager(verticalLinearLayout);
 
@@ -175,9 +167,9 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 mRecyclerContent.setAdapter(mNewsContentAdapter);
 
                 mProgressBar.setVisibility(View.GONE);
-                mBaseLayout.setVisibility(View.VISIBLE);
+                mRecyclerContent.setVisibility(View.VISIBLE);
                 mButtonComment.setVisibility(View.VISIBLE);
-                mHeaderLayout.setVisibility(View.VISIBLE);
+                mAppBarLayout.setVisibility(View.VISIBLE);
 
                 bindHeader();
                 initLoader = false;
@@ -254,22 +246,17 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             updateActionBar();
             bindHeader();
 
+            mProgressBar.setVisibility(View.GONE);
+
             // Показ главного окна
-            mBaseLayout.setAlpha(0f);
-            mBaseLayout.setVisibility(View.VISIBLE);
+            mRecyclerContent.setAlpha(0f);
+            mRecyclerContent.setVisibility(View.VISIBLE);
 
-            mHeaderLayout.setAlpha(0f);
-            mHeaderLayout.setVisibility(View.VISIBLE);
+            mAppBarLayout.setAlpha(0f);
+            mAppBarLayout.setVisibility(View.VISIBLE);
 
-            mBaseLayout.animate().alpha(1f).setDuration(mShortAnimationDuration).setListener(null);
-            mHeaderLayout.animate().alpha(1f).setDuration(mShortAnimationDuration).setListener(null);
-
-            mProgressBar.animate().alpha(0f).setDuration(mShortAnimationDuration).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressBar.setVisibility(View.GONE);
-                };
-            });
+            mRecyclerContent.animate().alpha(1f).setDuration(mShortAnimationDuration).setListener(null);
+            mAppBarLayout.animate().alpha(1f).setDuration(mShortAnimationDuration).setListener(null);
         }
     }
 
