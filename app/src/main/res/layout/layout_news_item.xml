@@ -10,7 +10,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/cv_preview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:clickable="true"
         android:layout_margin="3dp"
         app:cardElevation="3dp">
