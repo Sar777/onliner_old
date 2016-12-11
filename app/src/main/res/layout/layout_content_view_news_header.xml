@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/l_news_view_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="30dp">
+    android:fitsSystemWindows="true"
+    app:layout_collapseMode="parallax">
+
+    <ImageView
+        android:id="@+id/img_view_news_header_image"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:minHeight="150dp" />
 
     <TextView
         android:id="@+id/tv_view_news_header_title"
@@ -27,12 +37,12 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="21dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:orientation="horizontal"
         android:background="@drawable/i_shape_light_black"
-        android:layout_alignParentBottom="true">
+        android:layout_alignBottom="@+id/img_view_news_header_image">
 
         <LinearLayout
             android:layout_width="wrap_content"

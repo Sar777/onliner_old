@@ -6,6 +6,9 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -64,13 +67,17 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private ArrayList<ViewObject> mViewObjects;
 
     // Views
+    private TextView mTitle;
     private Toolbar mToolbar;
+    private AppBarLayout mAppBarLayout;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private Button mButtonComment;
     private Button mButtonRepeat;
     private ProgressBar mProgressBar;
     private ViewGroup mBaseLayout;
     private ViewGroup mRepeatGroup;
     private RecyclerView mRecyclerContent;
+    private ViewGroup mHeaderLayout;
 
     // Header Views
     private TextView mTextViewHeaderTitle;
@@ -101,12 +108,30 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_view_news);
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout_view_news);
+
+        mTitle = (TextView) findViewById(R.id.tv_view_news_title);
+
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if(mCollapsingToolbarLayout.getHeight() + verticalOffset < 2 * ViewCompat.getMinimumHeight(mCollapsingToolbarLayout))
+                    mTitle.animate().alpha(1).setDuration(600);
+                else
+                    mTitle.animate().alpha(0).setDuration(600);
+            }
+        });
+
         // Views
         mBaseLayout = (ViewGroup)findViewById(R.id.l_view_news_content);
         mBaseLayout.setVisibility(View.GONE);
 
         mProgressBar = (ProgressBar)findViewById(R.id.pb_news_list_loading);
         mProgressBar.setVisibility(View.VISIBLE);
+
+        mHeaderLayout = (ViewGroup) findViewById(R.id.l_news_view_header);
+        mHeaderLayout.setVisibility(View.INVISIBLE);
 
         mRepeatGroup = (ViewGroup)findViewById(R.id.l_view_news_repeat);
 
@@ -134,6 +159,8 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         mProject = intent.getStringExtra(TabBase.INTENT_PROJECT_TAG);
         mTitleString = intent.getStringExtra(TabBase.INTENT_TITLE_TAG);
 
+        mTitle.setText(mTitleString);
+
         boolean initLoader = true;
 
         // Восстановление активити
@@ -150,6 +177,7 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
                 mProgressBar.setVisibility(View.GONE);
                 mBaseLayout.setVisibility(View.VISIBLE);
                 mButtonComment.setVisibility(View.VISIBLE);
+                mHeaderLayout.setVisibility(View.VISIBLE);
 
                 bindHeader();
                 initLoader = false;
@@ -230,7 +258,11 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             mBaseLayout.setAlpha(0f);
             mBaseLayout.setVisibility(View.VISIBLE);
 
+            mHeaderLayout.setAlpha(0f);
+            mHeaderLayout.setVisibility(View.VISIBLE);
+
             mBaseLayout.animate().alpha(1f).setDuration(mShortAnimationDuration).setListener(null);
+            mHeaderLayout.animate().alpha(1f).setDuration(mShortAnimationDuration).setListener(null);
 
             mProgressBar.animate().alpha(0f).setDuration(mShortAnimationDuration).setListener(new AnimatorListenerAdapter() {
                 @Override
