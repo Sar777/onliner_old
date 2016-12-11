@@ -17,8 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:navigationIcon="?attr/homeAsUpIndicator"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:layout_scrollFlags="scroll">
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
                 android:id="@+id/tv_view_news_title"

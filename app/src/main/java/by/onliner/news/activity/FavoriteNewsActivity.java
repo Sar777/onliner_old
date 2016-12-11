@@ -1,5 +1,6 @@
 package by.onliner.news.activity;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,8 +39,13 @@ public class FavoriteNewsActivity extends AppCompatActivity {
 
         mRecyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(horizontalLayoutManager);
+        LinearLayoutManager layoutManager;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        else
+            layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+        mRecyclerView.setLayoutManager(layoutManager);
 
         mNewsFavoritesListAdapter = new NewsFavoritesListAdapter(this);
         mRecyclerView.setAdapter(mNewsFavoritesListAdapter);
