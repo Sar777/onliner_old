@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Заголовок новости
  */
-public class NewsPreview implements Parcelable {
+public class NewsHeader implements Parcelable {
     /**
      * Название
      */
@@ -41,7 +41,7 @@ public class NewsPreview implements Parcelable {
      */
     private HeaderAttributes mAttributes;
 
-    public NewsPreview() {
+    public NewsHeader() {
         this.mTitle = "";
         this.mView = 0;
         this.mComments = 0;
@@ -52,7 +52,7 @@ public class NewsPreview implements Parcelable {
         this.mAttributes = new HeaderAttributes();
     }
 
-    public NewsPreview(String title) {
+    public NewsHeader(String title) {
         this.mTitle = title;
         this.mView = 0;
         this.mComments = 0;
@@ -63,7 +63,7 @@ public class NewsPreview implements Parcelable {
         this.mAttributes = new HeaderAttributes();
     }
 
-    public NewsPreview(String title, Integer views, Integer comments, String postDate, Integer postDateUnix, String image, String url, HeaderAttributes attributes) {
+    public NewsHeader(String title, Integer views, Integer comments, String postDate, Integer postDateUnix, String image, String url, HeaderAttributes attributes) {
         this.mTitle = title;
         this.mView = views;
         this.mComments = comments;
@@ -74,7 +74,7 @@ public class NewsPreview implements Parcelable {
         this.mAttributes = attributes;
     }
 
-    public NewsPreview(NewsPreview headerNews) {
+    public NewsHeader(NewsHeader headerNews) {
         this.mTitle = headerNews.mTitle;
         this.mView = headerNews.getView();
         this.mComments = headerNews.getComments();
@@ -85,7 +85,7 @@ public class NewsPreview implements Parcelable {
         this.mAttributes = headerNews.getAttributes();
     }
 
-    protected NewsPreview(Parcel in) {
+    protected NewsHeader(Parcel in) {
         mTitle = in.readString();
         mPostDate = in.readString();
         mImage = in.readString();
@@ -230,7 +230,7 @@ public class NewsPreview implements Parcelable {
 
     @Override
     public String toString() {
-        return "NewsPreview{" +
+        return "NewsHeader{" +
                 "mTitle='" + mTitle + '\'' +
                 ", mView=" + mView +
                 ", mComments=" + mComments +
@@ -255,15 +255,15 @@ public class NewsPreview implements Parcelable {
         return 0;
     }
 
-    public static final Creator<NewsPreview> CREATOR = new Creator<NewsPreview>() {
+    public static final Creator<NewsHeader> CREATOR = new Creator<NewsHeader>() {
         @Override
-        public NewsPreview createFromParcel(Parcel in) {
-            return new NewsPreview(in);
+        public NewsHeader createFromParcel(Parcel in) {
+            return new NewsHeader(in);
         }
 
         @Override
-        public NewsPreview[] newArray(int size) {
-            return new NewsPreview[size];
+        public NewsHeader[] newArray(int size) {
+            return new NewsHeader[size];
         }
     };
 }

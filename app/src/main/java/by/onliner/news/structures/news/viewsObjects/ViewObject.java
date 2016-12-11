@@ -46,8 +46,6 @@ public abstract class ViewObject implements Parcelable {
 
     private static ViewObject getConcreteClass(Parcel source) {
         switch (ViewNewsType.values()[source.readInt()]) {
-            case TYPE_VIEW_PREVIEW:
-                return new PreviewViewObject(source);
             case TYPE_VIEW_TITLE:
                 return new TitleViewObject(source);
             case TYPE_VIEW_SPAN:

@@ -53,7 +53,7 @@ public class NewsMgr {
 
         Map<String, String> params = new HashMap<>();
         if (pull)
-            params.put("fromDate", getLastNews(project).getPreview().getPostDateUnix().toString());
+            params.put("fromDate", getLastNews(project).getHeader().getPostDateUnix().toString());
 
         // сеть
         final NewsService service = ServiceFactory.createRetrofitService(NewsService.class, Constant.mBaseURL);

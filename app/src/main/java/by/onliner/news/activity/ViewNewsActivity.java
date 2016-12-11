@@ -1,11 +1,12 @@
 package by.onliner.news.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -42,6 +46,10 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     public static String INTENT_NEWS_ID_TAG = "NEWS_ID";
     public static String INTENT_COMMENTS_TAG = "COMMENTS";
 
+    public static String BUNDLE_NEWS_TAG = "NEWS";
+    public static String BUNDLE_VIEW_OBJECTS_TAG = "VIEW_OBJECTS";
+    public static String BUNDLE_COMMENTS_TAG = "COMMENTS";
+
     private static final int LOADER_CONTENT_ID = 1;
     private static final int LOADER_COMMENTS_ID = 2;
 
@@ -57,14 +65,22 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
     private ArrayList<ViewObject> mViewObjects;
 
     // Views
-    private Toolbar mToolbar;
     private TextView mTitle;
+    private Toolbar mToolbar;
+    private AppBarLayout mAppBarLayout;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private Button mButtonComment;
     private Button mButtonRepeat;
     private ProgressBar mProgressBar;
-    private ViewGroup mBaseLayout;
     private ViewGroup mRepeatGroup;
     private RecyclerView mRecyclerContent;
+
+    // Header Views
+    private TextView mTextViewHeaderTitle;
+    private TextView mTextViewHeaderViews;
+    private TextView mTextViewHeaderComments;
+    private TextView mTextViewHeaderDate;
+    private ImageView mImageViewHeader;
 
     // Menu
     private MenuItem mItemFavorite;
@@ -88,10 +104,23 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        // Views
-        mBaseLayout = (ViewGroup)findViewById(R.id.l_view_news_content);
-        mBaseLayout.setVisibility(View.GONE);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_view_news);
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout_view_news);
+        mAppBarLayout.setVisibility(View.INVISIBLE);
 
+        mTitle = (TextView) findViewById(R.id.tv_view_news_title);
+
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if(mCollapsingToolbarLayout.getHeight() + verticalOffset < 2 * ViewCompat.getMinimumHeight(mCollapsingToolbarLayout))
+                    mTitle.animate().alpha(1).setDuration(600);
+                else
+                    mTitle.animate().alpha(0).setDuration(600);
+            }
+        });
+
+        // Views
         mProgressBar = (ProgressBar)findViewById(R.id.pb_news_list_loading);
         mProgressBar.setVisibility(View.VISIBLE);
 
@@ -103,7 +132,15 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         mButtonRepeat = (Button)findViewById(R.id.btn_load_repeat);
         mButtonRepeat.setOnClickListener(this);
 
+        // Header
+        mTextViewHeaderTitle = (TextView) findViewById(R.id.tv_view_news_header_title);
+        mTextViewHeaderViews = (TextView) findViewById(R.id.tv_view_news_header_views);
+        mTextViewHeaderComments = (TextView) findViewById(R.id.tv_view_news_header_comments);
+        mTextViewHeaderDate = (TextView) findViewById(R.id.tv_view_news_header_date);
+        mImageViewHeader = (ImageView) findViewById(R.id.img_view_news_header_image);
+
         mRecyclerContent = (RecyclerView)findViewById(R.id.recycler_news_content);
+        mRecyclerContent.setVisibility(View.GONE);
         LinearLayoutManager verticalLinearLayout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerContent.setLayoutManager(verticalLinearLayout);
 
@@ -114,23 +151,27 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         mProject = intent.getStringExtra(TabBase.INTENT_PROJECT_TAG);
         mTitleString = intent.getStringExtra(TabBase.INTENT_TITLE_TAG);
 
+        mTitle.setText(mTitleString);
+
         boolean initLoader = true;
 
         // Восстановление активити
         if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey("NEWS") && savedInstanceState.containsKey("COMMENTS")) {
-                mNews = savedInstanceState.getParcelable("NEWS");
+            if (savedInstanceState.containsKey(BUNDLE_NEWS_TAG) && savedInstanceState.containsKey(BUNDLE_COMMENTS_TAG)) {
+                mNews = savedInstanceState.getParcelable(BUNDLE_NEWS_TAG);
 
-                mComments = savedInstanceState.getParcelableArrayList("COMMENTS");
-                mViewObjects = savedInstanceState.getParcelableArrayList("VIEWS_OBJECTS");
+                mComments = savedInstanceState.getParcelableArrayList(BUNDLE_COMMENTS_TAG);
+                mViewObjects = savedInstanceState.getParcelableArrayList(BUNDLE_VIEW_OBJECTS_TAG);
 
                 mNewsContentAdapter = new NewsContentAdapter(this, mViewObjects);
                 mRecyclerContent.setAdapter(mNewsContentAdapter);
 
                 mProgressBar.setVisibility(View.GONE);
-                mBaseLayout.setVisibility(View.VISIBLE);
+                mRecyclerContent.setVisibility(View.VISIBLE);
                 mButtonComment.setVisibility(View.VISIBLE);
+                mAppBarLayout.setVisibility(View.VISIBLE);
 
+                bindHeader();
                 initLoader = false;
             }
         }
@@ -142,9 +183,18 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             bundle.putString("TITLE", mTitleString);
             getLoaderManager().initLoader(LOADER_CONTENT_ID, bundle, this);
         }
+    }
 
-        mTitle = (TextView) findViewById(R.id.tv_view_news_title);
-        mTitle.setText(mTitleString);
+    private void bindHeader()  {
+        mTextViewHeaderTitle.setText(mNews.getHeader().getTitle());
+        mTextViewHeaderViews.setText(mNews.getHeader().getView().toString());
+        mTextViewHeaderComments.setText(mNews.getHeader().getComments().toString());
+        mTextViewHeaderDate.setText(mNews.getHeader().getPostDate());
+
+        Picasso.with(App.getContext()).
+                load(mNews.getHeader().getImage()).
+                resize(0, 200).
+                into(mImageViewHeader);
     }
 
     @Override
@@ -154,12 +204,12 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
         getLoaderManager().destroyLoader(LOADER_CONTENT_ID);
 
         if (mNews != null) {
-            outState.putParcelable("NEWS", mNews);
-            outState.putParcelableArrayList("VIEWS_OBJECTS", mViewObjects);
+            outState.putParcelable(BUNDLE_NEWS_TAG, mNews);
+            outState.putParcelableArrayList(BUNDLE_VIEW_OBJECTS_TAG, mViewObjects);
         }
 
         if (mComments != null)
-            outState.putParcelableArrayList("COMMENTS", mComments);
+            outState.putParcelableArrayList(BUNDLE_COMMENTS_TAG, mComments);
     }
 
     @Override
@@ -194,19 +244,19 @@ public class ViewNewsActivity extends AppCompatActivity implements View.OnClickL
             loadingComments(mNews);
 
             updateActionBar();
+            bindHeader();
+
+            mProgressBar.setVisibility(View.GONE);
 
             // Показ главного окна
-            mBaseLayout.setAlpha(0f);
-            mBaseLayout.setVisibility(View.VISIBLE);
+            mRecyclerContent.setAlpha(0f);
+            mRecyclerContent.setVisibility(View.VISIBLE);
 
-            mBaseLayout.animate().alpha(1f).setDuration(mShortAnimationDuration).setListener(null);
+            mAppBarLayout.setAlpha(0f);
+            mAppBarLayout.setVisibility(View.VISIBLE);
 
-            mProgressBar.animate().alpha(0f).setDuration(mShortAnimationDuration).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressBar.setVisibility(View.GONE);
-                };
-            });
+            mRecyclerContent.animate().alpha(1f).setDuration(mShortAnimationDuration).setListener(null);
+            mAppBarLayout.animate().alpha(1f).setDuration(mShortAnimationDuration).setListener(null);
         }
     }
 

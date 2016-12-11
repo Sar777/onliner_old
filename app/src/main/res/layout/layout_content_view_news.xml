@@ -4,19 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="by.onliner.news.activity.ViewNewsActivity"
     tools:showIn="@layout/activity_view_news">
-
-    <ProgressBar
-        android:id="@+id/pb_news_list_loading"
-        android:scaleX="1.2"
-        android:scaleY="1.2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="invisible" />
 
     <LinearLayout
         android:id="@+id/l_view_news_repeat"
@@ -48,8 +40,18 @@
 
     <RelativeLayout
         android:id="@+id/l_view_news_content"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/pb_news_list_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:visibility="invisible" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_news_content"

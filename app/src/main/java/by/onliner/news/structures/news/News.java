@@ -13,7 +13,7 @@ public class News implements Parcelable {
      * Содержанеие заголовка новости где хранится информация о видео, изображении и так далее
      */
     @NonNull
-    private NewsPreview mPreview;
+    private NewsHeader mHeader;
     /**
      * Атрибуты новости
      */
@@ -27,24 +27,24 @@ public class News implements Parcelable {
 
     public News(@NonNull String url, @NonNull String project, String title, @NonNull String content) {
         this.mAttributes = new NewsAttributes(url, project);
-        this.mPreview = new NewsPreview(title);
+        this.mHeader = new NewsHeader(title);
         this.mContent = content;
     }
 
-    public News(NewsPreview preview) {
+    public News(NewsHeader preview) {
         this.mAttributes = new NewsAttributes();
-        this.mPreview = preview;
+        this.mHeader = preview;
         this.mContent = "";
     }
 
-    public News(@NonNull NewsAttributes attributes, @NonNull NewsPreview preview, @NonNull String content) {
+    public News(@NonNull NewsAttributes attributes, @NonNull NewsHeader preview, @NonNull String content) {
         this.mAttributes = attributes;
-        this.mPreview = preview;
+        this.mHeader = preview;
         this.mContent = content;
     }
 
     protected News(Parcel in) {
-        mPreview = in.readParcelable(NewsPreview.class.getClassLoader());
+        mHeader = in.readParcelable(NewsHeader.class.getClassLoader());
         mAttributes = in.readParcelable(NewsAttributes.class.getClassLoader());
         mContent = in.readString();
     }
@@ -69,16 +69,16 @@ public class News implements Parcelable {
      * Получение заголовка новости
      * @return Заголовок новости
      */
-    public NewsPreview getPreview() {
-        return mPreview;
+    public NewsHeader getHeader() {
+        return mHeader;
     }
 
     /**
      * Установка заголовка новости
-     * @param preview Заголовк новости
+     * @param header Заголовк новости
      */
-    public void setPreview(NewsPreview preview) {
-        this.mPreview = preview;
+    public void setHeader(NewsHeader header) {
+        this.mHeader = header;
     }
 
     /**
@@ -100,7 +100,7 @@ public class News implements Parcelable {
     @Override
     public String toString() {
         return "News{" +
-                "mPreview=" + mPreview +
+                "mHeader=" + mHeader +
                 ", mAttributes=" + mAttributes +
                 ", mContent='" + mContent.toString() + '\'' +
                 '}';
@@ -108,7 +108,7 @@ public class News implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(mPreview, flags);
+        dest.writeParcelable(mHeader, flags);
         dest.writeParcelable(mAttributes, flags);
         dest.writeString(mContent);
     }
