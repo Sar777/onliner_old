@@ -17,7 +17,7 @@ import by.onliner.news.R;
  * Created by orion on 22.11.16.
  */
 
-class ExtendedTextView extends TextView {
+public class ExtendedTextView extends TextView {
     private static final String TAG = "ExtentedTextView";
 
     public ExtendedTextView(Context context) {
