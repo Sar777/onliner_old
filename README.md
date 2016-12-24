@@ -1,4 +1,4 @@
-# Onliner.BY News Reader
+# Onliner.BY News Reader  ![Build Status](https://travis-ci.org/Sar777/onliner.svg?branch=master)
 
 ####**Текущий функционал:**<br>
 1. Просмотр списка новостей по категориям<br>
